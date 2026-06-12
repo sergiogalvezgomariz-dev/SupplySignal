@@ -11,11 +11,125 @@ try {
     }
   }
 } catch(e) {}
-const express = require("express");
-const path    = require("path");
-const fs      = require("fs");
+
+const express     = require("express");
+const path        = require("path");
+const fs          = require("fs");
+const session     = require("express-session");
+const helmet      = require("helmet");
+const rateLimit   = require("express-rate-limit");
 
 const app = express();
+
+// ── Seguridad: cabeceras HTTP ─────────────────────────────────────────────
+app.use(helmet({
+  contentSecurityPolicy: false, // CSP manual más abajo si se necesita
+  crossOriginEmbedderPolicy: false,
+}));
+
+// ── Rate limiting en /api/* ───────────────────────────────────────────────
+app.use("/api/", rateLimit({
+  windowMs: 60_000,
+  max: 60,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: "Too many requests, please try again in a minute." },
+}));
+
+// ── Sesión ────────────────────────────────────────────────────────────────
+app.use(session({
+  secret: process.env.SESSION_SECRET || "supplysignal_dev_secret",
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    secure: !!process.env.VERCEL, // solo HTTPS en producción
+    maxAge: 8 * 60 * 60 * 1000,  // 8 horas
+    sameSite: "lax",
+  },
+}));
+
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+
+// ── Login page ────────────────────────────────────────────────────────────
+const LOGIN_HTML = `<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SupplySignal — Access</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'IBM Plex Sans',sans-serif;background:#001F5B;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+.card{background:#fff;width:100%;max-width:380px;padding:40px 36px 36px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.top-accent{height:4px;background:#C8962A;margin:-40px -36px 32px;width:calc(100% + 72px)}
+.logo{font-family:'Playfair Display',serif;font-size:22px;font-weight:600;color:#001F5B;letter-spacing:.3px;margin-bottom:4px}
+.sub{font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:#8A95A8;margin-bottom:32px}
+label{display:block;font-size:10.5px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:#4F5A6E;margin-bottom:6px}
+input{width:100%;border:1px solid #CDD2DC;padding:11px 14px;font-family:inherit;font-size:13px;color:#1E2533;outline:none;margin-bottom:18px;transition:border-color .15s}
+input:focus{border-color:#001F5B}
+.btn{width:100%;background:#001F5B;color:#fff;border:none;padding:13px;font-family:inherit;font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;cursor:pointer;transition:background .15s;margin-top:4px}
+.btn:hover{background:#002A7A}
+.err{background:#FAEAEA;border-left:3px solid #B81C1C;color:#B81C1C;font-size:12px;padding:10px 14px;margin-bottom:18px;display:none}
+.err.show{display:block}
+.footer{margin-top:28px;font-size:10px;color:rgba(255,255,255,.4);text-align:center;letter-spacing:.3px}
+@media(max-width:420px){.card{padding:32px 24px 28px}.top-accent{margin:-32px -24px 28px;width:calc(100% + 48px)}}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="top-accent"></div>
+  <div class="logo">SupplySignal</div>
+  <div class="sub">Research Platform</div>
+  <div class="err" id="err">INVALID_MSG</div>
+  <form method="POST" action="/login">
+    <label>Username</label>
+    <input type="text" name="username" autocomplete="username" required autofocus>
+    <label>Password</label>
+    <input type="password" name="password" autocomplete="current-password" required>
+    <button class="btn" type="submit">Sign In</button>
+  </form>
+</div>
+<div class="footer">For authorized use only &nbsp;·&nbsp; SupplySignal Research Platform</div>
+<script>
+const p = new URLSearchParams(location.search);
+if(p.get('err')){const e=document.getElementById('err');e.textContent='Incorrect username or password.';e.classList.add('show');}
+</script>
+</body>
+</html>`;
+
+app.get("/login", (req, res) => {
+  if (req.session.auth) return res.redirect("/");
+  res.send(LOGIN_HTML);
+});
+
+app.post("/login", (req, res) => {
+  const { username, password } = req.body;
+  const validUser = process.env.AUTH_USER || "admin";
+  const validPass = process.env.AUTH_PASS || "changeme";
+  if (username === validUser && password === validPass) {
+    req.session.auth = true;
+    return res.redirect("/");
+  }
+  res.redirect("/login?err=1");
+});
+
+app.get("/logout", (req, res) => {
+  req.session.destroy(() => res.redirect("/login"));
+});
+
+// ── Middleware de autenticación ───────────────────────────────────────────
+function requireAuth(req, res, next) {
+  if (req.session.auth) return next();
+  if (req.path.startsWith("/api/")) return res.status(401).json({ error: "Unauthorized" });
+  res.redirect("/login");
+}
+
+app.use(requireAuth);
+
+// ── Archivos estáticos (solo tras autenticación) ──────────────────────────
 app.use(express.static(path.join(__dirname, "public")));
 
 // ── Configuración ─────────────────────────────────────────────────────────
@@ -240,6 +354,7 @@ app.get("/api/bot", (req, res) => {
 // Serie de precios intradía para gráficas (cliente + sus proveedores)
 app.get("/api/chart/:ticker", async (req, res) => {
   const cliente = req.params.ticker.toUpperCase();
+  if (!/^[A-Z0-9.\-]{1,10}$/.test(cliente)) return res.status(400).json({ error: "Invalid ticker" });
   const suppliers = pares
     .filter(p => p.cliente === cliente && p.proveedor)
     .map(p => ({ ticker: p.proveedor, nombre: p.proveedorNombre, dependencia: p.dependencia }));
@@ -283,29 +398,39 @@ app.get("/api/chart/:ticker", async (req, res) => {
 // Estado del informe (generado automáticamente con las señales)
 app.get("/api/report/status", (req, res) => res.json(estadoInforme));
 
-// Servir informes generados
-app.use("/report", express.static(path.join(__dirname, "output")));
+// Servir solo el HTML del informe (no todo el directorio output/)
+app.get("/report/informe_senales.html", (req, res) => {
+  const ruta = path.join(__dirname, "output", "informe_senales.html");
+  if (!fs.existsSync(ruta)) return res.status(404).send("Report not yet generated.");
+  res.sendFile(ruta);
+});
 
 // Briefings del agente de earnings
 app.get("/api/briefings", (req, res) => {
   const ruta = path.join(__dirname, "output", "briefings.json");
   if (!fs.existsSync(ruta)) return res.json({ briefings: [], mensaje: "No briefings yet" });
-  res.json(JSON.parse(fs.readFileSync(ruta, "utf8")));
+  try { res.json(JSON.parse(fs.readFileSync(ruta, "utf8"))); }
+  catch(e) { res.status(500).json({ error: "Failed to parse briefings" }); }
 });
 
 // Earnings calendar
 app.get("/api/earnings", (req, res) => {
   const ruta = path.join(__dirname, "output", "earnings.json");
   if (!fs.existsSync(ruta)) return res.json({ earnings: [], mensaje: "Ejecuta: python earnings_bot.py" });
-  res.json(JSON.parse(fs.readFileSync(ruta, "utf8")));
+  try { res.json(JSON.parse(fs.readFileSync(ruta, "utf8"))); }
+  catch(e) { res.status(500).json({ error: "Failed to parse earnings" }); }
 });
 
 // Correlaciones históricas
 app.get("/api/correlaciones", (req, res) => {
   const ruta = path.join(__dirname, "output", "analisis_correlacion.json");
   if (!fs.existsSync(ruta)) return res.json({ datos: [], mensaje: "Ejecuta primero: python ampliar_pares.py" });
-  res.json({ datos: JSON.parse(fs.readFileSync(ruta, "utf8")) });
+  try { res.json({ datos: JSON.parse(fs.readFileSync(ruta, "utf8")) }); }
+  catch(e) { res.status(500).json({ error: "Failed to parse correlaciones" }); }
 });
+
+// ── 404 ───────────────────────────────────────────────────────────────────
+app.use((req, res) => res.status(404).json({ error: "Not found" }));
 
 const PORT = process.env.PORT || 3100;
 app.listen(PORT, () => {
