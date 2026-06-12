@@ -1,0 +1,2042 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SupplySignal — Research Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:        #001F5B;
+  --navy2:       #002A7A;
+  --navy-light:  #003399;
+  --blue:        #0050C8;
+  --blue-mid:    #3373D1;
+  --gold:        #C8962A;
+  --gold-light:  #F0C96A;
+  --white:       #FFFFFF;
+  --off-white:   #F7F8FA;
+  --gray-50:     #F2F4F7;
+  --gray-100:    #E8EBF0;
+  --gray-200:    #CDD2DC;
+  --gray-400:    #8A95A8;
+  --gray-600:    #4F5A6E;
+  --gray-800:    #1E2533;
+  --green:       #0A6E3F;
+  --green-bg:    #E8F5EE;
+  --red:         #B81C1C;
+  --red-bg:      #FAEAEA;
+  --amber:       #8A5A00;
+  --amber-bg:    #FEF3D8;
+  --f-serif:     'Playfair Display', 'Times New Roman', serif;
+  --f-sans:      'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+  --f-mono:      'IBM Plex Mono', 'Courier New', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 14px; }
+body {
+  font-family: var(--f-sans);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.55;
+  color: var(--gray-800);
+  background: var(--white);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Top strip ────────────────────────────────────────────────────────── */
+.top-strip {
+  background: var(--navy);
+  height: 3px;
+}
+
+/* ── Header ───────────────────────────────────────────────────────────── */
+header {
+  background: var(--white);
+  border-bottom: 1px solid var(--gray-100);
+}
+.header-inner {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 28px;
+  display: flex;
+  align-items: stretch;
+  height: 64px;
+  gap: 0;
+}
+.logo-block {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-right: 36px;
+  border-right: 1px solid var(--gray-100);
+  margin-right: 28px;
+}
+.logo-mark {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.logo-mark span {
+  display: block;
+  height: 3px;
+  background: var(--navy);
+  border-radius: 1px;
+}
+.logo-mark span:nth-child(1) { width: 22px; }
+.logo-mark span:nth-child(2) { width: 16px; }
+.logo-mark span:nth-child(3) { width: 22px; }
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.logo-name {
+  font-family: var(--f-serif);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--navy);
+  letter-spacing: .3px;
+  line-height: 1;
+}
+.logo-sub {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gray-400);
+  margin-top: 3px;
+}
+
+/* ── Nav ──────────────────────────────────────────────────────────────── */
+nav {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+nav button {
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: var(--gray-600);
+  font-family: var(--f-sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  padding: 0 18px;
+  cursor: pointer;
+  transition: color .15s, border-color .15s;
+  white-space: nowrap;
+}
+nav button:hover { color: var(--navy); }
+nav button.activa {
+  color: var(--navy);
+  border-bottom-color: var(--gold);
+  font-weight: 600;
+}
+
+.header-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.live-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  color: var(--green);
+}
+.live-dot {
+  width: 6px; height: 6px;
+  background: var(--green);
+  border-radius: 50%;
+  animation: pulse-dot 2s infinite;
+}
+@keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.8)} }
+
+/* ── Subheader (título de sección) ────────────────────────────────────── */
+.section-bar {
+  background: var(--navy);
+  padding: 0 28px;
+}
+.section-bar-inner {
+  max-width: 1140px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 44px;
+}
+.section-title {
+  font-family: var(--f-serif);
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--white);
+  letter-spacing: .3px;
+}
+.section-meta {
+  font-size: 11px;
+  color: rgba(255,255,255,.5);
+  letter-spacing: .5px;
+}
+
+/* ── Layout ───────────────────────────────────────────────────────────── */
+.page-wrap {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 28px 28px 48px;
+}
+.pestaña { display: none; }
+.pestaña.activa { display: block; }
+
+/* ── Disclaimer ───────────────────────────────────────────────────────── */
+.disclaimer {
+  background: var(--amber-bg);
+  border-left: 3px solid var(--gold);
+  padding: 10px 16px;
+  font-size: 11.5px;
+  color: var(--amber);
+  margin-bottom: 24px;
+  letter-spacing: .1px;
+}
+.disclaimer strong { color: var(--gray-800); }
+
+/* ── Stat row ─────────────────────────────────────────────────────────── */
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1px;
+  background: var(--gray-200);
+  border: 1px solid var(--gray-200);
+  margin-bottom: 24px;
+}
+.stat-cell {
+  background: var(--white);
+  padding: 16px 20px;
+}
+.stat-cell:first-child { border-left: 3px solid var(--navy); }
+.stat-val {
+  font-family: var(--f-serif);
+  font-size: 26px;
+  font-weight: 400;
+  color: var(--navy);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.stat-lbl {
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--gray-400);
+}
+
+/* ── Toolbar ──────────────────────────────────────────────────────────── */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.toolbar input,
+.toolbar select {
+  font-family: var(--f-sans);
+  font-size: 12px;
+  color: var(--gray-800);
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  padding: 7px 12px;
+  outline: none;
+  transition: border-color .15s;
+  min-width: 180px;
+}
+.toolbar input:focus,
+.toolbar select:focus { border-color: var(--blue); }
+.toolbar input::placeholder { color: var(--gray-400); }
+
+/* ── Botón ────────────────────────────────────────────────────────────── */
+.btn {
+  font-family: var(--f-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  padding: 8px 20px;
+  border: none;
+  cursor: pointer;
+  transition: background .15s;
+}
+.btn-primary {
+  background: var(--navy);
+  color: var(--white);
+}
+.btn-primary:hover { background: var(--navy2); }
+.btn-secondary {
+  background: var(--white);
+  color: var(--navy);
+  border: 1px solid var(--navy);
+}
+.btn-secondary:hover { background: var(--gray-50); }
+
+/* ── Tabla de datos ───────────────────────────────────────────────────── */
+.data-table-wrap { overflow-x: auto; }
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  white-space: nowrap;
+}
+.data-table thead th {
+  background: var(--gray-50);
+  border-top: 2px solid var(--navy);
+  border-bottom: 1px solid var(--gray-200);
+  color: var(--gray-600);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  padding: 10px 14px;
+  text-align: left;
+}
+.data-table thead th.r { text-align: right; }
+.data-table thead th.c { text-align: center; }
+.data-table tbody td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--gray-100);
+  color: var(--gray-800);
+  vertical-align: middle;
+}
+.data-table tbody td.r { text-align: right; }
+.data-table tbody td.c { text-align: center; }
+.data-table tbody tr:hover td { background: var(--off-white); }
+.data-table tbody tr:last-child td { border-bottom: 2px solid var(--gray-200); }
+
+/* ── Ticker cell ──────────────────────────────────────────────────────── */
+.t-sym {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--navy);
+  letter-spacing: .5px;
+}
+.t-name {
+  font-size: 11px;
+  color: var(--gray-400);
+  margin-top: 1px;
+}
+
+/* ── Badges ───────────────────────────────────────────────────────────── */
+.badge {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  padding: 3px 8px;
+}
+.badge-buy      { background: var(--green-bg); color: var(--green); }
+.badge-sell     { background: var(--red-bg);   color: var(--red); }
+.badge-alta     { background: var(--green-bg); color: var(--green); }
+.badge-media    { background: var(--amber-bg); color: var(--amber); }
+.badge-baja     { background: var(--gray-100); color: var(--gray-600); }
+.badge-source   { background: var(--gray-100); color: var(--gray-600); font-size: 10px; }
+.val-pos { color: var(--green); font-weight: 600; font-family: var(--f-mono); }
+.val-neg { color: var(--red);   font-weight: 600; font-family: var(--f-mono); }
+.val-neu { color: var(--gray-600); font-family: var(--f-mono); }
+
+/* ── Signal cards ─────────────────────────────────────────────────────── */
+.signal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.signal-card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-top: 3px solid var(--navy);
+  padding: 0;
+  position: relative;
+}
+.signal-card.compra { border-top-color: var(--green); }
+.signal-card.venta  { border-top-color: var(--red); }
+.sc-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 16px 18px 12px;
+  border-bottom: 1px solid var(--gray-100);
+}
+.sc-ticker-block {}
+.sc-symbol {
+  font-family: var(--f-mono);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--navy);
+  letter-spacing: 1px;
+  line-height: 1;
+}
+.sc-via {
+  font-size: 11px;
+  color: var(--gray-400);
+  margin-top: 3px;
+  font-weight: 400;
+}
+.sc-name {
+  font-size: 12px;
+  color: var(--gray-600);
+  margin-top: 1px;
+}
+.sc-right { text-align: right; }
+.sc-score-num {
+  font-family: var(--f-serif);
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--navy);
+  line-height: 1;
+}
+.sc-score-lbl {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gray-400);
+  margin-top: 3px;
+}
+.sc-body {
+  padding: 12px 18px;
+  font-size: 12.5px;
+  color: var(--gray-600);
+  line-height: 1.6;
+  border-bottom: 1px solid var(--gray-100);
+}
+.sc-footer {
+  display: flex;
+  padding: 10px 18px;
+  gap: 0;
+}
+.sc-kv {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.sc-kv + .sc-kv {
+  border-left: 1px solid var(--gray-100);
+  padding-left: 14px;
+}
+.sc-k {
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--gray-400);
+}
+.sc-v {
+  font-family: var(--f-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--navy);
+}
+
+/* ── Empty / loading states ───────────────────────────────────────────── */
+.state-block {
+  border: 1px solid var(--gray-200);
+  border-top: 2px solid var(--navy);
+  padding: 52px 24px;
+  text-align: center;
+  background: var(--white);
+}
+.state-label {
+  font-family: var(--f-serif);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+.state-sub {
+  font-size: 12px;
+  color: var(--gray-400);
+  line-height: 1.7;
+}
+.state-sub code {
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  padding: 1px 6px;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  color: var(--navy);
+}
+
+/* ── Página titular de sección ────────────────────────────────────────── */
+.section-intro {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--gray-100);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.si-left {}
+.si-title {
+  font-family: var(--f-serif);
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--navy);
+  margin-bottom: 3px;
+}
+.si-sub {
+  font-size: 11px;
+  color: var(--gray-400);
+  letter-spacing: .3px;
+}
+
+/* ── Nota al pie de tabla ─────────────────────────────────────────────── */
+.table-note {
+  font-size: 10.5px;
+  color: var(--gray-400);
+  margin-top: 10px;
+  line-height: 1.8;
+  border-top: 1px solid var(--gray-100);
+  padding-top: 10px;
+}
+.table-note strong { color: var(--gray-600); }
+
+/* ── Charts ───────────────────────────────────────────────────────────── */
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(520px, 1fr));
+  gap: 20px;
+}
+.chart-card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-top: 3px solid var(--navy);
+}
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 14px 18px 10px;
+  border-bottom: 1px solid var(--gray-100);
+}
+.chart-title { font-family: var(--f-mono); font-size: 18px; font-weight: 500; color: var(--navy); }
+.chart-subtitle { font-size: 11px; color: var(--gray-400); margin-top: 2px; }
+.chart-state { font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+.chart-state.open  { color: var(--green); }
+.chart-state.close { color: var(--gray-400); }
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 8px 18px;
+  border-bottom: 1px solid var(--gray-100);
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--gray-600);
+}
+.legend-dot {
+  width: 10px; height: 3px;
+  border-radius: 1px;
+  flex-shrink: 0;
+}
+.legend-dep {
+  font-size: 10px;
+  color: var(--gray-400);
+}
+.chart-canvas-wrap {
+  padding: 10px 14px 14px;
+  position: relative;
+  height: 220px;
+}
+.chart-canvas-wrap canvas { width: 100% !important; height: 100% !important; }
+.chart-footer {
+  padding: 6px 18px 10px;
+  font-size: 10.5px;
+  color: var(--gray-400);
+  display: flex;
+  justify-content: space-between;
+}
+.charts-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+/* ── Comparador tabla ── */
+.comparador-wrap {
+  background: var(--white);
+  border: 1px solid var(--gray-100);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 28px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.06);
+}
+.comparador-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--gray-100);
+  background: #f8f9fc;
+}
+.comparador-title {
+  font-family: var(--f-serif);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--navy);
+}
+.comparador-hint {
+  font-size: 11.5px;
+  color: var(--gray-400);
+}
+#comparador-tabla table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+#comparador-tabla th {
+  font-family: var(--f-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  color: var(--gray-400);
+  padding: 9px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--gray-100);
+  background: #fafbfd;
+  white-space: nowrap;
+}
+#comparador-tabla td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--gray-50);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+#comparador-tabla tr:last-child td { border-bottom: none; }
+#comparador-tabla tr { cursor: pointer; transition: background .1s; }
+#comparador-tabla tr:hover td { background: #f5f7ff; }
+.cmp-ticker {
+  font-family: var(--f-mono);
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--navy);
+}
+.cmp-name {
+  font-size: 11.5px;
+  color: var(--gray-600);
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cmp-price {
+  font-family: var(--f-mono);
+  font-size: 12.5px;
+  color: var(--gray-800);
+  text-align: right;
+}
+.cmp-arrow {
+  color: var(--gray-300);
+  font-size: 16px;
+  text-align: center;
+  padding: 0 8px;
+}
+.cmp-dep {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  color: var(--gray-400);
+  text-align: right;
+}
+.cmp-bar-wrap {
+  width: 80px;
+  height: 4px;
+  background: var(--gray-100);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.cmp-bar {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--navy);
+  transition: width .4s;
+}
+.selector-btn {
+  font-family: var(--f-mono);
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: .8px;
+  padding: 5px 14px;
+  border: 1px solid var(--gray-200);
+  background: var(--white);
+  color: var(--gray-600);
+  cursor: pointer;
+  transition: all .15s;
+}
+.selector-btn:hover { border-color: var(--navy); color: var(--navy); }
+.selector-btn.activo { background: var(--navy); color: var(--white); border-color: var(--navy); }
+.charts-refresh-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 10.5px;
+  color: var(--gray-400);
+  padding: 0 0 14px;
+  letter-spacing: .3px;
+}
+
+/* ── Precios en vivo: fila de alerta ──────────────────────────────────── */
+.alert-row td { background: #fffbea !important; }
+.alert-row-shock td { background: #fff0f0 !important; }
+
+/* ── Variación en vivo ────────────────────────────────────────────────── */
+.chg-pos { color: var(--green); font-weight: 600; font-family: var(--f-mono); }
+.chg-neg { color: var(--red);   font-weight: 600; font-family: var(--f-mono); }
+.chg-neu { color: var(--gray-400); font-family: var(--f-mono); }
+
+/* ── Mini barra de progreso hacia el umbral ───────────────────────────── */
+.threshold-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.bar-track {
+  flex: 1;
+  height: 4px;
+  background: var(--gray-100);
+  border-radius: 2px;
+  overflow: hidden;
+  min-width: 60px;
+}
+.bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width .4s ease;
+}
+.bar-pct { font-family: var(--f-mono); font-size: 10.5px; color: var(--gray-400); min-width: 34px; text-align: right; }
+
+/* ── Badge alerta ─────────────────────────────────────────────────────── */
+.badge-alert {
+  display: inline-block;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  background: #fff0c0;
+  color: #7a5000;
+  border: 1px solid #e0c060;
+  animation: blink-alert 1.5s infinite;
+}
+.badge-shock {
+  background: #ffe0e0;
+  color: var(--red);
+  border-color: #f0a0a0;
+}
+@keyframes blink-alert { 0%,100%{opacity:1} 50%{opacity:.5} }
+
+/* ── Ticker de última actualización ──────────────────────────────────── */
+.update-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 10.5px;
+  color: var(--gray-400);
+  padding: 6px 0 14px;
+  letter-spacing: .4px;
+}
+.update-strip .next { display: flex; align-items: center; gap: 6px; }
+.countdown {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  color: var(--navy);
+  font-weight: 500;
+  min-width: 28px;
+}
+
+/* ── Footer ───────────────────────────────────────────────────────────── */
+footer {
+  background: var(--navy);
+  color: rgba(255,255,255,.45);
+  font-size: 10.5px;
+  letter-spacing: .4px;
+  padding: 16px 28px;
+  margin-top: 0;
+}
+.footer-inner {
+  max-width: 1140px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.footer-brand {
+  font-family: var(--f-serif);
+  font-size: 13px;
+  color: rgba(255,255,255,.7);
+}
+</style>
+</head>
+<body>
+
+<div class="top-strip"></div>
+
+<!-- ── Header ─────────────────────────────────────────────────────────── -->
+<header>
+  <div class="header-inner">
+    <div class="logo-block">
+      <div class="logo-mark">
+        <span></span><span></span><span></span>
+      </div>
+      <div class="logo-text">
+        <div class="logo-name">SupplySignal</div>
+        <div class="logo-sub">Research Platform</div>
+      </div>
+    </div>
+
+    <nav>
+      <button class="activa" onclick="cambiarPestana('senales', this)">Signals</button>
+      <button onclick="cambiarPestana('correlaciones', this)">Correlations</button>
+      <button onclick="cambiarPestana('charts', this)">Live Charts</button>
+      <button onclick="cambiarPestana('bot', this)">Execution</button>
+      <button onclick="cambiarPestana('earnings', this)">Earnings</button>
+    </nav>
+
+    <div class="header-right">
+      <div class="live-indicator">
+        <div class="live-dot"></div>
+        Market data live
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ── Page body ──────────────────────────────────────────────────────── -->
+<div class="page-wrap">
+
+  <div class="disclaimer">
+    <strong>Important disclosure.</strong> SupplySignal is a research tool only. Nothing herein constitutes investment advice or a recommendation to buy or sell any security. Investment decisions are the sole responsibility of the user. MiFID II compliant.
+  </div>
+
+  <!-- ══ SIGNALS ══════════════════════════════════════════════════════ -->
+  <div id="pestaña-senales" class="pestaña activa">
+    <div class="section-intro">
+      <div class="si-left">
+        <div class="si-title">Active Signals</div>
+        <div class="si-sub">Supplier exposure to customer price shocks — threshold ≥ 3% daily move</div>
+      </div>
+      <button class="btn btn-primary" onclick="cargarSenales()">Refresh</button>
+    </div>
+    <div id="senales">
+      <div class="state-block"><div class="state-label">Loading market data</div></div>
+    </div>
+  </div>
+
+  <!-- ══ CORRELATIONS ═════════════════════════════════════════════════ -->
+  <div id="pestaña-correlaciones" class="pestaña">
+    <div class="section-intro">
+      <div class="si-left">
+        <div class="si-title">Correlation Monitor</div>
+        <div class="si-sub">Live prices updated every minute · Historical analysis: 3-year series · Cohen &amp; Frazzini (2008)</div>
+      </div>
+      <button class="btn btn-primary" onclick="refrescarCorrelaciones()">Refresh now</button>
+    </div>
+
+    <div class="update-strip">
+      <span id="update-ts">Last update: —</span>
+      <span class="next">Next refresh in <span class="countdown" id="countdown">60</span>s</span>
+    </div>
+
+    <div class="stat-row" id="resumen-corr"></div>
+
+    <div class="toolbar">
+      <input id="filtro-buscar" type="search" placeholder="Search company or ticker...">
+      <select id="filtro-fuente" onchange="filtrarTabla()">
+        <option value="">All sources</option>
+        <option value="Wikipedia">Wikipedia</option>
+        <option value="Manual">Manual</option>
+        <option value="SEC EDGAR 10-K">SEC EDGAR</option>
+      </select>
+      <select id="filtro-corr" onchange="filtrarTabla()">
+        <option value="">All correlation levels</option>
+        <option value="alta">Strong (&gt; 0.30)</option>
+        <option value="media">Moderate (0.15 – 0.30)</option>
+        <option value="baja">Weak (&lt; 0.15)</option>
+      </select>
+      <select id="filtro-alert" onchange="filtrarTabla()">
+        <option value="">All statuses</option>
+        <option value="shock">Active shock only</option>
+        <option value="watch">Watch + shock</option>
+      </select>
+    </div>
+
+    <div class="data-table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Customer</th>
+            <th class="r">Price</th>
+            <th class="c">Change today</th>
+            <th class="c">Threshold (3%)</th>
+            <th>Supplier</th>
+            <th class="r">Price</th>
+            <th class="c">Change today</th>
+            <th class="c">Depend.</th>
+            <th class="c">Best lag</th>
+            <th class="c">Hist. corr.</th>
+            <th class="c">Return / shock</th>
+            <th>Alert</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-corr">
+          <tr><td colspan="12">
+            <div class="state-block"><div class="state-label">Loading live data...</div></div>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="table-note">
+      <strong>Change today:</strong> vs. prior close (Yahoo Finance, 15-min delayed) ·
+      <strong>Threshold bar:</strong> how close the customer is to the 3% shock trigger ·
+      <strong>Hist. corr.:</strong> best-lag Pearson correlation over 3-year window ·
+      <strong>Return / shock:</strong> supplier mean return in 5 days after customer move &gt;3% ·
+      Past performance is not indicative of future results.
+    </div>
+  </div>
+
+  <!-- ══ LIVE CHARTS ══════════════════════════════════════════════════ -->
+  <div id="pestaña-charts" class="pestaña">
+    <div class="section-intro">
+      <div class="si-left">
+        <div class="si-title">Live Price Charts</div>
+        <div class="si-sub">Intraday % change vs. prior close · Customer + suppliers on the same chart · 5-min intervals · Auto-refresh every 60s</div>
+      </div>
+      <button class="btn btn-primary" onclick="refrescarCharts()">Refresh now</button>
+    </div>
+
+    <div class="charts-refresh-strip">
+      <span id="charts-update-ts">Last update: —</span>
+      <span>Next refresh in <span class="countdown" id="charts-countdown">60</span>s</span>
+    </div>
+
+    <div class="charts-selector" id="charts-selector"></div>
+
+    <!-- Tabla comparativa cliente → supplier -->
+    <div class="comparador-wrap">
+      <div class="comparador-header">
+        <span class="comparador-title">Price Comparison — All Pairs</span>
+        <span class="comparador-hint">Sorted by customer move · Click any row to jump to chart</span>
+      </div>
+      <div id="comparador-tabla">
+        <div class="state-block"><div class="state-label">Loading...</div></div>
+      </div>
+    </div>
+
+    <div class="charts-grid" id="charts-grid">
+      <div class="state-block"><div class="state-label">Loading charts...</div></div>
+    </div>
+  </div>
+
+  <!-- ══ EXECUTION ════════════════════════════════════════════════════ -->
+  <div id="pestaña-bot" class="pestaña">
+    <div class="section-intro">
+      <div class="si-left">
+        <div class="si-title">Execution Log</div>
+        <div class="si-sub">Automated trade journal · Max. $220 per order · 1 order per name per day</div>
+      </div>
+      <button class="btn btn-primary" onclick="cargarBot()">Refresh</button>
+    </div>
+
+    <!-- Banner de descarga de informe (aparece automáticamente cuando está listo) -->
+    <div id="informe-banner" style="display:none;margin-bottom:24px;background:linear-gradient(135deg,#001F5B 0%,#003399 100%);border-radius:12px;padding:20px 24px;display:none;align-items:center;gap:18px;color:#fff;">
+      <div style="font-size:2rem;line-height:1;">📊</div>
+      <div style="flex:1;">
+        <div style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:600;margin-bottom:4px;">Signal Report Available</div>
+        <div style="font-size:.82rem;opacity:.7;" id="informe-banner-meta">Includes historical price charts, company summaries &amp; next earnings calls</div>
+      </div>
+      <a id="informe-download-link" href="#" download="SupplySignal_Report.html" target="_blank"
+         style="background:#C8962A;color:#fff;font-weight:600;padding:10px 22px;border-radius:6px;text-decoration:none;font-size:.88rem;white-space:nowrap;border:none;cursor:pointer;">
+        Download Report
+      </a>
+    </div>
+
+    <div id="bot">
+      <div class="state-block"><div class="state-label">Loading</div></div>
+    </div>
+  </div>
+
+  <!-- ══ EARNINGS ═══════════════════════════════════════════════════ -->
+  <div id="pestaña-earnings" class="pestaña">
+    <div class="section-intro">
+      <div class="si-left">
+        <div class="si-title">Earnings Calendar</div>
+        <div class="si-sub">Next earnings calls · AI briefings generated by Claude · Data: Yahoo Finance</div>
+      </div>
+      <button class="btn btn-primary" onclick="cargarEarnings()">Refresh</button>
+    </div>
+
+    <!-- Briefings del agente -->
+    <div id="briefings-cont"></div>
+
+    <!-- Separador -->
+    <div id="briefings-sep" style="display:none;border-top:1px solid #e5e7eb;margin:28px 0 24px;"></div>
+
+    <!-- Calendario completo -->
+    <div id="earnings-cont">
+      <div class="state-block"><div class="state-label">Loading</div></div>
+    </div>
+  </div>
+
+</div><!-- /page-wrap -->
+
+<footer>
+  <div class="footer-inner">
+    <span class="footer-brand">SupplySignal</span>
+    <span>Data: Yahoo Finance · SEC EDGAR · Wikipedia · Based on Cohen &amp; Frazzini, "Economic Links and Predictable Returns", Journal of Finance, 2008</span>
+    <span>For research purposes only. Not investment advice.</span>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.3.1/dist/chartjs-adapter-luxon.umd.min.js"></script>
+<script>
+// ── Estado global ─────────────────────────────────────────────────────────
+let datosCorrGlobal = [];   // análisis histórico
+let preciosGlobal   = {};   // precios en vivo { TICKER: {...} }
+let countdownSecs   = 60;
+let countdownTimer  = null;
+
+// ── Helpers de formato ────────────────────────────────────────────────────
+function fmtChg(v) {
+  if (v == null) return '<span class="chg-neu">—</span>';
+  const s = (v > 0 ? "+" : "") + v.toFixed(2) + "%";
+  const cls = v > 0 ? "chg-pos" : v < 0 ? "chg-neg" : "chg-neu";
+  return `<span class="${cls}">${s}</span>`;
+}
+function fmtPrice(v, currency) {
+  if (v == null) return '<span class="chg-neu">—</span>';
+  const sym = currency === "EUR" ? "€" : "$";
+  return `<span style="font-family:var(--f-mono);font-size:12.5px">${sym}${v.toFixed(2)}</span>`;
+}
+function badgeCorr(v) {
+  if (v == null) return '<span class="chg-neu">—</span>';
+  const a = Math.abs(v);
+  const cls = a > 0.3 ? "badge-alta" : a > 0.15 ? "badge-media" : "badge-baja";
+  return `<span class="badge ${cls}">${(v > 0 ? "+" : "") + v.toFixed(3)}</span>`;
+}
+function thresholdBar(chgAbs, umbral) {
+  const pct    = Math.min(chgAbs / umbral * 100, 100);
+  const color  = pct >= 100 ? "var(--red)" : pct >= 70 ? "#e09000" : "var(--navy)";
+  return `<div class="threshold-bar">
+    <div class="bar-track"><div class="bar-fill" style="width:${pct.toFixed(0)}%;background:${color}"></div></div>
+    <span class="bar-pct">${pct.toFixed(0)}%</span>
+  </div>`;
+}
+function alertBadge(chgAbs, umbral) {
+  if (chgAbs >= umbral) return `<span class="badge badge-alert badge-shock">SHOCK</span>`;
+  if (chgAbs >= umbral * 0.7) return `<span class="badge badge-alert">WATCH</span>`;
+  return "";
+}
+
+// ── Signals ───────────────────────────────────────────────────────────────
+async function cargarSenales() {
+  const cont = document.getElementById("senales");
+  cont.innerHTML = '<div class="state-block"><div class="state-label">Loading market data...</div></div>';
+  try {
+    const r     = await fetch("/api/signals");
+    const datos = await r.json();
+    if (!datos.senales?.length) {
+      cont.innerHTML = `<div class="state-block">
+        <div class="state-label">No active signals</div>
+        <div class="state-sub">No covered name has exceeded the 3% daily threshold today.<br>
+        Signals typically activate around earnings releases and material corporate events.</div>
+      </div>`;
+      return;
+    }
+    const cards = datos.senales.map(s => {
+      const dir    = s.accion.toLowerCase();
+      const chg    = s.variacionCliente;
+      const chgFmt = (chg > 0 ? "+" : "") + chg.toFixed(2) + "%";
+      const provChg = s.variacionProveedor != null
+        ? `<div class="sc-kv"><div class="sc-k">Supplier chg.</div><div class="sc-v">${(s.variacionProveedor>0?"+":"") + s.variacionProveedor.toFixed(2)}%</div></div>`
+        : "";
+      return `<div class="signal-card ${dir}">
+        <div class="sc-head">
+          <div class="sc-ticker-block">
+            <div class="sc-symbol">${s.proveedor}</div>
+            <div class="sc-name">${s.proveedorNombre}</div>
+            <div class="sc-via">Via ${s.cliente} &nbsp;${chg > 0 ? "▲" : "▼"} ${chgFmt}</div>
+          </div>
+          <div class="sc-right">
+            <div><span class="badge badge-${dir}">${s.accion}</span></div>
+            <div class="sc-score-num" style="margin-top:8px">${s.puntuacion}</div>
+            <div class="sc-score-lbl">Signal score</div>
+          </div>
+        </div>
+        <div class="sc-body">${s.explicacion}</div>
+        <div class="sc-footer">
+          <div class="sc-kv"><div class="sc-k">Price</div><div class="sc-v">${s.precioProveedor ? "$"+s.precioProveedor : "—"}</div></div>
+          ${provChg}
+          <div class="sc-kv"><div class="sc-k">Est. window</div><div class="sc-v">${s.lag}d</div></div>
+          <div class="sc-kv"><div class="sc-k">Dependency</div><div class="sc-v">${s.dependencia}%</div></div>
+        </div>
+      </div>`;
+    }).join("");
+    cont.innerHTML = `<div class="signal-grid">${cards}</div>`;
+  } catch (e) {
+    cont.innerHTML = `<div class="state-block"><div class="state-label">Connection error</div>
+      <div class="state-sub">Could not reach server. Is it running? <code>node server.js</code></div></div>`;
+  }
+}
+
+// ── Correlaciones: carga inicial del análisis histórico ───────────────────
+async function cargarCorrelaciones() {
+  document.getElementById("tbody-corr").innerHTML =
+    '<tr><td colspan="12"><div class="state-block"><div class="state-label">Loading analysis...</div></div></td></tr>';
+  try {
+    const r    = await fetch("/api/correlaciones");
+    const resp = await r.json();
+    if (resp.mensaje) {
+      document.getElementById("tbody-corr").innerHTML =
+        `<tr><td colspan="12"><div class="state-block"><div class="state-label">No data</div>
+        <div class="state-sub">${resp.mensaje}</div></div></td></tr>`;
+      return;
+    }
+    datosCorrGlobal = (resp.datos || []).sort((a, b) =>
+      Math.abs(b.analisis?.mejor_lag_correlacion || 0) - Math.abs(a.analisis?.mejor_lag_correlacion || 0)
+    );
+    // Carga precios y renderiza
+    await refrescarCorrelaciones();
+    // Arranca el loop de refresco cada 60s
+    iniciarCountdown();
+  } catch (e) {
+    document.getElementById("tbody-corr").innerHTML =
+      `<tr><td colspan="12"><div class="state-block"><div class="state-label">Connection error</div></div></td></tr>`;
+  }
+}
+
+// ── Correlaciones: refresco de precios en vivo ────────────────────────────
+async function refrescarCorrelaciones() {
+  try {
+    const r    = await fetch("/api/prices");
+    const resp = await r.json();
+    preciosGlobal = resp.precios || {};
+    document.getElementById("update-ts").textContent =
+      "Last update: " + new Date(resp.actualizadoEn).toLocaleTimeString("es-ES");
+    actualizarResumen();
+    filtrarTabla();
+  } catch (e) {
+    // mantiene la tabla anterior, solo actualiza el timestamp
+    document.getElementById("update-ts").textContent = "Last update: error";
+  }
+}
+
+function actualizarResumen() {
+  const umbral    = 3;
+  let enShock     = 0;
+  let enWatch     = 0;
+  const clientes  = [...new Set(datosCorrGlobal.map(p => p.cliente))];
+  for (const t of clientes) {
+    const chg = Math.abs(preciosGlobal[t]?.variacionPct || 0);
+    if (chg >= umbral)          enShock++;
+    else if (chg >= umbral * 0.7) enWatch++;
+  }
+  const fuertes  = datosCorrGlobal.filter(p => Math.abs(p.analisis?.mejor_lag_correlacion || 0) > 0.3).length;
+  const lagMedio = datosCorrGlobal.length
+    ? Math.round(datosCorrGlobal.reduce((s, p) => s + (p.analisis?.mejor_lag_dias || 0), 0) / datosCorrGlobal.length)
+    : 0;
+  document.getElementById("resumen-corr").innerHTML = `
+    <div class="stat-cell"><div class="stat-val">${datosCorrGlobal.length}</div><div class="stat-lbl">Pairs monitored</div></div>
+    <div class="stat-cell"><div class="stat-val">${fuertes}</div><div class="stat-lbl">Strong correlation</div></div>
+    <div class="stat-cell" style="${enShock > 0 ? "border-left:3px solid var(--red)" : ""}">
+      <div class="stat-val" style="${enShock > 0 ? "color:var(--red)" : ""}">${enShock}</div>
+      <div class="stat-lbl">Active shocks</div>
+    </div>
+    <div class="stat-cell" style="${enWatch > 0 ? "border-left:3px solid #c89000" : ""}">
+      <div class="stat-val" style="${enWatch > 0 ? "color:#c89000" : ""}">${enWatch}</div>
+      <div class="stat-lbl">On watch</div>
+    </div>
+    <div class="stat-cell"><div class="stat-val">${lagMedio}d</div><div class="stat-lbl">Mean best lag</div></div>`;
+}
+
+function renderTabla(datos) {
+  const tbody  = document.getElementById("tbody-corr");
+  const umbral = 3;
+  if (!datos.length) {
+    tbody.innerHTML = '<tr><td colspan="12"><div class="state-block"><div class="state-label">No results</div><div class="state-sub">Try adjusting the filters above.</div></div></td></tr>';
+    return;
+  }
+  tbody.innerHTML = datos.map(p => {
+    const a        = p.analisis;
+    const cli      = preciosGlobal[p.cliente]  || {};
+    const prov     = preciosGlobal[p.proveedor] || {};
+    const chgCliAbs = Math.abs(cli.variacionPct || 0);
+    const isShock  = chgCliAbs >= umbral;
+    const isWatch  = !isShock && chgCliAbs >= umbral * 0.7;
+    const rowCls   = isShock ? "alert-row-shock" : isWatch ? "alert-row" : "";
+    const retPos   = (a.retorno_medio_tras_shock || 0) >= 0;
+    const retFmt   = (retPos ? "+" : "") + (a.retorno_medio_tras_shock || 0).toFixed(2) + "%";
+
+    return `<tr class="${rowCls}">
+      <td><div class="t-sym">${p.cliente}</div><div class="t-name">${cli.nombre || p.clienteNombre}</div></td>
+      <td class="r">${fmtPrice(cli.precio, cli.moneda)}</td>
+      <td class="c">${fmtChg(cli.variacionPct)}</td>
+      <td class="c">${thresholdBar(chgCliAbs, umbral)}</td>
+      <td><div class="t-sym">${p.proveedor}</div><div class="t-name">${prov.nombre || p.proveedorNombre}</div></td>
+      <td class="r">${fmtPrice(prov.precio, prov.moneda)}</td>
+      <td class="c">${fmtChg(prov.variacionPct)}</td>
+      <td class="c chg-neu">${p.dependencia}%</td>
+      <td class="c" style="font-family:var(--f-mono);font-weight:500;color:var(--navy)">${a.mejor_lag_dias}d</td>
+      <td class="c">${badgeCorr(a.mejor_lag_correlacion)}</td>
+      <td class="c"><span class="${retPos ? "chg-pos" : "chg-neg"}">${retFmt}</span></td>
+      <td>${alertBadge(chgCliAbs, umbral)}</td>
+    </tr>`;
+  }).join("");
+}
+
+function filtrarTabla() {
+  const txt    = document.getElementById("filtro-buscar").value.toLowerCase();
+  const fuente = document.getElementById("filtro-fuente").value;
+  const nivel  = document.getElementById("filtro-corr").value;
+  const alerta = document.getElementById("filtro-alert").value;
+  const umbral = 3;
+
+  const filtrado = datosCorrGlobal.filter(p => {
+    const matchTxt = !txt || [p.cliente,p.proveedor,p.clienteNombre,p.proveedorNombre]
+      .some(s => s.toLowerCase().includes(txt));
+    const matchF   = !fuente || (p.fuente || "Manual") === fuente;
+    const c        = Math.abs(p.analisis?.mejor_lag_correlacion || 0);
+    const matchC   = !nivel
+      || (nivel === "alta"  && c > 0.3)
+      || (nivel === "media" && c > 0.15 && c <= 0.3)
+      || (nivel === "baja"  && c <= 0.15);
+    const chgAbs   = Math.abs(preciosGlobal[p.cliente]?.variacionPct || 0);
+    const matchA   = !alerta
+      || (alerta === "shock" && chgAbs >= umbral)
+      || (alerta === "watch" && chgAbs >= umbral * 0.7);
+    return matchTxt && matchF && matchC && matchA;
+  });
+  renderTabla(filtrado);
+}
+
+document.getElementById("filtro-buscar").addEventListener("input", filtrarTabla);
+
+// ── Countdown de refresco ─────────────────────────────────────────────────
+function iniciarCountdown() {
+  if (countdownTimer) clearInterval(countdownTimer);
+  countdownSecs = 60;
+  document.getElementById("countdown").textContent = countdownSecs;
+  countdownTimer = setInterval(async () => {
+    countdownSecs--;
+    document.getElementById("countdown").textContent = countdownSecs;
+    if (countdownSecs <= 0) {
+      countdownSecs = 60;
+      await refrescarCorrelaciones();
+    }
+  }, 1000);
+}
+
+// ── Informe automático ────────────────────────────────────────────────────
+async function verificarInforme() {
+  try {
+    const r = await fetch("/api/report/status");
+    const d = await r.json();
+    const banner = document.getElementById("informe-banner");
+    const link   = document.getElementById("informe-download-link");
+    const meta   = document.getElementById("informe-banner-meta");
+
+    if (d.disponible && d.url) {
+      link.href = d.url + "?t=" + Date.now();
+      if (d.generadoEn) {
+        const fecha = new Date(d.generadoEn);
+        const hora  = fecha.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: false });
+        meta.textContent = `Generated at ${hora} ET · historical price charts, company summaries & next earnings calls`;
+      }
+      banner.style.display = "flex";
+    } else {
+      banner.style.display = "none";
+    }
+  } catch (e) { /* servidor no disponible */ }
+}
+
+// ── Execution log ─────────────────────────────────────────────────────────
+async function cargarBot() {
+  const cont = document.getElementById("bot");
+  try {
+    const r     = await fetch("/api/bot");
+    const datos = await r.json();
+    if (!datos.operaciones?.length) {
+      cont.innerHTML = `<div class="state-block">
+        <div class="state-label">No executions recorded</div>
+        <div class="state-sub">The bot has not executed any orders yet.<br>Start it with <code>node bot.js</code></div>
+      </div>`;
+      return;
+    }
+    const rows = datos.operaciones.slice().reverse().map(op => {
+      const lado = op.lado === "COMPRA" ? "buy" : "sell";
+      return `<tr>
+        <td style="font-family:var(--f-mono);font-size:11px;color:var(--gray-400)">${new Date(op.fecha).toLocaleString("es-ES")}</td>
+        <td><span class="badge badge-${lado}">${op.lado}</span></td>
+        <td><div class="t-sym">${op.ticker}</div><div class="t-name">${op.nombre}</div></td>
+        <td class="r" style="font-family:var(--f-mono);font-weight:500;color:var(--navy)">$${op.importeUsd}</td>
+        <td style="color:var(--gray-600);font-size:12px;white-space:normal;max-width:360px;line-height:1.5">${op.motivo}</td>
+      </tr>`;
+    }).join("");
+    cont.innerHTML = `
+      <div style="font-size:11px;color:var(--gray-400);margin-bottom:14px;letter-spacing:.3px">
+        Mode: <strong style="color:var(--gray-800)">${datos.modo}</strong> &nbsp;&nbsp;
+        Last review: <strong style="color:var(--gray-800)">${datos.ultimaRevision ? new Date(datos.ultimaRevision).toLocaleString("es-ES") : "—"}</strong>
+      </div>
+      <div class="data-table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Timestamp</th><th>Side</th><th>Name</th><th class="r">Amount</th><th>Rationale</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>`;
+  } catch (e) {
+    cont.innerHTML = `<div class="state-block"><div class="state-label">Connection error</div></div>`;
+  }
+}
+
+// ── Live Charts ───────────────────────────────────────────────────────────
+// Paleta idéntica a Yahoo Finance compare mode
+const PALETA_YF = ['#7B61FF','#0ea5e9','#f59e0b','#10b981','#ef4444','#8b5cf6','#f97316','#06b6d4'];
+const chartInstancias   = {};   // { ticker: Chart }
+let   clientesDisponibles = [];
+let   clientesActivos     = new Set();
+let   chartsCountdown     = 60;
+let   chartsCountdownTimer = null;
+
+function cambiarPestana(id, btn) {
+  document.querySelectorAll(".pestaña").forEach(p => p.classList.remove("activa"));
+  document.querySelectorAll("nav button").forEach(b => b.classList.remove("activa"));
+  document.getElementById("pestaña-" + id).classList.add("activa");
+  btn.classList.add("activa");
+  if (id === "correlaciones") {
+    if (!datosCorrGlobal.length) cargarCorrelaciones(); else refrescarCorrelaciones();
+  }
+  if (id === "charts") {
+    if (!clientesDisponibles.length) inicializarCharts(); else refrescarCharts();
+  }
+  if (id === "bot")      { cargarBot(); verificarInforme(); }
+  if (id === "earnings") { cargarBriefings(); cargarEarnings(); }
+}
+
+async function inicializarCharts() {
+  // Extrae clientes únicos con proveedores de pares.json vía /api/prices
+  try {
+    const r    = await fetch("/api/prices");
+    const resp = await r.json();
+    clientesDisponibles = Object.entries(resp.precios)
+      .filter(([, d]) => d.esCliente && d.suppliers?.length > 0)
+      .map(([ticker]) => ticker)
+      .sort();
+
+    // Botones selectores
+    const sel = document.getElementById("charts-selector");
+    sel.innerHTML = clientesDisponibles.map(t =>
+      `<button class="selector-btn activo" id="selbtn-${t}" onclick="toggleCliente('${t}')">${t}</button>`
+    ).join("");
+    clientesActivos = new Set(clientesDisponibles);
+
+    await refrescarCharts();
+    iniciarChartsCountdown();
+  } catch (e) {
+    document.getElementById("charts-grid").innerHTML =
+      `<div class="state-block"><div class="state-label">Connection error</div><div class="state-sub">Is the server running? <code>node server.js</code></div></div>`;
+  }
+}
+
+function toggleCliente(ticker) {
+  if (clientesActivos.has(ticker)) {
+    clientesActivos.delete(ticker);
+    document.getElementById("selbtn-" + ticker)?.classList.remove("activo");
+  } else {
+    clientesActivos.add(ticker);
+    document.getElementById("selbtn-" + ticker)?.classList.add("activo");
+  }
+  renderChartsGrid();
+}
+
+async function refrescarCharts() {
+  document.getElementById("charts-update-ts").textContent = "Updating...";
+
+  // Actualiza tabla comparativa y gráficas en paralelo
+  renderChartsGrid();
+  await Promise.all([
+    renderTablaComparacion(),
+    (async () => {
+      const clientes = [...clientesActivos];
+      for (let i = 0; i < clientes.length; i += 3) {
+        const lote = clientes.slice(i, i + 3);
+        await Promise.all(lote.map(t => cargarYDibujar(t)));
+      }
+    })(),
+  ]);
+
+  const ahora = new Date().toLocaleTimeString("es-ES");
+  document.getElementById("charts-update-ts").textContent = `Last update: ${ahora}`;
+}
+
+async function renderTablaComparacion() {
+  const el = document.getElementById("comparador-tabla");
+  try {
+    const r    = await fetch("/api/prices");
+    const data = await r.json();
+    const p    = data.precios;
+
+    // Construye filas: un par por cada cliente→supplier
+    const filas = [];
+    for (const [tickerCli, datoCli] of Object.entries(p)) {
+      if (!datoCli.esCliente || !datoCli.suppliers?.length) continue;
+      for (const sup of datoCli.suppliers) {
+        const datoSup = p[sup.ticker];
+        filas.push({ tickerCli, datoCli, sup, datoSup });
+      }
+    }
+
+    // Ordena por variación absoluta del cliente (mayor movimiento primero)
+    filas.sort((a, b) =>
+      Math.abs(b.datoCli.variacionPct ?? 0) - Math.abs(a.datoCli.variacionPct ?? 0)
+    );
+
+    if (!filas.length) {
+      el.innerHTML = `<div class="state-block"><div class="state-label">No pairs available</div></div>`;
+      return;
+    }
+
+    const fmtP = (v, moneda) => {
+      if (v == null) return "—";
+      const sym = moneda === "USD" ? "$" : (moneda || "");
+      return `${sym}${v.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    };
+
+    const fmtChgTd = (v) => {
+      if (v == null) return `<span class="chg-neu">—</span>`;
+      const s   = (v >= 0 ? "+" : "") + v.toFixed(2) + "%";
+      const cls = v > 0 ? "chg-pos" : v < 0 ? "chg-neg" : "chg-neu";
+      return `<span class="${cls}">${s}</span>`;
+    };
+
+    el.innerHTML = `
+      <table>
+        <thead>
+          <tr>
+            <th>Customer</th>
+            <th style="text-align:right">Price</th>
+            <th style="text-align:right">Change</th>
+            <th class="cmp-arrow"></th>
+            <th>Supplier</th>
+            <th style="text-align:right">Price</th>
+            <th style="text-align:right">Change</th>
+            <th style="text-align:right">Dep.</th>
+            <th>Correlation</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${filas.map(({ tickerCli, datoCli, sup, datoSup }) => {
+            const dep    = sup.dependencia ?? 0;
+            const barW   = Math.min(dep, 100);
+            const barClr = dep >= 50 ? "#c8962a" : dep >= 25 ? "#001F5B" : "#6b7280";
+            return `
+            <tr onclick="document.getElementById('card-${tickerCli}')?.scrollIntoView({behavior:'smooth',block:'center'})">
+              <td>
+                <div class="cmp-ticker">${tickerCli}</div>
+                <div class="cmp-name">${datoCli.nombre || tickerCli}</div>
+              </td>
+              <td class="cmp-price">${fmtP(datoCli.precio, datoCli.moneda)}</td>
+              <td style="text-align:right">${fmtChgTd(datoCli.variacionPct)}</td>
+              <td class="cmp-arrow">→</td>
+              <td>
+                <div class="cmp-ticker">${sup.ticker}</div>
+                <div class="cmp-name">${sup.nombre || sup.ticker}</div>
+              </td>
+              <td class="cmp-price">${fmtP(datoSup?.precio, datoSup?.moneda)}</td>
+              <td style="text-align:right">${fmtChgTd(datoSup?.variacionPct)}</td>
+              <td class="cmp-dep">${dep}%</td>
+              <td>
+                <div class="cmp-bar-wrap">
+                  <div class="cmp-bar" style="width:${barW}%;background:${barClr}"></div>
+                </div>
+              </td>
+            </tr>`;
+          }).join("")}
+        </tbody>
+      </table>`;
+  } catch (e) {
+    el.innerHTML = `<div class="state-block"><div class="state-label">Error loading prices</div></div>`;
+  }
+}
+
+function renderChartsGrid() {
+  const grid = document.getElementById("charts-grid");
+  if (!clientesActivos.size) {
+    grid.innerHTML = `<div class="state-block"><div class="state-label">No customers selected</div></div>`;
+    return;
+  }
+  // Solo crea cards que no existen aún
+  [...clientesActivos].forEach(ticker => {
+    if (!document.getElementById("card-" + ticker)) {
+      const div = document.createElement("div");
+      div.className = "chart-card";
+      div.id = "card-" + ticker;
+      div.innerHTML = `
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">${ticker}</div>
+            <div class="chart-subtitle" id="chart-sub-${ticker}">Loading...</div>
+          </div>
+          <div class="chart-state" id="chart-state-${ticker}"></div>
+        </div>
+        <div class="chart-legend" id="chart-legend-${ticker}"></div>
+        <div class="chart-canvas-wrap">
+          <canvas id="canvas-${ticker}"></canvas>
+        </div>
+        <div class="chart-footer">
+          <span>% change vs. prior close</span>
+          <span id="chart-ts-${ticker}"></span>
+        </div>`;
+      grid.appendChild(div);
+    }
+  });
+  // Elimina cards de clientes desactivados
+  document.querySelectorAll(".chart-card").forEach(card => {
+    const t = card.id.replace("card-", "");
+    if (!clientesActivos.has(t)) {
+      if (chartInstancias[t]) { chartInstancias[t].destroy(); delete chartInstancias[t]; }
+      card.remove();
+    }
+  });
+}
+
+async function cargarYDibujar(ticker) {
+  try {
+    const r    = await fetch(`/api/chart/${ticker}`);
+    const data = await r.json();
+    if (!data.series?.length) return;
+
+    const todasSeries  = data.series;
+    const clienteSerie = todasSeries.find(s => s.esCliente);
+
+    // Cabecera
+    const sub = document.getElementById("chart-sub-" + ticker);
+    if (sub && clienteSerie) sub.textContent = clienteSerie.nombre;
+
+    const stateEl = document.getElementById("chart-state-" + ticker);
+    if (stateEl && clienteSerie) {
+      const open = clienteSerie.marketState === "REGULAR";
+      stateEl.textContent = open ? "● Market open" : "Market closed";
+      stateEl.className   = "chart-state " + (open ? "open" : "close");
+    }
+
+    const canvas = document.getElementById("canvas-" + ticker);
+    if (!canvas) return;
+    const ctx2d = canvas.getContext("2d");
+
+    // Normalizar cada serie a [0,1] según su propio rango del día
+    function normalizar(puntos) {
+      const vals = puntos.map(p => p.v);
+      const min  = Math.min(...vals);
+      const max  = Math.max(...vals);
+      const rng  = max - min || 1;
+      return puntos.map(p => ({ x: p.t, y: (p.v - min) / rng }));
+    }
+
+    const datasets = todasSeries.map((s, i) => {
+      const color = PALETA_YF[i % PALETA_YF.length];
+      const pts   = normalizar(s.puntos);
+      return {
+        label:                    s.ticker,
+        data:                     pts,
+        borderColor:              color,
+        borderWidth:              s.esCliente ? 2 : 1.5,
+        backgroundColor:          "transparent",
+        fill:                     false,
+        pointRadius:              0,
+        pointHoverRadius:         4,
+        pointHoverBackgroundColor: color,
+        pointHoverBorderColor:    "#fff",
+        pointHoverBorderWidth:    2,
+        tension:                  0.2,
+        spanGaps:                 true,
+      };
+    });
+
+    // Leyenda estilo Yahoo Finance
+    const legendEl = document.getElementById("chart-legend-" + ticker);
+    if (legendEl) {
+      legendEl.innerHTML = todasSeries.map((s, i) => {
+        const color = PALETA_YF[i % PALETA_YF.length];
+        const ult   = s.puntos[s.puntos.length - 1];
+        const precio = ult ? (s.moneda === "USD" ? "$" : "") + ult.v.toFixed(2) : "—";
+        return `<div class="legend-item">
+          <div style="width:14px;height:2px;background:${color};border-radius:1px;flex-shrink:0"></div>
+          <span style="font-family:var(--f-mono);font-size:11px;font-weight:500;color:var(--gray-800)">${s.ticker}</span>
+          <span style="font-family:var(--f-mono);font-size:10.5px;color:var(--gray-600)">${precio}</span>
+          ${s.dependencia ? `<span class="legend-dep">${s.dependencia}% dep.</span>` : ""}
+        </div>`;
+      }).join("");
+    }
+
+    if (chartInstancias[ticker]) {
+      chartInstancias[ticker].data.datasets = datasets;
+      chartInstancias[ticker].update("none");
+    } else {
+      chartInstancias[ticker] = new Chart(canvas, {
+        type: "line",
+        data: { datasets },
+        options: {
+          animation:   false,
+          responsive:  true,
+          maintainAspectRatio: false,
+          interaction: { mode: "index", intersect: false },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: "#fff",
+              borderColor:     "#e0e3eb",
+              borderWidth:     1,
+              titleColor:      "#6b7280",
+              bodyColor:       "#1f2937",
+              titleFont: { family: "'IBM Plex Sans', sans-serif", size: 11 },
+              bodyFont:  { family: "'IBM Plex Mono', monospace", size: 11.5 },
+              padding:   10,
+              boxPadding: 4,
+              callbacks: {
+                title: items => {
+                  const d = new Date(items[0].parsed.x);
+                  return d.toLocaleTimeString("en-US", { timeZone: "America/New_York", hour: "2-digit", minute: "2-digit", hour12: false }) + " ET";
+                },
+                label: ctx => {
+                  const s = todasSeries[ctx.datasetIndex];
+                  const ult = s?.puntos[ctx.dataIndex];
+                  const precio = ult ? "$" + ult.v.toFixed(2) : "";
+                  return `  ${ctx.dataset.label}   ${precio}`;
+                },
+                labelColor: ctx => ({
+                  borderColor:     ctx.dataset.borderColor,
+                  backgroundColor: ctx.dataset.borderColor,
+                  borderRadius:    2,
+                }),
+              },
+            },
+          },
+          scales: {
+            x: {
+              type: "time",
+              adapters: { date: { zone: "America/New_York" } },
+              time: {
+                unit:           "minute",
+                stepSize:       30,
+                displayFormats: { minute: "H:mm" },
+                tooltipFormat:  "H:mm",
+              },
+              grid:   { display: false },
+              border: { display: false },
+              ticks:  {
+                color:        "#9ca3af",
+                font:         { family: "'IBM Plex Sans', sans-serif", size: 10.5 },
+                maxRotation:  0,
+                autoSkip:     true,
+                maxTicksLimit: 9,
+                padding:      6,
+              },
+            },
+            y: {
+              display: false,
+              grid:    { display: false },
+            },
+          },
+        },
+        plugins: [
+          {
+            id: "lastpoint",
+            afterDraw(chart) {
+              const c = chart.ctx;
+              chart.data.datasets.forEach((ds, di) => {
+                const meta = chart.getDatasetMeta(di);
+                if (!meta.data.length) return;
+                const last = meta.data[meta.data.length - 1];
+                c.save();
+                c.beginPath();
+                c.arc(last.x, last.y, 4, 0, Math.PI * 2);
+                c.fillStyle   = "#22c55e";
+                c.strokeStyle = "#fff";
+                c.lineWidth   = 2;
+                c.fill();
+                c.stroke();
+                c.restore();
+              });
+            },
+          },
+          {
+            id: "crosshair",
+            afterDraw(chart) {
+              if (!chart.tooltip?._active?.length) return;
+              const x = chart.tooltip._active[0].element.x;
+              const { top, bottom } = chart.chartArea;
+              const c = chart.ctx;
+              c.save();
+              c.beginPath();
+              c.moveTo(x, top);
+              c.lineTo(x, bottom);
+              c.lineWidth   = 1;
+              c.strokeStyle = "#d1d5db";
+              c.stroke();
+              c.restore();
+            },
+          },
+          {
+            id: "zeroline",
+            afterDraw(chart) {
+              const yScale = chart.scales.y;
+              if (!yScale) return;
+              const y = yScale.getPixelForValue(0);
+              const { left, right } = chart.chartArea;
+              const c = chart.ctx;
+              c.save();
+              c.beginPath();
+              c.moveTo(left, y);
+              c.lineTo(right, y);
+              c.lineWidth   = 1;
+              c.strokeStyle = "#d1d5db";
+              c.stroke();
+              c.restore();
+            },
+          },
+        ],
+      });
+    }
+
+    const tsEl = document.getElementById("chart-ts-" + ticker);
+    if (tsEl) tsEl.textContent = new Date(data.actualizadoEn).toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" });
+
+  } catch (e) { /* mantiene la gráfica anterior */ }
+}
+
+function iniciarChartsCountdown() {
+  if (chartsCountdownTimer) clearInterval(chartsCountdownTimer);
+  chartsCountdown = 60;
+  document.getElementById("charts-countdown").textContent = chartsCountdown;
+  chartsCountdownTimer = setInterval(async () => {
+    chartsCountdown--;
+    document.getElementById("charts-countdown").textContent = chartsCountdown;
+    if (chartsCountdown <= 0) {
+      chartsCountdown = 60;
+      await refrescarCharts();
+    }
+  }, 1000);
+}
+
+// ── Earnings Briefings (AI Agent) ─────────────────────────────────────────
+async function cargarBriefings() {
+  const cont = document.getElementById("briefings-cont");
+  const sep  = document.getElementById("briefings-sep");
+  try {
+    const r    = await fetch("/api/briefings");
+    const data = await r.json();
+    const list = (data.briefings || []).filter(b => b.briefing);
+    if (!list.length) { cont.innerHTML = ""; sep.style.display = "none"; return; }
+
+    sep.style.display = "block";
+
+    const streakBadge = n => {
+      if (n >= 4) return `<span style="background:#dcfce7;color:#15803d;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;letter-spacing:.5px">BEAT ×${n}</span>`;
+      if (n >= 2) return `<span style="background:#d1fae5;color:#065f46;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px">BEAT ×${n}</span>`;
+      if (n <= -2) return `<span style="background:#fee2e2;color:#b91c1c;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px">MISS ×${Math.abs(n)}</span>`;
+      return "";
+    };
+
+    const fmtRev = v => {
+      if (!v) return "—";
+      if (v >= 1e12) return `$${(v/1e12).toFixed(1)}T`;
+      if (v >= 1e9)  return `$${(v/1e9).toFixed(1)}B`;
+      return `$${(v/1e6).toFixed(0)}M`;
+    };
+
+    const quarterRow = q => {
+      const beat  = q.beat === true;
+      const miss  = q.beat === false;
+      const color = beat ? "#15803d" : miss ? "#b91c1c" : "#6b7280";
+      const label = beat ? "▲ BEAT" : miss ? "▼ MISS" : "—";
+      const surp  = q.surprisePct != null ? `${q.surprisePct > 0 ? "+" : ""}${q.surprisePct.toFixed(1)}%` : "";
+      return `<tr>
+        <td style="color:#6b7280;font-size:11px">${q.quarter}</td>
+        <td style="font-family:var(--f-mono);font-size:12px;text-align:right">$${q.epsActual ?? "—"}</td>
+        <td style="font-family:var(--f-mono);font-size:12px;text-align:right;color:#9ca3af">$${q.epsEstimate ?? "—"}</td>
+        <td style="font-size:11px;font-weight:700;color:${color};text-align:right">${label}</td>
+        <td style="font-family:var(--f-mono);font-size:11px;color:${color};text-align:right">${surp}</td>
+      </tr>`;
+    };
+
+    const watchItems = items => items.map(i =>
+      `<li style="font-size:.82rem;color:#374151;margin-bottom:4px">${i}</li>`
+    ).join("");
+
+    let html = `<div style="margin-bottom:8px">
+      <div style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:600;color:var(--navy);margin-bottom:4px">
+        AI Earnings Briefings
+      </div>
+      <div style="font-size:.8rem;color:var(--gray-400)">
+        Generated by Claude · ${list.length} briefing${list.length>1?"s":""} ·
+        Updated: ${data.actualizadoEn ? new Date(data.actualizadoEn).toLocaleString("en-US",{month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"}) : "—"}
+      </div>
+    </div>`;
+
+    for (const b of list) {
+      const bf = b.briefing;
+      const sc = b.supplyChain || {};
+      const relaciones = [...(sc.proveedores||[]), ...(sc.clientes||[])];
+
+      html += `<div class="card" style="margin-bottom:20px;padding:0;overflow:hidden">
+        <!-- Header -->
+        <div style="background:var(--navy);color:#fff;padding:16px 22px;display:flex;justify-content:space-between;align-items:flex-start">
+          <div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+              <span style="font-family:var(--f-mono);font-size:1.2rem;font-weight:700">${b.ticker}</span>
+              ${streakBadge(b.beatStreak || 0)}
+            </div>
+            <div style="font-style:italic;font-size:.9rem;opacity:.85;line-height:1.4;max-width:640px">"${bf.headline}"</div>
+          </div>
+          <div style="text-align:right;min-width:130px">
+            <div style="font-size:.75rem;opacity:.6;letter-spacing:.5px;text-transform:uppercase">Next Earnings</div>
+            <div style="font-family:var(--f-mono);font-size:.95rem;font-weight:600;margin-top:2px">${b.earningsDate}</div>
+            <div style="font-size:.78rem;opacity:.6;margin-top:2px">in ${b.diasRestantes} days</div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:1px solid #f3f4f6">
+
+          <!-- Col izq: contexto + estimaciones -->
+          <div style="padding:18px 20px;border-right:1px solid #f3f4f6">
+            <div style="font-size:.72rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#9ca3af;margin-bottom:8px">Business Context</div>
+            <div style="font-size:.83rem;color:#374151;line-height:1.6;margin-bottom:16px">${bf.business_context}</div>
+
+            <div style="font-size:.72rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#9ca3af;margin-bottom:8px">Market Expectations</div>
+            <div style="font-size:.83rem;color:#374151;line-height:1.6;margin-bottom:16px">${bf.market_expectations}</div>
+
+            <!-- Estimaciones numéricas -->
+            <div style="display:flex;gap:16px;flex-wrap:wrap">
+              <div style="background:#f8f9fc;border-radius:8px;padding:10px 14px;flex:1;min-width:100px">
+                <div style="font-size:.7rem;color:#9ca3af;text-transform:uppercase;letter-spacing:.5px">EPS Consensus</div>
+                <div style="font-family:var(--f-mono);font-size:1.1rem;font-weight:700;color:var(--navy);margin-top:2px">$${b.epsNextQ ?? "—"}</div>
+                ${b.epsLow != null ? `<div style="font-size:.73rem;color:#9ca3af;margin-top:2px">$${b.epsLow} – $${b.epsHigh}</div>` : ""}
+              </div>
+              <div style="background:#f8f9fc;border-radius:8px;padding:10px 14px;flex:1;min-width:100px">
+                <div style="font-size:.7rem;color:#9ca3af;text-transform:uppercase;letter-spacing:.5px">Revenue Est.</div>
+                <div style="font-family:var(--f-mono);font-size:1.1rem;font-weight:700;color:var(--navy);margin-top:2px">${fmtRev(b.revNextQ)}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Col der: EPS history + supply chain -->
+          <div style="padding:18px 20px">
+            <div style="font-size:.72rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#9ca3af;margin-bottom:8px">EPS History — Last 4 Quarters</div>
+            <table style="width:100%;border-collapse:collapse;margin-bottom:4px">
+              <thead><tr>
+                <th style="font-size:10px;color:#9ca3af;font-weight:500;text-align:left;padding-bottom:4px">Quarter</th>
+                <th style="font-size:10px;color:#9ca3af;font-weight:500;text-align:right;padding-bottom:4px">Actual</th>
+                <th style="font-size:10px;color:#9ca3af;font-weight:500;text-align:right;padding-bottom:4px">Est.</th>
+                <th style="font-size:10px;color:#9ca3af;font-weight:500;text-align:right;padding-bottom:4px">Result</th>
+                <th style="font-size:10px;color:#9ca3af;font-weight:500;text-align:right;padding-bottom:4px">Surprise</th>
+              </tr></thead>
+              <tbody>${(b.quarters||[]).map(quarterRow).join("")}</tbody>
+            </table>
+            <div style="font-size:.78rem;color:#6b7280;line-height:1.5;margin-top:10px">${bf.eps_trend_analysis}</div>
+
+            ${relaciones.length ? `
+            <div style="font-size:.72rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#9ca3af;margin:14px 0 8px">Supply Chain Exposure</div>
+            <div style="font-size:.82rem;color:#374151;line-height:1.6;margin-bottom:8px">${bf.supply_chain_exposure}</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px">
+              ${relaciones.map(r => `<span style="background:#f0f4ff;color:#001F5B;font-family:var(--f-mono);font-size:11px;padding:3px 9px;border-radius:4px;font-weight:600">${r.ticker} <span style="font-weight:400;color:#6b7280">${r.dependencia}%</span></span>`).join("")}
+            </div>` : ""}
+          </div>
+        </div>
+
+        <!-- Footer: riesgos, catalizadores, watch list, noticias -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:0">
+          <div style="padding:14px 18px;border-right:1px solid #f3f4f6">
+            <div style="font-size:.7rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#b91c1c;margin-bottom:8px">Key Risks</div>
+            <div style="font-size:.82rem;color:#374151;line-height:1.6">${bf.key_risks}</div>
+          </div>
+          <div style="padding:14px 18px;border-right:1px solid #f3f4f6">
+            <div style="font-size:.7rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#15803d;margin-bottom:8px">Key Catalysts</div>
+            <div style="font-size:.82rem;color:#374151;line-height:1.6">${bf.key_catalysts}</div>
+          </div>
+          <div style="padding:14px 18px;border-right:1px solid #f3f4f6">
+            <div style="font-size:.7rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#6b7280;margin-bottom:8px">Watch List</div>
+            <ul style="margin:0;padding-left:14px">${watchItems(bf.watch_list||[])}</ul>
+          </div>
+          <div style="padding:14px 18px">
+            <div style="font-size:.7rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#C8962A;margin-bottom:10px">Recent News</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              ${(b.noticias||[]).map(n => `
+                <a href="${n.url}" target="_blank" rel="noopener"
+                   style="display:block;text-decoration:none;border-bottom:1px solid #f3f4f6;padding-bottom:8px">
+                  <div style="font-size:.78rem;color:#1f2937;line-height:1.4;font-weight:500;
+                               display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">
+                    ${n.title}
+                  </div>
+                  <div style="margin-top:3px;display:flex;gap:6px;align-items:center">
+                    <span style="font-size:.7rem;color:#C8962A;font-weight:600">${n.provider}</span>
+                    ${n.fecha ? `<span style="font-size:.68rem;color:#9ca3af">${n.fecha}</span>` : ""}
+                  </div>
+                </a>`).join("")}
+              ${!(b.noticias||[]).length ? `<span style="font-size:.8rem;color:#9ca3af">No recent news</span>` : ""}
+            </div>
+          </div>
+        </div>
+      </div>`;
+    }
+
+    cont.innerHTML = html;
+  } catch(e) {
+    document.getElementById("briefings-cont").innerHTML = "";
+  }
+}
+
+// ── Earnings Calendar ─────────────────────────────────────────────────────
+async function cargarEarnings() {
+  const cont = document.getElementById("earnings-cont");
+  cont.innerHTML = `<div class="state-block"><div class="state-label">Loading earnings data…</div></div>`;
+  try {
+    const r    = await fetch("/api/earnings");
+    const data = await r.json();
+    const list = data.earnings || [];
+
+    if (!list.length) {
+      cont.innerHTML = `<div class="state-block">
+        <div class="state-label">No data yet</div>
+        <div class="state-sub">Run <code>python earnings_bot.py</code> to populate</div>
+      </div>`;
+      return;
+    }
+
+    const hoy     = new Date();
+    const con     = list.filter(e => e.proximoEarnings).sort((a,b) => a.proximoEarnings.localeCompare(b.proximoEarnings));
+    const sin     = list.filter(e => !e.proximoEarnings);
+    const upd     = data.actualizadoEn ? new Date(data.actualizadoEn).toLocaleString("es-ES") : "—";
+
+    // Agrupa por mes
+    const porMes = {};
+    for (const e of con) {
+      const mes = e.proximoEarnings.slice(0, 7); // "2026-07"
+      if (!porMes[mes]) porMes[mes] = [];
+      porMes[mes].push(e);
+    }
+
+    const mesNombre = m => {
+      const [y, mo] = m.split("-");
+      return new Date(+y, +mo-1, 1).toLocaleDateString("en-US", { month: "long", year: "numeric" });
+    };
+
+    const urgencia = dias => {
+      if (dias === null || dias === undefined) return "";
+      if (dias < 0)   return "style='opacity:.45'";
+      if (dias <= 7)  return "";
+      if (dias <= 14) return "";
+      return "";
+    };
+
+    const badge = dias => {
+      if (dias === null || dias === undefined) return "";
+      if (dias < 0)   return `<span style="font-size:10px;background:#f3f4f6;color:#9ca3af;padding:2px 7px;border-radius:4px">passed</span>`;
+      if (dias === 0) return `<span style="font-size:10px;background:#fef3c7;color:#92400e;padding:2px 7px;border-radius:4px;font-weight:600">TODAY</span>`;
+      if (dias <= 7)  return `<span style="font-size:10px;background:#fee2e2;color:#b91c1c;padding:2px 7px;border-radius:4px;font-weight:600">in ${dias}d</span>`;
+      if (dias <= 14) return `<span style="font-size:10px;background:#fffbeb;color:#92400e;padding:2px 7px;border-radius:4px;font-weight:600">in ${dias}d</span>`;
+      return `<span style="font-size:10px;background:#f3f4f6;color:#6b7280;padding:2px 7px;border-radius:4px">in ${dias}d</span>`;
+    };
+
+    const fmtFecha = s => {
+      const d = new Date(s + "T12:00:00");
+      return d.toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" });
+    };
+
+    const fmtMktCap = v => {
+      if (!v) return "—";
+      if (v >= 1e12) return `$${(v/1e12).toFixed(1)}T`;
+      if (v >= 1e9)  return `$${(v/1e9).toFixed(1)}B`;
+      return `$${(v/1e6).toFixed(0)}M`;
+    };
+
+    let html = `<div style="font-size:11px;color:var(--gray-400);margin-bottom:20px;letter-spacing:.3px">
+      Last updated: <strong style="color:var(--gray-700)">${upd}</strong> &nbsp;·&nbsp;
+      ${con.length} companies with dates &nbsp;·&nbsp;
+      <span style="color:#b91c1c">■</span> &lt;7 days &nbsp;
+      <span style="color:#C8962A">■</span> &lt;14 days
+    </div>`;
+
+    for (const [mes, empresas] of Object.entries(porMes)) {
+      html += `<div style="margin-bottom:28px">
+        <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:600;color:var(--navy);
+                    border-bottom:1px solid #e5e7eb;padding-bottom:8px;margin-bottom:12px">
+          ${mesNombre(mes)}
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px">`;
+
+      for (const e of empresas) {
+        const dias = e.diasRestantes;
+        html += `<div class="card" ${urgencia(dias)} style="padding:14px 16px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
+            <div>
+              <span style="font-family:var(--f-mono);font-size:1rem;font-weight:600;color:var(--navy)">${e.ticker}</span>
+              <span style="font-size:.78rem;color:var(--gray-400);margin-left:6px">${fmtMktCap(e.marketCap)}</span>
+            </div>
+            ${badge(dias)}
+          </div>
+          <div style="font-size:.82rem;color:var(--gray-600);margin-bottom:8px;line-height:1.3">${(e.nombre||"").replace(/,.*/, "")}</div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div style="font-size:.85rem;font-weight:600;color:var(--gray-800)">${fmtFecha(e.proximoEarnings)}</div>
+            <div style="text-align:right;font-size:.8rem;color:var(--gray-500)">
+              ${e.epsEstimado != null ? `EPS est. <strong style="color:var(--navy)">$${e.epsEstimado.toFixed(2)}</strong>` : ""}
+            </div>
+          </div>
+          ${e.epsEstimado != null && e.epsEstimadoBajo != null ? `
+          <div style="margin-top:6px;font-size:.75rem;color:var(--gray-400)">
+            Range: $${e.epsEstimadoBajo.toFixed(2)} – $${e.epsEstimadoAlto.toFixed(2)}
+          </div>` : ""}
+        </div>`;
+      }
+
+      html += `</div></div>`;
+    }
+
+    if (sin.length) {
+      html += `<div style="font-size:.8rem;color:var(--gray-400);margin-top:8px">
+        No date available: ${sin.map(e=>e.ticker).join(", ")}
+      </div>`;
+    }
+
+    cont.innerHTML = html;
+  } catch(e) {
+    cont.innerHTML = `<div class="state-block"><div class="state-label">Connection error</div></div>`;
+  }
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────
+cargarSenales();
+verificarInforme();
+setInterval(cargarBot, 60000);
+setInterval(verificarInforme, 120000); // comprueba si hay informe nuevo cada 2 min
+</script>
+</body>
+</html>

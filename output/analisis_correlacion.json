@@ -1,0 +1,947 @@
+[
+  {
+    "cliente": "AAPL",
+    "clienteNombre": "Apple",
+    "proveedor": "TSM",
+    "proveedorNombre": "TSMC",
+    "dependencia": 25,
+    "fuente": "Manual",
+    "lag": "15-18",
+    "analisis": {
+      "correlaciones": {
+        "lag_0": 0.349,
+        "lag_1": 0.013,
+        "lag_3": -0.06,
+        "lag_5": -0.033,
+        "lag_7": -0.0,
+        "lag_10": 0.012,
+        "lag_15": 0.101
+      },
+      "mejor_lag_dias": 15,
+      "mejor_lag_correlacion": 0.101,
+      "rolling_media": 0.331,
+      "rolling_std": 0.18,
+      "retorno_medio_tras_shock": 0.49,
+      "num_shocks_analizados": 46,
+      "observaciones": 751
+    }
+  },
+  {
+    "cliente": "AAPL",
+    "clienteNombre": "Apple",
+    "proveedor": "QCOM",
+    "proveedorNombre": "Qualcomm",
+    "dependencia": 20,
+    "fuente": "Manual",
+    "lag": "3-6",
+    "analisis": {
+      "correlaciones": {
+        "lag_0": 0.415,
+        "lag_1": 0.001,
+        "lag_3": -0.071,
+        "lag_5": 0.01,
+        "lag_7": -0.027,
+        "lag_10": -0.026,
+        "lag_15": 0.018
+      },
+      "mejor_lag_dias": 3,
+      "mejor_lag_correlacion": -0.071,
+      "rolling_media": 0.413,
+      "rolling_std": 0.154,
+      "retorno_medio_tras_shock": 0.64,
+      "num_shocks_analizados": 46,
+      "observaciones": 751
+    }
+  },
+  {
+    "cliente": "AAPL",
+    "clienteNombre": "Apple",
+    "proveedor": "SWKS",
+    "proveedorNombre": "Skyworks",
+    "dependencia": 55,
+    "fuente": "Manual",
+    "lag": "15-18",
+    "analisis": {
+      "correlaciones": {
+        "lag_0": 0.501,
+        "lag_1": -0.008,
+        "lag_3": -0.017,
+        "lag_5": 0.003,
+        "lag_7": 0.009,
+        "lag_10": -0.009,
+        "lag_15": 0.03
+      },
+      "mejor_lag_dias": 15,
+      "mejor_lag_correlacion": 0.03,
+      "rolling_media": 0.487,
+      "rolling_std": 0.14,
+      "retorno_medio_tras_shock": 0.26,
+      "num_shocks_analizados": 46,
+      "observaciones": 751
+    }
+  },
+  {
+    "cliente": "AAPL",
+    "clienteNombre": "Apple",
+    "proveedor": "QRVO",
+    "proveedorNombre": "Qorvo",
+    "dependencia": 30,
+    "fuente": "Manual",
+    "lag": "3-6",
+    "analisis": {
+      "correlaciones": {
+        "lag_0": 0.482,
+        "lag_1": -0.028,
+        "lag_3": -0.036,
+        "lag_5": 0.0,
+        "lag_7": -0.011,
+        "lag_10": 0.003,
+        "lag_15": -0.012
+      },
+      "mejor_lag_dias": 3,
+      "mejor_lag_correlacion": -0.036,
+      "rolling_media": 0.441,
+      "rolling_std": 0.161,
+      "retorno_medio_tras_shock": 0.29,
+      "num_shocks_analizados": 46,
+      "observaciones": 751
+    }
+  },
+  {
+    "cliente": "AAPL",
+    "clienteNombre": "Apple",
+    "proveedor": "CRUS",
+    "proveedorNombre": "Cirrus Logic",
+    "dependencia": 80,
+    "fuente": "Manual",
+    "lag": "15-18",
+    "analisis": {
+      "correlaciones": {
+        "lag_0": 0.455,
+        "lag_1": 0.033,
+        "lag_3": -0.001,
+        "lag_5": -0.028,
+        "lag_7": 0.029,
+        "lag_10": -0.021,
+        "lag_15": -0.039
+      },
+      "mejor_lag_dias": 15,
+      "mejor_lag_correlacion": -0.039,
+      "rolling_media": 0.428,
+      "rolling_std": 0.161,
+      "retorno_medio_tras_shock": 0.59,
+      "num_shocks_analizados": 46,
+      "observaciones": 751
+    }
+  },
+  {
+    "cliente": "NVDA",
+    "clienteNombre": "NVIDIA",
+    "proveedor": "TSM",
+    "proveedorNombre": "TSMC",
+    "dependencia": 11,
+    "fuente": "Manual",
+    "lag": "1-4",
+    "analisis": {
+      "correlaciones": {
+        "lag_0": 0.682,
+        "lag_1": -0.081,
+        "lag_3": -0.072,
+        "lag_5": -0.001,
+        "lag_7": 0.033,
+        "lag_10": 0.017,
+        "lag_15": -0.036
+      },
+      "mejor_lag_dias": 1,
+      "mejor_lag_correlacion": -0.081,
+      "rolling_media": 0.657,
+      "rolling_std": 0.111,
+      "retorno_medio_tras_shock": 0.18,
+      "num_shocks_analizados": 192,
+      "observaciones": 751
+    }
+  },
+  {
+    "cliente": "NVDA",
+    "clienteNombre": "NVIDIA",
+    "proveedor": "MU",
+    "proveedorNombre": "Micron",
+    "dependencia": 15,
+    "fuente": "Manual",
+    "lag": "15-18",
+    "analisis": {
+      "correlaciones": {
+        "lag_0": 0.519,
+        "lag_1": -0.062,
+        "lag_3": -0.016,
+        "lag_5": -0.001,
+        "lag_7": 0.011,
+        "lag_10": 0.025,
+        "lag_15": -0.066
+      },
+      "mejor_lag_dias": 15,
+      "mejor_lag_correlacion": -0.066,
+      "rolling_media": 0.54,
+      "rolling_std": 0.132,
+      "retorno_medio_tras_shock": 0.32,
+      "num_shocks_analizados": 192,
+      "observaciones": 751
+    }
+  },
+  {
+    "cliente": "NVDA",
+    "clienteNombre": "NVIDIA",
+    "proveedor": "VRT",
+    "proveedorNombre": "Vertiv",
+    "dependencia": 20,
+    "fuente": "Manual",
+    "lag": "3-6",
+    "analisis": {
+      "correlaciones": {
+        "lag_0": 0.605,
+        "lag_1": -0.045,
+        "lag_3": -0.048,
+        "lag_5": -0.024,
+        "lag_7": -0.019,
+        "lag_10": -0.006,
+        "lag_15": -0.001
+      },
+      "mejor_lag_dias": 3,
+      "mejor_lag_correlacion": -0.048,
+      "rolling_media": 0.625,
+      "rolling_std": 0.147,
+      "retorno_medio_tras_shock": 0.27,
+      "num_shocks_analizados": 192,
+      "observaciones": 751
+    }
+  },
+  {
+    "cliente": "TSLA",
+    "clienteNombre": "Tesla",
+    "proveedor": "PCAR",
+    "proveedorNombre": "Paccar",
+    "dependencia": 10,
+    "fuente": "Manual",
+    "lag": "1-4",
+    "analisis": {
+      "correlaciones": {
+        "lag_0": 0.243,
+        "lag_1": -0.077,
+        "lag_3": -0.027,
+        "lag_5": -0.043,
+        "lag_7": -0.016,
+        "lag_10": -0.049,
+        "lag_15": -0.029
+      },
+      "mejor_lag_dias": 1,
+      "mejor_lag_correlacion": -0.077,
+      "rolling_media": 0.24,
+      "rolling_std": 0.101,
+      "retorno_medio_tras_shock": 0.04,
+      "num_shocks_analizados": 266,
+      "observaciones": 751
+    }
+  },
+  {
+    "cliente": "TSLA",
+    "clienteNombre": "Tesla",
+    "proveedor": "ALB",
+    "proveedorNombre": "Albemarle (litio)",
+    "dependencia": 18,
+    "fuente": "Manual",
+    "lag": "3-6",
+    "analisis": {
+      "correlaciones": {
+        "lag_0": 0.344,
+        "lag_1": -0.0,
+        "lag_3": 0.012,
+        "lag_5": 0.001,
+        "lag_7": 0.011,
+        "lag_10": 0.008,
+        "lag_15": 0.01
+      },
+      "mejor_lag_dias": 3,
+      "mejor_lag_correlacion": 0.012,
+      "rolling_media": 0.343,
+      "rolling_std": 0.149,
+      "retorno_medio_tras_shock": 0.19,
+      "num_shocks_analizados": 266,
+      "observaciones": 751
+    }
+  },
+  {
+    "cliente": "TSLA",
+    "clienteNombre": "Tesla",
+    "proveedor": "STM",
+    "proveedorNombre": "STMicroelectronics",
+    "dependencia": 12,
+    "fuente": "Manual",
+    "lag": "3-6",
+    "analisis": {
+      "correlaciones": {
+        "lag_0": 0.395,
+        "lag_1": -0.049,
+        "lag_3": -0.059,
+        "lag_5": -0.055,
+        "lag_7": -0.017,
+        "lag_10": -0.001,
+        "lag_15": 0.043
+      },
+      "mejor_lag_dias": 3,
+      "mejor_lag_correlacion": -0.059,
+      "rolling_media": 0.397,
+      "rolling_std": 0.13,
+      "retorno_medio_tras_shock": 0.26,
+      "num_shocks_analizados": 266,
+      "observaciones": 751
+    }
+  },
+  {
+    "cliente": "MSFT",
+    "clienteNombre": "Microsoft",
+    "proveedor": "AMD",
+    "proveedorNombre": "AMD",
+    "dependencia": 12,
+    "fuente": "Manual",
+    "lag": "10-13",
+    "analisis": {
+      "correlaciones": {
+        "lag_0": 0.361,
+        "lag_1": -0.017,
+        "lag_3": -0.032,
+        "lag_5": 0.028,
+        "lag_7": 0.014,
+        "lag_10": 0.053,
+        "lag_15": 0.045
+      },
+      "mejor_lag_dias": 10,
+      "mejor_lag_correlacion": 0.053,
+      "rolling_media": 0.397,
+      "rolling_std": 0.157,
+      "retorno_medio_tras_shock": 0.16,
+      "num_shocks_analizados": 37,
+      "observaciones": 751
+    }
+  },
+  {
+    "cliente": "MSFT",
+    "clienteNombre": "Microsoft",
+    "proveedor": "DELL",
+    "proveedorNombre": "Dell",
+    "dependencia": 15,
+    "fuente": "Manual",
+    "lag": "10-13",
+    "analisis": {
+      "correlaciones": {
+        "lag_0": 0.327,
+        "lag_1": 0.039,
+        "lag_3": 0.0,
+        "lag_5": 0.05,
+        "lag_7": -0.011,
+        "lag_10": 0.062,
+        "lag_15": -0.005
+      },
+      "mejor_lag_dias": 10,
+      "mejor_lag_correlacion": 0.062,
+      "rolling_media": 0.339,
+      "rolling_std": 0.165,
+      "retorno_medio_tras_shock": 0.55,
+      "num_shocks_analizados": 37,
+      "observaciones": 751
+    }
+  },
+  {
+    "cliente": "AMZN",
+    "clienteNombre": "Amazon",
+    "proveedor": "GXO",
+    "proveedorNombre": "GXO Logistics",
+    "dependencia": 14,
+    "fuente": "Manual",
+    "lag": "3-6",
+    "analisis": {
+      "correlaciones": {
+        "lag_0": 0.309,
+        "lag_1": 0.001,
+        "lag_3": -0.08,
+        "lag_5": -0.006,
+        "lag_7": -0.053,
+        "lag_10": 0.002,
+        "lag_15": -0.0
+      },
+      "mejor_lag_dias": 3,
+      "mejor_lag_correlacion": -0.08,
+      "rolling_media": 0.298,
+      "rolling_std": 0.146,
+      "retorno_medio_tras_shock": 0.16,
+      "num_shocks_analizados": 68,
+      "observaciones": 751
+    }
+  },
+  {
+    "cliente": "AMZN",
+    "clienteNombre": "Amazon",
+    "proveedor": "RIVN",
+    "proveedorNombre": "Rivian",
+    "dependencia": 30,
+    "fuente": "Manual",
+    "lag": "1-4",
+    "analisis": {
+      "correlaciones": {
+        "lag_0": 0.225,
+        "lag_1": -0.048,
+        "lag_3": 0.026,
+        "lag_5": 0.027,
+        "lag_7": -0.012,
+        "lag_10": -0.022,
+        "lag_15": -0.019
+      },
+      "mejor_lag_dias": 1,
+      "mejor_lag_correlacion": -0.048,
+      "rolling_media": 0.242,
+      "rolling_std": 0.143,
+      "retorno_medio_tras_shock": 0.71,
+      "num_shocks_analizados": 68,
+      "observaciones": 751
+    }
+  },
+  {
+    "cliente": "AAPL",
+    "clienteNombre": "Apple",
+    "proveedor": "AMAT",
+    "proveedorNombre": "Applied Materials",
+    "dependencia": 8,
+    "fuente": "Wikipedia",
+    "lag": "3-6",
+    "analisis": {
+      "correlaciones": {
+        "lag_0": 0.362,
+        "lag_1": -0.053,
+        "lag_3": -0.098,
+        "lag_5": -0.021,
+        "lag_7": -0.036,
+        "lag_10": 0.016,
+        "lag_15": 0.051
+      },
+      "mejor_lag_dias": 3,
+      "mejor_lag_correlacion": -0.098,
+      "rolling_media": 0.343,
+      "rolling_std": 0.169,
+      "retorno_medio_tras_shock": 0.7,
+      "num_shocks_analizados": 46,
+      "observaciones": 751
+    }
+  },
+  {
+    "cliente": "AAPL",
+    "clienteNombre": "Apple",
+    "proveedor": "KLAC",
+    "proveedorNombre": "KLA Corporation",
+    "dependencia": 7,
+    "fuente": "Wikipedia",
+    "lag": "3-6",
+    "analisis": {
+      "correlaciones": {
+        "lag_0": 0.37,
+        "lag_1": -0.029,
+        "lag_3": -0.096,
+        "lag_5": -0.04,
+        "lag_7": -0.028,
+        "lag_10": 0.035,
+        "lag_15": 0.035
+      },
+      "mejor_lag_dias": 3,
+      "mejor_lag_correlacion": -0.096,
+      "rolling_media": 0.357,
+      "rolling_std": 0.176,
+      "retorno_medio_tras_shock": 0.85,
+      "num_shocks_analizados": 46,
+      "observaciones": 751
+    }
+  },
+  {
+    "cliente": "NVDA",
+    "clienteNombre": "NVIDIA",
+    "proveedor": "AMAT",
+    "proveedorNombre": "Applied Materials",
+    "dependencia": 12,
+    "fuente": "Wikipedia",
+    "lag": "1-4",
+    "analisis": {
+      "correlaciones": {
+        "lag_0": 0.573,
+        "lag_1": -0.123,
+        "lag_3": -0.092,
+        "lag_5": 0.004,
+        "lag_7": 0.005,
+        "lag_10": 0.003,
+        "lag_15": -0.054
+      },
+      "mejor_lag_dias": 1,
+      "mejor_lag_correlacion": -0.123,
+      "rolling_media": 0.579,
+      "rolling_std": 0.13,
+      "retorno_medio_tras_shock": 0.22,
+      "num_shocks_analizados": 192,
+      "observaciones": 751
+    }
+  },
+  {
+    "cliente": "NVDA",
+    "clienteNombre": "NVIDIA",
+    "proveedor": "KLAC",
+    "proveedorNombre": "KLA Corporation",
+    "dependencia": 10,
+    "fuente": "Wikipedia",
+    "lag": "1-4",
+    "analisis": {
+      "correlaciones": {
+        "lag_0": 0.598,
+        "lag_1": -0.136,
+        "lag_3": -0.082,
+        "lag_5": -0.022,
+        "lag_7": 0.001,
+        "lag_10": 0.014,
+        "lag_15": -0.067
+      },
+      "mejor_lag_dias": 1,
+      "mejor_lag_correlacion": -0.136,
+      "rolling_media": 0.604,
+      "rolling_std": 0.121,
+      "retorno_medio_tras_shock": 0.31,
+      "num_shocks_analizados": 192,
+      "observaciones": 751
+    }
+  },
+  {
+    "cliente": "NVDA",
+    "clienteNombre": "NVIDIA",
+    "proveedor": "LRCX",
+    "proveedorNombre": "Lam Research",
+    "dependencia": 11,
+    "fuente": "Wikipedia",
+    "lag": "1-4",
+    "analisis": {
+      "correlaciones": {
+        "lag_0": 0.584,
+        "lag_1": -0.111,
+        "lag_3": -0.068,
+        "lag_5": -0.004,
+        "lag_7": 0.019,
+        "lag_10": 0.023,
+        "lag_15": -0.074
+      },
+      "mejor_lag_dias": 1,
+      "mejor_lag_correlacion": -0.111,
+      "rolling_media": 0.598,
+      "rolling_std": 0.123,
+      "retorno_medio_tras_shock": 0.25,
+      "num_shocks_analizados": 192,
+      "observaciones": 751
+    }
+  },
+  {
+    "cliente": "NVDA",
+    "clienteNombre": "NVIDIA",
+    "proveedor": "SMCI",
+    "proveedorNombre": "Super Micro Computer",
+    "dependencia": 20,
+    "fuente": "Wikipedia",
+    "lag": "3-6",
+    "analisis": {
+      "correlaciones": {
+        "lag_0": 0.499,
+        "lag_1": 0.014,
+        "lag_3": -0.039,
+        "lag_5": -0.003,
+        "lag_7": 0.024,
+        "lag_10": -0.035,
+        "lag_15": 0.007
+      },
+      "mejor_lag_dias": 3,
+      "mejor_lag_correlacion": -0.039,
+      "rolling_media": 0.516,
+      "rolling_std": 0.14,
+      "retorno_medio_tras_shock": -0.01,
+      "num_shocks_analizados": 192,
+      "observaciones": 751
+    }
+  },
+  {
+    "cliente": "AMD",
+    "clienteNombre": "AMD",
+    "proveedor": "TSM",
+    "proveedorNombre": "TSMC",
+    "dependencia": 100,
+    "fuente": "Wikipedia",
+    "lag": "15-18",
+    "analisis": {
+      "correlaciones": {
+        "lag_0": 0.574,
+        "lag_1": -0.045,
+        "lag_3": -0.034,
+        "lag_5": 0.021,
+        "lag_7": 0.029,
+        "lag_10": 0.035,
+        "lag_15": 0.067
+      },
+      "mejor_lag_dias": 15,
+      "mejor_lag_correlacion": 0.067,
+      "rolling_media": 0.572,
+      "rolling_std": 0.111,
+      "retorno_medio_tras_shock": 0.34,
+      "num_shocks_analizados": 213,
+      "observaciones": 751
+    }
+  },
+  {
+    "cliente": "INTC",
+    "clienteNombre": "Intel",
+    "proveedor": "AMAT",
+    "proveedorNombre": "Applied Materials",
+    "dependencia": 14,
+    "fuente": "Wikipedia",
+    "lag": "1-4",
+    "analisis": {
+      "correlaciones": {
+        "lag_0": 0.481,
+        "lag_1": -0.09,
+        "lag_3": -0.008,
+        "lag_5": -0.033,
+        "lag_7": -0.002,
+        "lag_10": -0.007,
+        "lag_15": -0.042
+      },
+      "mejor_lag_dias": 1,
+      "mejor_lag_correlacion": -0.09,
+      "rolling_media": 0.444,
+      "rolling_std": 0.112,
+      "retorno_medio_tras_shock": 0.33,
+      "num_shocks_analizados": 216,
+      "observaciones": 751
+    }
+  },
+  {
+    "cliente": "QCOM",
+    "clienteNombre": "Qualcomm",
+    "proveedor": "TSM",
+    "proveedorNombre": "TSMC",
+    "dependencia": 65,
+    "fuente": "Wikipedia",
+    "lag": "15-18",
+    "analisis": {
+      "correlaciones": {
+        "lag_0": 0.475,
+        "lag_1": -0.046,
+        "lag_3": -0.008,
+        "lag_5": -0.022,
+        "lag_7": -0.016,
+        "lag_10": 0.047,
+        "lag_15": 0.082
+      },
+      "mejor_lag_dias": 15,
+      "mejor_lag_correlacion": 0.082,
+      "rolling_media": 0.529,
+      "rolling_std": 0.173,
+      "retorno_medio_tras_shock": 0.23,
+      "num_shocks_analizados": 111,
+      "observaciones": 751
+    }
+  },
+  {
+    "cliente": "TSLA",
+    "clienteNombre": "Tesla",
+    "proveedor": "ON",
+    "proveedorNombre": "ON Semiconductor",
+    "dependencia": 12,
+    "fuente": "Wikipedia",
+    "lag": "1-4",
+    "analisis": {
+      "correlaciones": {
+        "lag_0": 0.445,
+        "lag_1": -0.062,
+        "lag_3": -0.014,
+        "lag_5": -0.009,
+        "lag_7": -0.012,
+        "lag_10": 0.014,
+        "lag_15": 0.025
+      },
+      "mejor_lag_dias": 1,
+      "mejor_lag_correlacion": -0.062,
+      "rolling_media": 0.428,
+      "rolling_std": 0.115,
+      "retorno_medio_tras_shock": 0.19,
+      "num_shocks_analizados": 266,
+      "observaciones": 751
+    }
+  },
+  {
+    "cliente": "GM",
+    "clienteNombre": "General Motors",
+    "proveedor": "MGA",
+    "proveedorNombre": "Magna International",
+    "dependencia": 9,
+    "fuente": "Wikipedia",
+    "lag": "5-8",
+    "analisis": {
+      "correlaciones": {
+        "lag_0": 0.53,
+        "lag_1": -0.035,
+        "lag_3": 0.01,
+        "lag_5": 0.05,
+        "lag_7": -0.004,
+        "lag_10": -0.018,
+        "lag_15": 0.003
+      },
+      "mejor_lag_dias": 5,
+      "mejor_lag_correlacion": 0.05,
+      "rolling_media": 0.531,
+      "rolling_std": 0.107,
+      "retorno_medio_tras_shock": 0.18,
+      "num_shocks_analizados": 90,
+      "observaciones": 751
+    }
+  },
+  {
+    "cliente": "F",
+    "clienteNombre": "Ford",
+    "proveedor": "MGA",
+    "proveedorNombre": "Magna International",
+    "dependencia": 11,
+    "fuente": "Wikipedia",
+    "lag": "1-4",
+    "analisis": {
+      "correlaciones": {
+        "lag_0": 0.509,
+        "lag_1": -0.062,
+        "lag_3": 0.018,
+        "lag_5": 0.024,
+        "lag_7": 0.044,
+        "lag_10": 0.001,
+        "lag_15": -0.045
+      },
+      "mejor_lag_dias": 1,
+      "mejor_lag_correlacion": -0.062,
+      "rolling_media": 0.548,
+      "rolling_std": 0.116,
+      "retorno_medio_tras_shock": -0.0,
+      "num_shocks_analizados": 88,
+      "observaciones": 751
+    }
+  },
+  {
+    "cliente": "F",
+    "clienteNombre": "Ford",
+    "proveedor": "ALV",
+    "proveedorNombre": "Autoliv",
+    "dependencia": 10,
+    "fuente": "Wikipedia",
+    "lag": "1-4",
+    "analisis": {
+      "correlaciones": {
+        "lag_0": 0.477,
+        "lag_1": -0.071,
+        "lag_3": 0.002,
+        "lag_5": 0.03,
+        "lag_7": -0.026,
+        "lag_10": 0.056,
+        "lag_15": -0.068
+      },
+      "mejor_lag_dias": 1,
+      "mejor_lag_correlacion": -0.071,
+      "rolling_media": 0.498,
+      "rolling_std": 0.129,
+      "retorno_medio_tras_shock": 0.07,
+      "num_shocks_analizados": 88,
+      "observaciones": 751
+    }
+  },
+  {
+    "cliente": "MSFT",
+    "clienteNombre": "Microsoft",
+    "proveedor": "NVDA",
+    "proveedorNombre": "NVIDIA",
+    "dependencia": 15,
+    "fuente": "Wikipedia",
+    "lag": "1-4",
+    "analisis": {
+      "correlaciones": {
+        "lag_0": 0.493,
+        "lag_1": -0.054,
+        "lag_3": -0.023,
+        "lag_5": -0.013,
+        "lag_7": -0.037,
+        "lag_10": 0.048,
+        "lag_15": 0.052
+      },
+      "mejor_lag_dias": 1,
+      "mejor_lag_correlacion": -0.054,
+      "rolling_media": 0.495,
+      "rolling_std": 0.12,
+      "retorno_medio_tras_shock": 0.27,
+      "num_shocks_analizados": 37,
+      "observaciones": 751
+    }
+  },
+  {
+    "cliente": "AMZN",
+    "clienteNombre": "Amazon",
+    "proveedor": "NVDA",
+    "proveedorNombre": "NVIDIA",
+    "dependencia": 12,
+    "fuente": "Wikipedia",
+    "lag": "7-10",
+    "analisis": {
+      "correlaciones": {
+        "lag_0": 0.476,
+        "lag_1": -0.028,
+        "lag_3": -0.032,
+        "lag_5": -0.001,
+        "lag_7": -0.077,
+        "lag_10": 0.012,
+        "lag_15": 0.056
+      },
+      "mejor_lag_dias": 7,
+      "mejor_lag_correlacion": -0.077,
+      "rolling_media": 0.465,
+      "rolling_std": 0.156,
+      "retorno_medio_tras_shock": 0.46,
+      "num_shocks_analizados": 68,
+      "observaciones": 751
+    }
+  },
+  {
+    "cliente": "META",
+    "clienteNombre": "Meta",
+    "proveedor": "NVDA",
+    "proveedorNombre": "NVIDIA",
+    "dependencia": 18,
+    "fuente": "Wikipedia",
+    "lag": "15-18",
+    "analisis": {
+      "correlaciones": {
+        "lag_0": 0.472,
+        "lag_1": -0.037,
+        "lag_3": 0.002,
+        "lag_5": 0.009,
+        "lag_7": -0.012,
+        "lag_10": 0.01,
+        "lag_15": 0.042
+      },
+      "mejor_lag_dias": 15,
+      "mejor_lag_correlacion": 0.042,
+      "rolling_media": 0.456,
+      "rolling_std": 0.166,
+      "retorno_medio_tras_shock": 0.42,
+      "num_shocks_analizados": 88,
+      "observaciones": 751
+    }
+  },
+  {
+    "cliente": "GOOGL",
+    "clienteNombre": "Alphabet",
+    "proveedor": "NVDA",
+    "proveedorNombre": "NVIDIA",
+    "dependencia": 10,
+    "fuente": "Wikipedia",
+    "lag": "3-6",
+    "analisis": {
+      "correlaciones": {
+        "lag_0": 0.394,
+        "lag_1": -0.057,
+        "lag_3": -0.094,
+        "lag_5": -0.027,
+        "lag_7": -0.028,
+        "lag_10": 0.026,
+        "lag_15": 0.022
+      },
+      "mejor_lag_dias": 3,
+      "mejor_lag_correlacion": -0.094,
+      "rolling_media": 0.389,
+      "rolling_std": 0.151,
+      "retorno_medio_tras_shock": 0.44,
+      "num_shocks_analizados": 63,
+      "observaciones": 751
+    }
+  },
+  {
+    "cliente": "TSLA",
+    "clienteNombre": "Tesla",
+    "proveedor": "LAC",
+    "proveedorNombre": "Lithium Americas",
+    "dependencia": 15,
+    "fuente": "Wikipedia",
+    "lag": "15-18",
+    "analisis": {
+      "correlaciones": {
+        "lag_0": 0.217,
+        "lag_1": -0.017,
+        "lag_3": 0.032,
+        "lag_5": -0.0,
+        "lag_7": -0.019,
+        "lag_10": -0.031,
+        "lag_15": 0.044
+      },
+      "mejor_lag_dias": 15,
+      "mejor_lag_correlacion": 0.044,
+      "rolling_media": 0.243,
+      "rolling_std": 0.134,
+      "retorno_medio_tras_shock": 0.06,
+      "num_shocks_analizados": 245,
+      "observaciones": 675
+    }
+  },
+  {
+    "cliente": "NVDA",
+    "clienteNombre": "NVIDIA",
+    "proveedor": "ACHR",
+    "proveedorNombre": "Archer Aviation",
+    "dependencia": 8,
+    "fuente": "Wikipedia",
+    "lag": "3-6",
+    "analisis": {
+      "correlaciones": {
+        "lag_0": 0.274,
+        "lag_1": -0.018,
+        "lag_3": -0.031,
+        "lag_5": 0.029,
+        "lag_7": 0.021,
+        "lag_10": 0.019,
+        "lag_15": -0.001
+      },
+      "mejor_lag_dias": 3,
+      "mejor_lag_correlacion": -0.031,
+      "rolling_media": 0.252,
+      "rolling_std": 0.197,
+      "retorno_medio_tras_shock": 0.09,
+      "num_shocks_analizados": 192,
+      "observaciones": 751
+    }
+  },
+  {
+    "cliente": "005930.KS",
+    "clienteNombre": "revenue in fiscal years 2026 and 2025, respectively. Samsung",
+    "proveedor": "QRVO",
+    "proveedorNombre": "Qorvo, Inc.",
+    "dependencia": 10.0,
+    "fuente": "SEC EDGAR 10-K",
+    "lag": "10-13",
+    "analisis": {
+      "correlaciones": {
+        "lag_0": -0.024,
+        "lag_1": 0.01,
+        "lag_3": -0.031,
+        "lag_5": -0.05,
+        "lag_7": 0.012,
+        "lag_10": 0.067,
+        "lag_15": 0.023
+      },
+      "mejor_lag_dias": 10,
+      "mejor_lag_correlacion": 0.067,
+      "rolling_media": 0.034,
+      "rolling_std": 0.105,
+      "retorno_medio_tras_shock": -0.04,
+      "num_shocks_analizados": 114,
+      "observaciones": 704
+    }
+  }
+]

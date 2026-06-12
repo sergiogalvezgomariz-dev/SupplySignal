@@ -1,0 +1,164 @@
+[
+  {
+    "cliente": "AAPL",
+    "clienteNombre": "Apple",
+    "proveedor": "SWKS",
+    "proveedorNombre": "SKYWORKS SOLUTIONS, INC.",
+    "dependencia": 67.0,
+    "fuente": "SEC EDGAR 10-K",
+    "lag": "3-7"
+  },
+  {
+    "cliente": "AAPL",
+    "clienteNombre": "Apple",
+    "proveedor": "QRVO",
+    "proveedorNombre": "Qorvo, Inc.",
+    "dependencia": 50.0,
+    "fuente": "SEC EDGAR 10-K",
+    "lag": "3-7"
+  },
+  {
+    "cliente": "005930.KS",
+    "clienteNombre": "Samsung",
+    "proveedor": "QRVO",
+    "proveedorNombre": "Qorvo, Inc.",
+    "dependencia": 10.0,
+    "fuente": "SEC EDGAR 10-K",
+    "lag": "3-7"
+  },
+  {
+    "cliente": "HPQ",
+    "clienteNombre": "HP",
+    "proveedor": "QRVO",
+    "proveedorNombre": "Qorvo, Inc.",
+    "dependencia": 50.0,
+    "fuente": "SEC EDGAR 10-K",
+    "lag": "3-7"
+  },
+  {
+    "cliente": "AAPL",
+    "clienteNombre": "Apple",
+    "proveedor": "QCOM",
+    "proveedorNombre": "QUALCOMM INC/DE",
+    "dependencia": 10.0,
+    "fuente": "SEC EDGAR 10-K",
+    "lag": "3-7"
+  },
+  {
+    "cliente": "QCOM",
+    "clienteNombre": "Qualcomm",
+    "proveedor": "QCOM",
+    "proveedorNombre": "QUALCOMM INC/DE",
+    "dependencia": 10.0,
+    "fuente": "SEC EDGAR 10-K",
+    "lag": "3-7"
+  },
+  {
+    "cliente": "INTC",
+    "clienteNombre": "Intel",
+    "proveedor": "QCOM",
+    "proveedorNombre": "QUALCOMM INC/DE",
+    "dependencia": 5.0,
+    "fuente": "SEC EDGAR 10-K",
+    "lag": "3-7"
+  },
+  {
+    "cliente": "005930.KS",
+    "clienteNombre": "Samsung",
+    "proveedor": "QCOM",
+    "proveedorNombre": "QUALCOMM INC/DE",
+    "dependencia": 10.0,
+    "fuente": "SEC EDGAR 10-K",
+    "lag": "3-7"
+  },
+  {
+    "cliente": "",
+    "clienteNombre": "Xiaomi",
+    "proveedor": "QCOM",
+    "proveedorNombre": "QUALCOMM INC/DE",
+    "dependencia": 10.0,
+    "fuente": "SEC EDGAR 10-K",
+    "lag": "3-7"
+  },
+  {
+    "cliente": "META",
+    "clienteNombre": "Meta",
+    "proveedor": "ADI",
+    "proveedorNombre": "ANALOG DEVICES INC",
+    "dependencia": 10.0,
+    "fuente": "SEC EDGAR 10-K",
+    "lag": "3-7"
+  },
+  {
+    "cliente": "INTC",
+    "clienteNombre": "Intel",
+    "proveedor": "MCHP",
+    "proveedorNombre": "MICROCHIP TECHNOLOGY INC",
+    "dependencia": 47.0,
+    "fuente": "SEC EDGAR 10-K",
+    "lag": "3-7"
+  },
+  {
+    "cliente": "AAPL",
+    "clienteNombre": "Apple",
+    "proveedor": "STM",
+    "proveedorNombre": "STMicroelectronics N.V.",
+    "dependencia": 17.7,
+    "fuente": "SEC EDGAR 20-F",
+    "lag": "3-7"
+  },
+  {
+    "cliente": "INTC",
+    "clienteNombre": "Intel",
+    "proveedor": "SMCI",
+    "proveedorNombre": "Super Micro Computer, Inc.",
+    "dependencia": 6.6,
+    "fuente": "SEC EDGAR 10-K",
+    "lag": "3-7"
+  },
+  {
+    "cliente": "F",
+    "clienteNombre": "Ford",
+    "proveedor": "ALV",
+    "proveedorNombre": "AUTOLIV INC",
+    "dependencia": 29.0,
+    "fuente": "SEC EDGAR 10-K",
+    "lag": "3-7"
+  },
+  {
+    "cliente": "F",
+    "clienteNombre": "Ford",
+    "proveedor": "BWA",
+    "proveedorNombre": "BORGWARNER INC",
+    "dependencia": 71.0,
+    "fuente": "SEC EDGAR 10-K",
+    "lag": "3-7"
+  },
+  {
+    "cliente": "GM",
+    "clienteNombre": "General Motors",
+    "proveedor": "LEA",
+    "proveedorNombre": "LEAR CORP",
+    "dependencia": 22.0,
+    "fuente": "SEC EDGAR 10-K",
+    "lag": "3-7"
+  },
+  {
+    "cliente": "F",
+    "clienteNombre": "Ford",
+    "proveedor": "HXL",
+    "proveedorNombre": "HEXCEL CORP /DE/",
+    "dependencia": 80.0,
+    "fuente": "SEC EDGAR 10-K",
+    "lag": "3-7"
+  },
+  {
+    "cliente": "BA",
+    "clienteNombre": "Boeing",
+    "proveedor": "HXL",
+    "proveedorNombre": "HEXCEL CORP /DE/",
+    "dependencia": 25.0,
+    "fuente": "SEC EDGAR 10-K",
+    "lag": "3-7"
+  }
+]

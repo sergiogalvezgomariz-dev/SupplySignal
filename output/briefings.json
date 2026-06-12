@@ -1,0 +1,114 @@
+{
+  "actualizadoEn": "2026-06-12T15:31:56.666832",
+  "ventanaDias": 14,
+  "total": 1,
+  "briefings": [
+    {
+      "ticker": "MU",
+      "nombre": "Micron Technology, Inc.",
+      "earningsDate": "2026-06-24",
+      "diasRestantes": 12,
+      "epsNextQ": 19.6563,
+      "epsLow": 7.53,
+      "epsHigh": 24.08,
+      "revNextQ": 34286563820,
+      "beatStreak": 4,
+      "quarters": [
+        {
+          "quarter": "2025-05-31",
+          "epsActual": 1.91,
+          "epsEstimate": 1.595,
+          "epsDifference": 0.32,
+          "surprisePct": 19.75,
+          "beat": true
+        },
+        {
+          "quarter": "2025-08-31",
+          "epsActual": 3.03,
+          "epsEstimate": 2.8602,
+          "epsDifference": 0.17,
+          "surprisePct": 5.94,
+          "beat": true
+        },
+        {
+          "quarter": "2025-11-30",
+          "epsActual": 4.78,
+          "epsEstimate": 3.9641,
+          "epsDifference": 0.82,
+          "surprisePct": 20.58,
+          "beat": true
+        },
+        {
+          "quarter": "2026-02-28",
+          "epsActual": 12.2,
+          "epsEstimate": 9.1587,
+          "epsDifference": 3.04,
+          "surprisePct": 33.21,
+          "beat": true
+        }
+      ],
+      "supplyChain": {
+        "esCliente": false,
+        "esProveedor": true,
+        "proveedores": [],
+        "clientes": [
+          {
+            "ticker": "NVDA",
+            "nombre": "NVIDIA",
+            "dependencia": 15,
+            "lag": "3-7"
+          }
+        ]
+      },
+      "noticias": [
+        {
+          "title": "Top Bank Doubles Micron Price Target on Memory Boom",
+          "provider": "GuruFocus.com",
+          "url": "https://finance.yahoo.com/markets/stocks/articles/top-bank-doubles-micron-price-123931457.html",
+          "fecha": "Jun 12"
+        },
+        {
+          "title": "Everyone's Buying NVIDIA - Here Are 2 Smarter AI Stocks for 2026",
+          "provider": "Zacks",
+          "url": "https://finance.yahoo.com/markets/stocks/articles/everyones-buying-nvidia-2-smarter-114800263.html",
+          "fecha": "Jun 12"
+        },
+        {
+          "title": "Latest News In AI Chips - AI-Powered Shift: Transforming Data Into Business Intelligence",
+          "provider": "Simply Wall St.",
+          "url": "https://finance.yahoo.com/sectors/technology/articles/latest-news-ai-chips-ai-113735040.html",
+          "fecha": "Jun 12"
+        },
+        {
+          "title": "Micron and Sandisk Are Up Big During the Past Year. Can the Run Continue?",
+          "provider": "Motley Fool",
+          "url": "https://www.fool.com/investing/2026/06/12/micron-and-sandisk-are-up-big-over-the-past-year-c/",
+          "fecha": "Jun 12"
+        },
+        {
+          "title": "Why Goldman Is Cautious on Micron Stock Ahead of Earnings",
+          "provider": "Barrons.com",
+          "url": "https://www.barrons.com/articles/micron-stock-price-target-goldman-earnings-f5f6475b?siteid=yhoof2&yptr=yahoo",
+          "fecha": "Jun 12"
+        },
+        {
+          "title": "2 Semiconductor Stocks to Keep an Eye On and 1 We Turn Down",
+          "provider": "StockStory",
+          "url": "https://finance.yahoo.com/markets/stocks/articles/2-semiconductor-stocks-keep-eye-102120717.html",
+          "fecha": "Jun 12"
+        }
+      ],
+      "briefing": {
+        "headline": "Micron heads into fiscal Q3 2026 earnings on a 4-quarter beat streak with accelerating EPS momentum, as HBM demand from NVIDIA remains the critical variable to watch.",
+        "business_context": "Micron Technology is one of the world's three primary DRAM and NAND flash manufacturers, competing directly with Samsung and SK Hynix across cloud, mobile, automotive, and embedded end markets. The company is strategically pivotal in the AI infrastructure supply chain as the leading U.S.-domiciled producer of High Bandwidth Memory (HBM), which is a key component in NVIDIA's H100, H200, and Blackwell GPU platforms. Micron's revenue trajectory is closely tied to data center capex cycles, DRAM pricing dynamics, and the rate of AI accelerator adoption by hyperscalers.",
+        "market_expectations": "Consensus estimates fiscal Q3 2026 EPS at $19.66 (range: $7.53–$24.08, indicating unusually wide dispersion) on revenue of approximately $34.29B. The wide EPS range reflects significant uncertainty around HBM3E allocation ramp, DRAM spot pricing, and potential tariff or export control impacts on China-bound shipments. Gross margin sustainability near or above the current 58.4% level will be closely scrutinized given the mix shift toward higher-ASP HBM products.",
+        "eps_trend_analysis": "Micron has delivered 4 consecutive EPS beats with accelerating magnitude: +19.75% in May 2025, +5.94% in August 2025, +20.58% in November 2025, and a substantial +33.21% beat in February 2026. Absolute EPS has grown from $1.91 to $12.20 across these four quarters, reflecting both DRAM pricing recovery and HBM mix enrichment. The pattern of accelerating beat magnitude into February 2026 sets a high bar for the upcoming print, as consensus has likely already embedded aggressive upward revisions. At $19.66 consensus EPS, the implied sequential growth is approximately 61%, which is ambitious and suggests the market is pricing in continued HBM ramp execution and favorable pricing.",
+        "supply_chain_exposure": "NVIDIA is the single most consequential customer in Micron's disclosed exposure, representing approximately 15% of supplier revenue with a reported 3–7 day demand signal lag. As NVIDIA accelerates Blackwell platform shipments to hyperscalers, HBM3E content per GPU unit directly amplifies Micron's revenue per system sold. Any softness in NVIDIA's data center GPU shipment cadence—whether from export restrictions to China, hyperscaler capex moderation, or competitive GPU alternatives—would have a direct and near-term read-through to Micron's HBM revenue line. Concentration in a single customer at 15% of revenue represents meaningful idiosyncratic risk. On the supply side, Micron sources advanced lithography equipment from ASML (EUV tools critical for 1-alpha and 1-beta DRAM nodes) and relies on specialty chemicals and substrate suppliers concentrated in Japan and Taiwan, creating potential operational risk from geopolitical disruptions.",
+        "key_risks": "1. Export control escalation or further restrictions on advanced memory shipments to China could materially impair Micron's China-facing revenue, which has historically represented a meaningful portion of NAND and commodity DRAM sales; any incremental regulatory action between now and the print date warrants close monitoring. 2. HBM supply-demand balance is tightening as SK Hynix and Samsung aggressively ramp HBM3E capacity; if Micron's HBM ASP realization or allocation share disappoints relative to elevated expectations, gross margin could compress from current levels, pressuring EPS below the already-wide consensus range.",
+        "key_catalysts": "1. A confirmed expansion of HBM3E supply agreements with NVIDIA or other hyperscalers—particularly any disclosure of HBM4 qualification progress or design wins—would signal durable pricing power and extend the revenue visibility horizon well into fiscal 2027. 2. Stronger-than-expected cloud DRAM pricing in the spot and contract markets, driven by continued hyperscaler memory density upgrades for AI inference workloads, could push both revenue and gross margin above the high end of guidance, replicating the magnitude of the February 2026 beat.",
+        "watch": ""
+      },
+      "generadoEn": "2026-06-12T15:31:56.666791"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "MU": {
+    "quarters": [
+      {
+        "quarter": "2025-05-31",
+        "epsActual": 1.91,
+        "epsEstimate": 1.595,
+        "epsDifference": 0.32,
+        "surprisePct": 19.75,
+        "beat": true
+      },
+      {
+        "quarter": "2025-08-31",
+        "epsActual": 3.03,
+        "epsEstimate": 2.8602,
+        "epsDifference": 0.17,
+        "surprisePct": 5.94,
+        "beat": true
+      },
+      {
+        "quarter": "2025-11-30",
+        "epsActual": 4.78,
+        "epsEstimate": 3.9641,
+        "epsDifference": 0.82,
+        "surprisePct": 20.58,
+        "beat": true
+      },
+      {
+        "quarter": "2026-02-28",
+        "epsActual": 12.2,
+        "epsEstimate": 9.1587,
+        "epsDifference": 3.04,
+        "surprisePct": 33.21,
+        "beat": true
+      }
+    ],
+    "updatedAt": "2026-06-12T15:31:20.239776"
+  }
+}

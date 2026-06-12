@@ -1,0 +1,305 @@
+{
+  "comentario": "Actualizado automáticamente por ampliar_pares.py",
+  "pares": [
+    {
+      "cliente": "AAPL",
+      "clienteNombre": "Apple",
+      "proveedor": "TSM",
+      "proveedorNombre": "TSMC",
+      "dependencia": 25,
+      "lag": "3-6"
+    },
+    {
+      "cliente": "AAPL",
+      "clienteNombre": "Apple",
+      "proveedor": "QCOM",
+      "proveedorNombre": "Qualcomm",
+      "dependencia": 20,
+      "lag": "3-7"
+    },
+    {
+      "cliente": "AAPL",
+      "clienteNombre": "Apple",
+      "proveedor": "SWKS",
+      "proveedorNombre": "Skyworks",
+      "dependencia": 55,
+      "lag": "2-5"
+    },
+    {
+      "cliente": "AAPL",
+      "clienteNombre": "Apple",
+      "proveedor": "QRVO",
+      "proveedorNombre": "Qorvo",
+      "dependencia": 30,
+      "lag": "2-6"
+    },
+    {
+      "cliente": "AAPL",
+      "clienteNombre": "Apple",
+      "proveedor": "CRUS",
+      "proveedorNombre": "Cirrus Logic",
+      "dependencia": 80,
+      "lag": "2-5"
+    },
+    {
+      "cliente": "NVDA",
+      "clienteNombre": "NVIDIA",
+      "proveedor": "TSM",
+      "proveedorNombre": "TSMC",
+      "dependencia": 11,
+      "lag": "2-5"
+    },
+    {
+      "cliente": "NVDA",
+      "clienteNombre": "NVIDIA",
+      "proveedor": "MU",
+      "proveedorNombre": "Micron",
+      "dependencia": 15,
+      "lag": "3-7"
+    },
+    {
+      "cliente": "NVDA",
+      "clienteNombre": "NVIDIA",
+      "proveedor": "VRT",
+      "proveedorNombre": "Vertiv",
+      "dependencia": 20,
+      "lag": "3-8"
+    },
+    {
+      "cliente": "TSLA",
+      "clienteNombre": "Tesla",
+      "proveedor": "PCAR",
+      "proveedorNombre": "Paccar",
+      "dependencia": 10,
+      "lag": "4-8"
+    },
+    {
+      "cliente": "TSLA",
+      "clienteNombre": "Tesla",
+      "proveedor": "ALB",
+      "proveedorNombre": "Albemarle (litio)",
+      "dependencia": 18,
+      "lag": "4-9"
+    },
+    {
+      "cliente": "TSLA",
+      "clienteNombre": "Tesla",
+      "proveedor": "STM",
+      "proveedorNombre": "STMicroelectronics",
+      "dependencia": 12,
+      "lag": "3-7"
+    },
+    {
+      "cliente": "MSFT",
+      "clienteNombre": "Microsoft",
+      "proveedor": "AMD",
+      "proveedorNombre": "AMD",
+      "dependencia": 12,
+      "lag": "3-6"
+    },
+    {
+      "cliente": "MSFT",
+      "clienteNombre": "Microsoft",
+      "proveedor": "DELL",
+      "proveedorNombre": "Dell",
+      "dependencia": 15,
+      "lag": "3-7"
+    },
+    {
+      "cliente": "AMZN",
+      "clienteNombre": "Amazon",
+      "proveedor": "GXO",
+      "proveedorNombre": "GXO Logistics",
+      "dependencia": 14,
+      "lag": "4-8"
+    },
+    {
+      "cliente": "AMZN",
+      "clienteNombre": "Amazon",
+      "proveedor": "RIVN",
+      "proveedorNombre": "Rivian",
+      "dependencia": 30,
+      "lag": "2-6"
+    },
+    {
+      "cliente": "AAPL",
+      "clienteNombre": "Apple",
+      "proveedor": "AMAT",
+      "proveedorNombre": "Applied Materials",
+      "dependencia": 8,
+      "lag": "4-8",
+      "fuente": "Wikipedia"
+    },
+    {
+      "cliente": "AAPL",
+      "clienteNombre": "Apple",
+      "proveedor": "KLAC",
+      "proveedorNombre": "KLA Corporation",
+      "dependencia": 7,
+      "lag": "4-8",
+      "fuente": "Wikipedia"
+    },
+    {
+      "cliente": "NVDA",
+      "clienteNombre": "NVIDIA",
+      "proveedor": "AMAT",
+      "proveedorNombre": "Applied Materials",
+      "dependencia": 12,
+      "lag": "3-7",
+      "fuente": "Wikipedia"
+    },
+    {
+      "cliente": "NVDA",
+      "clienteNombre": "NVIDIA",
+      "proveedor": "KLAC",
+      "proveedorNombre": "KLA Corporation",
+      "dependencia": 10,
+      "lag": "3-7",
+      "fuente": "Wikipedia"
+    },
+    {
+      "cliente": "NVDA",
+      "clienteNombre": "NVIDIA",
+      "proveedor": "LRCX",
+      "proveedorNombre": "Lam Research",
+      "dependencia": 11,
+      "lag": "3-7",
+      "fuente": "Wikipedia"
+    },
+    {
+      "cliente": "NVDA",
+      "clienteNombre": "NVIDIA",
+      "proveedor": "SMCI",
+      "proveedorNombre": "Super Micro Computer",
+      "dependencia": 20,
+      "lag": "2-5",
+      "fuente": "Wikipedia"
+    },
+    {
+      "cliente": "AMD",
+      "clienteNombre": "AMD",
+      "proveedor": "TSM",
+      "proveedorNombre": "TSMC",
+      "dependencia": 12,
+      "lag": "2-5",
+      "fuente": "Wikipedia"
+    },
+    {
+      "cliente": "INTC",
+      "clienteNombre": "Intel",
+      "proveedor": "AMAT",
+      "proveedorNombre": "Applied Materials",
+      "dependencia": 14,
+      "lag": "4-8",
+      "fuente": "Wikipedia"
+    },
+    {
+      "cliente": "QCOM",
+      "clienteNombre": "Qualcomm",
+      "proveedor": "TSM",
+      "proveedorNombre": "TSMC",
+      "dependencia": 65,
+      "lag": "2-5",
+      "fuente": "Wikipedia"
+    },
+    {
+      "cliente": "TSLA",
+      "clienteNombre": "Tesla",
+      "proveedor": "PCRFY",
+      "proveedorNombre": "Panasonic",
+      "dependencia": 20,
+      "lag": "4-9",
+      "fuente": "Wikipedia"
+    },
+    {
+      "cliente": "TSLA",
+      "clienteNombre": "Tesla",
+      "proveedor": "ON",
+      "proveedorNombre": "ON Semiconductor",
+      "dependencia": 12,
+      "lag": "3-7",
+      "fuente": "Wikipedia"
+    },
+    {
+      "cliente": "GM",
+      "clienteNombre": "General Motors",
+      "proveedor": "MGA",
+      "proveedorNombre": "Magna International",
+      "dependencia": 9,
+      "lag": "4-8",
+      "fuente": "Wikipedia"
+    },
+    {
+      "cliente": "F",
+      "clienteNombre": "Ford",
+      "proveedor": "MGA",
+      "proveedorNombre": "Magna International",
+      "dependencia": 11,
+      "lag": "4-8",
+      "fuente": "Wikipedia"
+    },
+    {
+      "cliente": "F",
+      "clienteNombre": "Ford",
+      "proveedor": "ALV",
+      "proveedorNombre": "Autoliv",
+      "dependencia": 10,
+      "lag": "4-8",
+      "fuente": "Wikipedia"
+    },
+    {
+      "cliente": "MSFT",
+      "clienteNombre": "Microsoft",
+      "proveedor": "NVDA",
+      "proveedorNombre": "NVIDIA",
+      "dependencia": 15,
+      "lag": "3-6",
+      "fuente": "Wikipedia"
+    },
+    {
+      "cliente": "AMZN",
+      "clienteNombre": "Amazon",
+      "proveedor": "NVDA",
+      "proveedorNombre": "NVIDIA",
+      "dependencia": 12,
+      "lag": "3-6",
+      "fuente": "Wikipedia"
+    },
+    {
+      "cliente": "META",
+      "clienteNombre": "Meta",
+      "proveedor": "NVDA",
+      "proveedorNombre": "NVIDIA",
+      "dependencia": 18,
+      "lag": "2-5",
+      "fuente": "Wikipedia"
+    },
+    {
+      "cliente": "GOOGL",
+      "clienteNombre": "Alphabet",
+      "proveedor": "NVDA",
+      "proveedorNombre": "NVIDIA",
+      "dependencia": 10,
+      "lag": "2-5",
+      "fuente": "Wikipedia"
+    },
+    {
+      "cliente": "TSLA",
+      "clienteNombre": "Tesla",
+      "proveedor": "LAC",
+      "proveedorNombre": "Lithium Americas",
+      "dependencia": 15,
+      "lag": "5-10",
+      "fuente": "Wikipedia"
+    },
+    {
+      "cliente": "NVDA",
+      "clienteNombre": "NVIDIA",
+      "proveedor": "ACHR",
+      "proveedorNombre": "Archer Aviation",
+      "dependencia": 8,
+      "lag": "4-9",
+      "fuente": "Wikipedia"
+    }
+  ]
+}
