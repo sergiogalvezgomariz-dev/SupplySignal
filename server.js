@@ -12,12 +12,12 @@ try {
   }
 } catch(e) {}
 
-const express     = require("express");
-const path        = require("path");
-const fs          = require("fs");
-const session     = require("express-session");
-const helmet      = require("helmet");
-const rateLimit   = require("express-rate-limit");
+const express       = require("express");
+const path          = require("path");
+const fs            = require("fs");
+const cookieSession = require("cookie-session");
+const helmet        = require("helmet");
+const rateLimit     = require("express-rate-limit");
 
 const app = express();
 
@@ -36,17 +36,17 @@ app.use("/api/", rateLimit({
   message: { error: "Too many requests, please try again in a minute." },
 }));
 
-// ── Sesión ────────────────────────────────────────────────────────────────
-app.use(session({
-  secret: process.env.SESSION_SECRET || "supplysignal_dev_secret",
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    httpOnly: true,
-    secure: !!process.env.VERCEL, // solo HTTPS en producción
-    maxAge: 8 * 60 * 60 * 1000,  // 8 horas
-    sameSite: "lax",
-  },
+// Vercel actúa como proxy — necesario para cookies secure
+app.set("trust proxy", 1);
+
+// ── Sesión en cookie (funciona en serverless sin almacenamiento externo) ──
+app.use(cookieSession({
+  name: "ss_session",
+  keys: [process.env.SESSION_SECRET || "supplysignal_dev_secret"],
+  maxAge: 8 * 60 * 60 * 1000,  // 8 horas
+  httpOnly: true,
+  secure: !!process.env.VERCEL,
+  sameSite: "lax",
 }));
 
 app.use(express.urlencoded({ extended: false }));
@@ -117,7 +117,8 @@ app.post("/login", (req, res) => {
 });
 
 app.get("/logout", (req, res) => {
-  req.session.destroy(() => res.redirect("/login"));
+  req.session = null;
+  res.redirect("/login");
 });
 
 // ── Middleware de autenticación ───────────────────────────────────────────
