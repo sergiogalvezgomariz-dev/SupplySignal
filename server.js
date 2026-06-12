@@ -158,33 +158,53 @@ function generarInformeBackground() {
   });
 }
 
-// ── Arranque: primera carga y loops ───────────────────────────────────────
-(async () => {
-  console.log(`Cargando precios iniciales para ${todosLosTickers.length} tickers...`);
-  await actualizarPrecios();
-  calcularSenales();
-  console.log("✅ Precios cargados. Loops activos (precios: 1min · señales: 1h).\n");
+// ── Arranque: primera carga y loops (solo en entorno local) ───────────────
+const esVercel = !!process.env.VERCEL;
 
-  setInterval(async () => {
+if (!esVercel) {
+  (async () => {
+    console.log(`Cargando precios iniciales para ${todosLosTickers.length} tickers...`);
     await actualizarPrecios();
-    // Las señales se recalculan cada hora O si llevan más de 1h sin calcular
-    if (Date.now() - ultimaRefreshSenales >= INTERVALO_SENALES) calcularSenales();
-  }, INTERVALO_PRECIOS);
+    calcularSenales();
+    console.log("✅ Precios cargados. Loops activos (precios: 1min · señales: 1h).\n");
 
-  // También recalcula señales en el intervalo horario independientemente
-  setInterval(calcularSenales, INTERVALO_SENALES);
-})();
+    setInterval(async () => {
+      await actualizarPrecios();
+      if (Date.now() - ultimaRefreshSenales >= INTERVALO_SENALES) calcularSenales();
+    }, INTERVALO_PRECIOS);
+
+    setInterval(calcularSenales, INTERVALO_SENALES);
+  })();
+}
+
+// ── Carga on-demand para Vercel (caché de 2 min) ─────────────────────────
+const CACHE_TTL = 2 * 60 * 1000; // 2 minutos
+let cargandoPrecios = false;
+
+async function asegurarPrecios() {
+  const yaRecientes = Date.now() - ultimaRefreshSenales < CACHE_TTL;
+  if (yaRecientes || cargandoPrecios) return;
+  cargandoPrecios = true;
+  try {
+    await actualizarPrecios();
+    calcularSenales();
+  } finally {
+    cargandoPrecios = false;
+  }
+}
 
 // ── Endpoints ─────────────────────────────────────────────────────────────
 
 // Señales activas
-app.get("/api/signals", (req, res) => {
+app.get("/api/signals", async (req, res) => {
+  await asegurarPrecios();
   if (!cacheSenales) return res.json({ generadoEn: null, umbralShock: UMBRAL_SHOCK, senales: [], errores: ["Cargando datos iniciales..."] });
   res.json(cacheSenales);
 });
 
 // Precios en vivo de todos los tickers seguidos
-app.get("/api/prices", (req, res) => {
+app.get("/api/prices", async (req, res) => {
+  await asegurarPrecios();
   // Enriquece con info de los pares: qué rol tiene cada ticker
   const clientes   = new Set(pares.map(p => p.cliente));
   const resultado  = {};
