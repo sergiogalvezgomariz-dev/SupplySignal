@@ -792,6 +792,108 @@ footer {
   font-size: 13px;
   color: rgba(255,255,255,.7);
 }
+
+/* ── Mobile responsive ────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Header */
+  .header-inner {
+    padding: 0 14px;
+    height: auto;
+    flex-wrap: wrap;
+    gap: 0;
+  }
+  .logo-block {
+    padding-right: 0;
+    border-right: none;
+    margin-right: 0;
+    height: 52px;
+  }
+  .logo-sub { display: none; }
+  .header-right { display: none; }
+
+  /* Nav: scrollable horizontal strip below logo */
+  nav {
+    width: 100%;
+    border-top: 1px solid var(--gray-100);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  nav::-webkit-scrollbar { display: none; }
+  nav button {
+    padding: 0 14px;
+    height: 40px;
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+
+  /* Section bar */
+  .section-bar { padding: 0 14px; }
+  .section-meta { display: none; }
+
+  /* Page wrap */
+  .page-wrap { padding: 16px 14px 32px; }
+
+  /* Section intro */
+  .section-intro { flex-direction: column; align-items: flex-start; }
+
+  /* Stat row: 2 cols max on small screens */
+  .stat-row { grid-template-columns: repeat(2, 1fr); }
+
+  /* Toolbar: stack vertically */
+  .toolbar { flex-direction: column; gap: 8px; }
+  .toolbar input, .toolbar select { min-width: 0; width: 100%; }
+
+  /* Signal cards: single column */
+  .signal-grid { grid-template-columns: 1fr; }
+
+  /* Charts grid: single column */
+  .charts-grid { grid-template-columns: 1fr; }
+  .chart-canvas-wrap { height: 180px; }
+
+  /* Data table: horizontal scroll */
+  .data-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+  /* Comparador */
+  #comparador-tabla { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+  /* Footer */
+  .footer-inner { flex-direction: column; gap: 6px; text-align: center; }
+
+  /* Update strip */
+  .update-strip { flex-direction: column; gap: 4px; }
+}
+
+@media (max-width: 480px) {
+  html { font-size: 13px; }
+
+  .logo-name { font-size: 15px; }
+
+  /* Stat row: single column */
+  .stat-row { grid-template-columns: 1fr; }
+  .stat-val { font-size: 22px; }
+
+  /* Signal card footer: stack kv pairs */
+  .sc-footer { flex-wrap: wrap; gap: 10px; padding: 10px 14px; }
+  .sc-kv { flex: 0 0 calc(50% - 5px); }
+  .sc-kv + .sc-kv { border-left: none; padding-left: 0; }
+
+  /* Section title */
+  .si-title { font-size: 18px; }
+
+  /* Chart canvas smaller */
+  .chart-canvas-wrap { height: 150px; }
+
+  /* Briefing card adjustments */
+  .briefing-body-grid { grid-template-columns: 1fr !important; }
+  .briefing-footer-grid { grid-template-columns: 1fr 1fr !important; }
+  /* Earnings calendar */
+  .earnings-month-grid { grid-template-columns: 1fr !important; }
+}
+
+@media (max-width: 360px) {
+  .briefing-footer-grid { grid-template-columns: 1fr !important; }
+}
 </style>
 </head>
 <body>
@@ -1824,7 +1926,7 @@ async function cargarBriefings() {
           </div>
         </div>
 
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:1px solid #f3f4f6">
+        <div class="briefing-body-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:1px solid #f3f4f6">
 
           <!-- Col izq: contexto + estimaciones -->
           <div style="padding:18px 20px;border-right:1px solid #f3f4f6">
@@ -1873,7 +1975,7 @@ async function cargarBriefings() {
         </div>
 
         <!-- Footer: riesgos, catalizadores, watch list, noticias -->
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:0">
+        <div class="briefing-footer-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:0">
           <div style="padding:14px 18px;border-right:1px solid #f3f4f6">
             <div style="font-size:.7rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#b91c1c;margin-bottom:8px">Key Risks</div>
             <div style="font-size:.82rem;color:#374151;line-height:1.6">${bf.key_risks}</div>
@@ -1991,7 +2093,7 @@ async function cargarEarnings() {
                     border-bottom:1px solid #e5e7eb;padding-bottom:8px;margin-bottom:12px">
           ${mesNombre(mes)}
         </div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px">`;
+        <div class="earnings-month-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px">`;
 
       for (const e of empresas) {
         const dias = e.diasRestantes;
