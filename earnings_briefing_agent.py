@@ -79,6 +79,7 @@ Format your response as JSON with this exact structure:
   "key_risks": "1-2 specific risks that could surprise to the downside",
   "key_catalysts": "1-2 specific factors that could drive an upside surprise",
   "options_read": "1-2 sentences interpreting the implied move vs historical move. Is the market overpricing or underpricing volatility? What does this signal about positioning?",
+  "revision_read": "1 sentence on analyst estimate revision trend: are estimates rising or falling into earnings, and what does it signal about consensus positioning?",
   "watch_list": ["list", "of", "specific", "metrics", "to", "watch", "during", "the", "call"]
 }"""
 
@@ -393,6 +394,197 @@ def skill_get_news(ticker: str, max_items: int = 6) -> list[dict]:
         return []
 
 
+def skill_get_estimate_revisions(ticker: str) -> dict:
+    """
+    Fase 2 — Revisiones de estimaciones de analistas en los últimos 7/30/90 días.
+
+    Un setup alcista clásico: más analistas subiendo estimaciones que bajándolas
+    en los 30 días previos a earnings = "positive revision momentum".
+    Si además el precio sube con las revisiones = confirmación técnica.
+
+    Fuente: yfinance eps_revisions, earnings_estimate, analyst_price_targets
+    """
+    try:
+        t = yf.Ticker(ticker)
+
+        result = {"available": False, "trend": "unknown"}
+
+        # EPS revisions: cuántos analistas subieron/bajaron en 7/30/90d
+        eps_rev = t.eps_revisions
+        if eps_rev is not None and not eps_rev.empty:
+            row = None
+            for idx in ["0q", "0Q"]:
+                if idx in eps_rev.index:
+                    row = eps_rev.loc[idx]
+                    break
+            if row is None and len(eps_rev) > 0:
+                row = eps_rev.iloc[0]
+            if row is not None:
+                def safe_int(v):
+                    try: return int(v) if v is not None and str(v) != "nan" else 0
+                    except: return 0
+                result["up7d"]  = safe_int(row.get("upLast7days"))
+                result["up30d"] = safe_int(row.get("upLast30days"))
+                result["dn30d"] = safe_int(row.get("downLast30days"))
+                result["dn90d"] = safe_int(row.get("downLast90days"))
+
+        # Earnings estimate: número de analistas + crecimiento esperado
+        est = t.earnings_estimate
+        if est is not None and not est.empty:
+            row = None
+            for idx in ["0q", "0Q"]:
+                if idx in est.index:
+                    row = est.loc[idx]
+                    break
+            if row is None and len(est) > 0:
+                row = est.iloc[0]
+            if row is not None:
+                def safe_float(v):
+                    try: return round(float(v), 4) if v is not None and str(v) != "nan" else None
+                    except: return None
+                result["analysts"]  = safe_int(row.get("numberOfAnalysts"))
+                result["epsGrowth"] = safe_float(row.get("growth"))
+
+        # Price targets de analistas
+        try:
+            pt = t.analyst_price_targets
+            if isinstance(pt, dict) and pt:
+                def sn(v):
+                    try: return round(float(v), 2) if v is not None else None
+                    except: return None
+                result["ptMean"]   = sn(pt.get("mean"))
+                result["ptHigh"]   = sn(pt.get("high"))
+                result["ptLow"]    = sn(pt.get("low"))
+                result["ptMedian"] = sn(pt.get("median"))
+        except Exception:
+            pass
+
+        # Tendencia: ¿están subiendo o bajando estimaciones?
+        up   = result.get("up30d", 0)
+        dn   = result.get("dn30d", 0)
+        if up == 0 and dn == 0:
+            result["trend"] = "unknown"
+        elif up > dn * 1.5:
+            result["trend"] = "rising"   # bullish setup
+        elif dn > up * 1.5:
+            result["trend"] = "falling"  # bearish setup
+        else:
+            result["trend"] = "stable"
+
+        result["available"] = True
+        return result
+
+    except Exception as e:
+        return {"available": False, "trend": "unknown", "error": str(e)}
+
+
+def skill_get_latest_8k(ticker: str, days_back: int = 5) -> dict:
+    """
+    Fase 3 — Detecta y extrae el 8-K más reciente de SEC EDGAR.
+
+    Un 8-K de resultados (Item 2.02) se publica antes o simultáneamente con
+    la earnings call. Contiene EPS, revenue y guidance antes de que los analistas
+    hayan podido procesarlo. Primera lectura = ventaja informacional.
+
+    Flujo:
+      1. CIK del ticker via company_tickers.json
+      2. Submissions recientes de la empresa
+      3. Detecta 8-K de los últimos N días
+      4. Descarga el documento principal y extrae texto plano
+      5. Devuelve texto y URL para análisis posterior con Claude
+    """
+    import re
+    import urllib.request
+
+    UA = "SupplySignal research@supplysignal.com"
+
+    def get_url(url: str, timeout: int = 12) -> bytes:
+        req = urllib.request.Request(url, headers={"User-Agent": UA})
+        with urllib.request.urlopen(req, timeout=timeout) as r:
+            return r.read()
+
+    def strip_html(html: str) -> str:
+        html = re.sub(r'<script[^>]*>.*?</script>', ' ', html, flags=re.DOTALL | re.IGNORECASE)
+        html = re.sub(r'<style[^>]*>.*?</style>',  ' ', html, flags=re.DOTALL | re.IGNORECASE)
+        html = re.sub(r'<!--.*?-->',                ' ', html, flags=re.DOTALL)
+        html = re.sub(r'<[^>]+>',                  ' ', html)
+        html = re.sub(r'&nbsp;', ' ', html)
+        html = re.sub(r'&amp;',  '&', html)
+        html = re.sub(r'&lt;',   '<', html)
+        html = re.sub(r'&gt;',   '>', html)
+        return re.sub(r'\s+', ' ', html).strip()
+
+    try:
+        # 1. CIK lookup
+        tickers_json = json.loads(get_url("https://www.sec.gov/files/company_tickers.json"))
+        cik = None
+        for entry in tickers_json.values():
+            if entry.get("ticker", "").upper() == ticker.upper():
+                cik = int(entry["cik_str"])
+                break
+        if not cik:
+            return {"available": False, "error": f"CIK not found for {ticker}"}
+
+        cik_padded = f"{cik:010d}"
+
+        # 2. Recent submissions
+        subs    = json.loads(get_url(f"https://data.sec.gov/submissions/CIK{cik_padded}.json"))
+        recent  = subs.get("filings", {}).get("recent", {})
+        forms   = recent.get("form", [])
+        dates   = recent.get("filingDate", [])
+        accnums = recent.get("accessionNumber", [])
+        docs    = recent.get("primaryDocument", [])
+
+        # 3. Busca 8-K de los últimos N días
+        cutoff = (datetime.date.today() - datetime.timedelta(days=days_back)).isoformat()
+        found  = None
+        for i, form in enumerate(forms):
+            if form in ("8-K", "8-K/A") and dates[i] >= cutoff:
+                found = {
+                    "filingDate":      dates[i],
+                    "accessionNumber": accnums[i],
+                    "primaryDoc":      docs[i] if i < len(docs) else "",
+                    "cik":             cik,
+                    "cikPadded":       cik_padded,
+                }
+                break
+
+        if not found:
+            return {"available": False, "message": f"No 8-K filed in last {days_back} days for {ticker}"}
+
+        # 4. URL del documento principal
+        acc_clean = found["accessionNumber"].replace("-", "")
+        doc_url = (
+            f"https://www.sec.gov/Archives/edgar/data/{cik}"
+            f"/{acc_clean}/{found['primaryDoc']}"
+        )
+        edgar_url = (
+            f"https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany"
+            f"&CIK={cik}&type=8-K&dateb=&owner=include&count=5"
+        )
+
+        # 5. Descarga y extrae texto
+        try:
+            raw  = get_url(doc_url).decode("utf-8", errors="replace")
+            text = strip_html(raw)
+            # Limita a los primeros 8000 chars (donde suelen estar los resultados)
+            text = text[:8000]
+        except Exception as e:
+            text = f"[Could not fetch document: {e}]"
+
+        return {
+            "available":    True,
+            "ticker":       ticker,
+            "filingDate":   found["filingDate"],
+            "docUrl":       doc_url,
+            "edgarUrl":     edgar_url,
+            "textExtract":  text,
+        }
+
+    except Exception as e:
+        return {"available": False, "error": str(e)}
+
+
 def skill_load_eps_memory() -> dict:
     """Carga memoria de sorpresas EPS acumuladas."""
     if MEMORY_FILE.exists():
@@ -421,7 +613,9 @@ def generate_briefing_with_claude(ticker: str, earnings_date: str, dias: int,
                                    company_info: dict, eps_data: dict,
                                    supply_chain: dict, memory: dict,
                                    implied_move: dict | None = None,
-                                   hist_moves: dict | None = None) -> dict:
+                                   hist_moves: dict | None = None,
+                                   revisions: dict | None = None,
+                                   edgar_8k: dict | None = None) -> dict:
     """Llama a Claude API con todos los datos y obtiene el briefing estructurado."""
 
     client = anthropic.Anthropic()  # usa ANTHROPIC_API_KEY del entorno
@@ -481,6 +675,36 @@ SUPPLY CHAIN EXPOSURE:
         contexto += "Key customers:\n"
         for c in supply_chain["clientes"]:
             contexto += f"  - {c['ticker']} ({c['nombre']}): {c['dependencia']}% of supplier revenue, ~{c['lag']} day lag\n"
+
+    # Estimate revisions (Phase 2)
+    if revisions and revisions.get("available"):
+        rv = revisions
+        trend_str = {"rising": "RISING ↑ (bullish setup)", "falling": "FALLING ↓ (bearish setup)", "stable": "STABLE →"}.get(rv.get("trend", ""), "unknown")
+        contexto += f"""
+ANALYST ESTIMATE REVISIONS (last 30 days):
+- Trend: {trend_str}
+- Estimates raised (up 30d): {rv.get('up30d', '—')} analysts
+- Estimates cut (dn 30d): {rv.get('dn30d', '—')} analysts
+- Estimates raised (up 7d): {rv.get('up7d', '—')} analysts
+- Total analysts covering: {rv.get('analysts', '—')}
+- EPS growth expected vs YoY: {(rv.get('epsGrowth') or 0)*100:.1f}%
+"""
+        if rv.get("ptMean"):
+            contexto += f"- Analyst price target: mean ${rv['ptMean']} (range ${rv.get('ptLow','—')} – ${rv.get('ptHigh','—')})\n"
+    else:
+        contexto += "\nANALYST REVISIONS: Not available.\n"
+
+    # 8-K filing (Phase 3) — si ya hay resultados publicados
+    if edgar_8k and edgar_8k.get("available") and edgar_8k.get("textExtract"):
+        contexto += f"""
+SEC EDGAR 8-K FILING (filed {edgar_8k['filingDate']}):
+— Results already published. Extract of filing text:
+{edgar_8k['textExtract'][:3000]}
+[...truncated]
+
+NOTE: The above is the actual earnings release. Use it to update market_expectations
+with reported figures vs consensus, and note any guidance provided.
+"""
 
     # Implied move (options market)
     if implied_move and implied_move.get("available"):
@@ -576,6 +800,22 @@ def procesar_ticker(ticker: str, earnings_date: str, dias: int,
     noticias = skill_get_news(ticker)
     print(f"OK — {len(noticias)} articles")
 
+    print(f"    · Estimate revisions...", end=" ", flush=True)
+    revisions = skill_get_estimate_revisions(ticker)
+    if revisions.get("available"):
+        trend = revisions.get("trend", "unknown")
+        up, dn = revisions.get("up30d", 0), revisions.get("dn30d", 0)
+        print(f"OK — {trend.upper()} ({up}↑ / {dn}↓ in 30d)")
+    else:
+        print(f"N/A — {revisions.get('error','')}")
+
+    print(f"    · SEC EDGAR 8-K check...", end=" ", flush=True)
+    edgar_8k = skill_get_latest_8k(ticker, days_back=3)
+    if edgar_8k.get("available"):
+        print(f"OK — 8-K filed {edgar_8k['filingDate']} (results already out!)")
+    else:
+        print(f"None — {edgar_8k.get('message', edgar_8k.get('error',''))}")
+
     print(f"    · Options implied move...", end=" ", flush=True)
     implied_move = skill_get_implied_move(ticker, earnings_date)
     if implied_move.get("available"):
@@ -608,7 +848,7 @@ def procesar_ticker(ticker: str, earnings_date: str, dias: int,
         briefing = generate_briefing_with_claude(
             ticker, earnings_date, dias,
             company_info, eps_data, supply_chain, memory,
-            implied_move, hist_moves,
+            implied_move, hist_moves, revisions, edgar_8k,
         )
         print("OK")
     except Exception as e:
@@ -630,6 +870,8 @@ def procesar_ticker(ticker: str, earnings_date: str, dias: int,
         "noticias":      noticias,
         "impliedMove":   implied_move,
         "histMoves":     hist_moves,
+        "revisions":     revisions,
+        "edgar8k":       {"available": edgar_8k.get("available"), "filingDate": edgar_8k.get("filingDate"), "edgarUrl": edgar_8k.get("edgarUrl")} if edgar_8k else None,
         "briefing":      briefing,
         "generadoEn":    datetime.datetime.now().isoformat(),
     }

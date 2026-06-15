@@ -1161,6 +1161,10 @@ footer {
     <!-- Separador -->
     <div id="briefings-sep" style="display:none;border-top:1px solid #e5e7eb;margin:28px 0 24px;"></div>
 
+    <!-- Post-earnings Postmortem -->
+    <div id="postmortem-cont"></div>
+    <div id="postmortem-sep" style="display:none;border-top:1px solid #e5e7eb;margin:28px 0 24px;"></div>
+
     <!-- Calendario completo -->
     <div id="earnings-cont">
       <div class="state-block"><div class="state-label">Loading</div></div>
@@ -1500,7 +1504,7 @@ function cambiarPestana(id, btn) {
     if (!clientesDisponibles.length) inicializarCharts(); else refrescarCharts();
   }
   if (id === "bot")      { cargarBot(); verificarInforme(); }
-  if (id === "earnings") { cargarBriefings(); cargarEarnings(); }
+  if (id === "earnings") { cargarBriefings(); cargarPostmortem(); cargarEarnings(); }
 }
 
 async function inicializarCharts() {
@@ -2055,9 +2059,9 @@ async function cargarBriefings() {
           </div>
         </div>
 
-        <!-- Options strip: implied vs histórico -->
-        ${im.available ? `
+        <!-- Options + Revisions strip -->
         <div style="background:#f8f9fc;border-top:1px solid #f3f4f6;border-bottom:1px solid #f3f4f6;padding:10px 20px;display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+          ${im.available ? `
           <div style="display:flex;align-items:center;gap:8px">
             <span style="font-size:.68rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#6b7280">Options Market</span>
             <span style="font-family:var(--f-mono);font-size:.95rem;font-weight:700;color:var(--navy)">${im.label}</span>
@@ -2071,7 +2075,23 @@ async function cargarBriefings() {
           </div>
           <div>${optLabel}</div>` : ""}
           ${bf.options_read ? `<div style="flex:1;min-width:200px;font-size:.78rem;color:#4b5563;line-height:1.5;border-left:2px solid #e5e7eb;padding-left:14px;margin-left:4px">${bf.options_read}</div>` : ""}
-        </div>` : ""}
+          ` : ""}
+          ${(() => {
+            const rv = b.revisions;
+            if (!rv?.available) return "";
+            const trend = rv.trend;
+            const [bg,fg,arrow,lbl] =
+              trend === "rising"  ? ["#d1fae5","#065f46","↑","RISING ESTIMATES"] :
+              trend === "falling" ? ["#fee2e2","#b91c1c","↓","FALLING ESTIMATES"] :
+                                   ["#f3f4f6","#6b7280","→","STABLE ESTIMATES"];
+            const analysts = rv.analysts ? ` · ${rv.analysts} analysts` : "";
+            const pt = rv.priceTarget ? ` · PT $${rv.priceTarget}` : "";
+            return `<div style="display:flex;align-items:center;gap:8px;${im.available?"border-left:2px solid #e5e7eb;padding-left:20px":""}">
+              <span style="background:${bg};color:${fg};font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:3px;letter-spacing:.5px">${arrow} ${lbl}</span>
+              <span style="font-size:.72rem;color:#9ca3af">up7d:${rv.up7d||0} up30d:${rv.up30d||0} dn30d:${rv.dn30d||0}${analysts}${pt}</span>
+            </div>`;
+          })()}
+        </div>
 
         <!-- Footer: riesgos, catalizadores, watch list, noticias -->
         <div class="briefing-footer-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:0">
@@ -2112,6 +2132,124 @@ async function cargarBriefings() {
     cont.innerHTML = html;
   } catch(e) {
     document.getElementById("briefings-cont").innerHTML = "";
+  }
+}
+
+// ── Post-earnings Postmortem ──────────────────────────────────────────────
+async function cargarPostmortem() {
+  const cont = document.getElementById("postmortem-cont");
+  const sep  = document.getElementById("postmortem-sep");
+  try {
+    const r    = await fetch("/api/postmortem");
+    const data = await r.json();
+    const list = (data.postmortems || []).filter(p => p.analysis);
+    if (!list.length) { cont.innerHTML = ""; sep.style.display = "none"; return; }
+
+    sep.style.display = "block";
+
+    const verdictBadge = v => {
+      if (v === "BEAT_MARKET")   return `<span style="background:#d1fae5;color:#065f46;font-size:10px;font-weight:700;padding:2px 9px;border-radius:4px;letter-spacing:.5px">▲ BEAT MARKET</span>`;
+      if (v === "MISSED_MARKET") return `<span style="background:#fee2e2;color:#b91c1c;font-size:10px;font-weight:700;padding:2px 9px;border-radius:4px;letter-spacing:.5px">▼ MISSED MARKET</span>`;
+      return `<span style="background:#f3f4f6;color:#6b7280;font-size:10px;font-weight:700;padding:2px 9px;border-radius:4px;letter-spacing:.5px">— IN LINE</span>`;
+    };
+
+    let html = `<div style="margin-bottom:12px">
+      <div style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:600;color:var(--navy);margin-bottom:4px">
+        Post-Earnings Analysis
+      </div>
+      <div style="font-size:.8rem;color:var(--gray-400)">
+        Actual vs implied move · Supply chain signals · ${list.length} postmortem${list.length>1?"s":""}
+      </div>
+    </div>`;
+
+    for (const pm of list) {
+      const an  = pm.analysis || {};
+      const am  = pm.actualMove || {};
+      const im  = pm.impliedMove || {};
+      const eps = pm.reportedEps || {};
+      const sigs = pm.supplySignals || [];
+
+      const moveColor = (am.movePct || 0) >= 0 ? "#065f46" : "#b91c1c";
+      const moveFmt   = am.movePct != null ? `${am.movePct >= 0 ? "+" : ""}${am.movePct.toFixed(2)}%` : "—";
+      const implFmt   = im.impliedMovePct != null ? `±${im.impliedMovePct}%` : "—";
+
+      html += `<div class="card" style="margin-bottom:16px;padding:0;overflow:hidden;border-top:3px solid ${(am.movePct||0)>=0?"#065f46":"#b91c1c"}">
+        <!-- Header -->
+        <div style="padding:14px 20px 12px;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;border-bottom:1px solid #f3f4f6">
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+            <span style="font-family:var(--f-mono);font-size:1.1rem;font-weight:700;color:var(--navy)">${pm.ticker}</span>
+            <span style="font-size:.8rem;color:#6b7280">${pm.nombre}</span>
+            ${verdictBadge(an.verdict)}
+          </div>
+          <div style="text-align:right;flex-shrink:0">
+            <div style="font-size:.7rem;color:#9ca3af;letter-spacing:.3px">Earnings date</div>
+            <div style="font-family:var(--f-mono);font-size:.9rem;font-weight:600;color:var(--navy)">${pm.earningsDate}</div>
+          </div>
+        </div>
+
+        <!-- Headline -->
+        <div style="padding:12px 20px 0;font-style:italic;font-size:.88rem;color:#374151;line-height:1.5">"${an.headline || ""}"</div>
+
+        <!-- Métricas de precio -->
+        <div style="padding:12px 20px;display:flex;gap:20px;flex-wrap:wrap;border-bottom:1px solid #f3f4f6">
+          <div style="background:#f8f9fc;border-radius:8px;padding:10px 16px;flex:1;min-width:110px;text-align:center">
+            <div style="font-size:.68rem;color:#9ca3af;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px">Actual Move</div>
+            <div style="font-family:var(--f-mono);font-size:1.3rem;font-weight:700;color:${moveColor}">${moveFmt}</div>
+            ${am.gapPct != null ? `<div style="font-size:.7rem;color:#9ca3af;margin-top:2px">gap ${am.gapPct>=0?"+":""}${am.gapPct.toFixed(2)}%</div>` : ""}
+          </div>
+          <div style="background:#f8f9fc;border-radius:8px;padding:10px 16px;flex:1;min-width:110px;text-align:center">
+            <div style="font-size:.68rem;color:#9ca3af;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px">Pre-earnings Implied</div>
+            <div style="font-family:var(--f-mono);font-size:1.3rem;font-weight:700;color:var(--navy)">${implFmt}</div>
+            ${pm.deltaVsImplied != null ? `<div style="font-size:.7rem;color:${pm.deltaVsImplied>=0?"#065f46":"#6b7280"};margin-top:2px">delta ${pm.deltaVsImplied>=0?"+":""}${pm.deltaVsImplied.toFixed(2)}%</div>` : ""}
+          </div>
+          ${eps.available ? `
+          <div style="background:#f8f9fc;border-radius:8px;padding:10px 16px;flex:1;min-width:110px;text-align:center">
+            <div style="font-size:.68rem;color:#9ca3af;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px">EPS Reported</div>
+            <div style="font-family:var(--f-mono);font-size:1.3rem;font-weight:700;color:${eps.beat?"#065f46":"#b91c1c"}">$${eps.epsActual ?? "—"}</div>
+            <div style="font-size:.7rem;color:#9ca3af;margin-top:2px">est $${eps.epsEstimate ?? "—"} · ${eps.surprise!=null?(eps.surprise>=0?"+":"")+eps.surprise.toFixed(1)+"%":"—"}</div>
+          </div>` : ""}
+        </div>
+
+        <!-- Análisis narrativo -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:1px solid #f3f4f6">
+          <div style="padding:14px 20px;border-right:1px solid #f3f4f6">
+            <div style="font-size:.7rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#9ca3af;margin-bottom:6px">Price Action Read</div>
+            <div style="font-size:.82rem;color:#374151;line-height:1.6">${an.price_action_read || "—"}</div>
+          </div>
+          <div style="padding:14px 20px">
+            <div style="font-size:.7rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#9ca3af;margin-bottom:6px">Supply Chain Signal</div>
+            <div style="font-size:.82rem;color:#374151;line-height:1.6">${an.supply_chain_signal || "—"}</div>
+          </div>
+        </div>
+
+        <!-- Supply chain lag trades generados -->
+        ${sigs.length ? `
+        <div style="padding:12px 20px;background:#fffbf0;border-bottom:1px solid #f3f4f6">
+          <div style="font-size:.7rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#C8962A;margin-bottom:8px">Lag Trade Signals Generated</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px">
+            ${sigs.map(s => `
+            <div style="background:#fff;border:1px solid #e5e7eb;border-radius:6px;padding:6px 12px;display:flex;align-items:center;gap:8px">
+              <span style="font-size:9.5px;font-weight:700;color:${s.accion==="COMPRA"?"#065f46":"#b91c1c"};padding:1px 6px;border-radius:3px;background:${s.accion==="COMPRA"?"#d1fae5":"#fee2e2"}">${s.accion}</span>
+              <span style="font-family:var(--f-mono);font-size:.85rem;font-weight:600;color:var(--navy)">${s.proveedor}</span>
+              <span style="font-size:.75rem;color:#6b7280">${s.dependencia}% dep · ${s.lagDays}d lag</span>
+              <span style="font-size:.72rem;color:#9ca3af;border-left:1px solid #e5e7eb;padding-left:8px">until ${s.validoHasta}</span>
+            </div>`).join("")}
+          </div>
+        </div>` : ""}
+
+        <!-- Positioning note -->
+        ${an.positioning_note ? `
+        <div style="padding:10px 20px;display:flex;align-items:center;gap:10px">
+          <span style="font-size:.7rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#9ca3af;white-space:nowrap">Positioning</span>
+          <span style="font-size:.8rem;color:#4b5563;line-height:1.5">${an.positioning_note}</span>
+        </div>` : ""}
+      </div>`;
+    }
+
+    cont.innerHTML = html;
+  } catch(e) {
+    cont.innerHTML = "";
+    document.getElementById("postmortem-sep").style.display = "none";
   }
 }
 

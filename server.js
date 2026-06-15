@@ -430,6 +430,14 @@ app.get("/api/correlaciones", (req, res) => {
   catch(e) { res.status(500).json({ error: "Failed to parse correlaciones" }); }
 });
 
+// Postmortem del agente post-earnings
+app.get("/api/postmortem", (req, res) => {
+  const ruta = path.join(__dirname, "output", "postmortem.json");
+  if (!fs.existsSync(ruta)) return res.json({ postmortems: [], mensaje: "No postmortems yet. Run: python earnings_postmortem_agent.py" });
+  try { res.json(JSON.parse(fs.readFileSync(ruta, "utf8"))); }
+  catch(e) { res.status(500).json({ error: "Failed to parse postmortem" }); }
+});
+
 // ── 404 ───────────────────────────────────────────────────────────────────
 app.use((req, res) => res.status(404).json({ error: "Not found" }));
 
