@@ -78,6 +78,7 @@ Format your response as JSON with this exact structure:
   "supply_chain_exposure": "Which suppliers or customers are exposed, quantified where possible",
   "key_risks": "1-2 specific risks that could surprise to the downside",
   "key_catalysts": "1-2 specific factors that could drive an upside surprise",
+  "options_read": "1-2 sentences interpreting the implied move vs historical move. Is the market overpricing or underpricing volatility? What does this signal about positioning?",
   "watch_list": ["list", "of", "specific", "metrics", "to", "watch", "during", "the", "call"]
 }"""
 
@@ -213,6 +214,161 @@ def skill_get_supply_chain_exposure(ticker: str, pares: list[dict]) -> dict:
     }
 
 
+def skill_get_implied_move(ticker: str, earnings_date: str | None = None) -> dict:
+    """
+    Calcula el movimiento implícito del mercado para la próxima publicación de resultados.
+
+    Metodología profesional:
+      1. Obtiene el precio actual del subyacente
+      2. Busca el vencimiento de opciones más cercano DESPUÉS de la fecha de earnings
+      3. Encuentra el strike ATM (más cercano al precio actual)
+      4. Calcula el precio medio del straddle: (call_mid + put_mid)
+      5. Implied move % = straddle / stock_price
+
+    El implied move representa lo que el mercado está pagando para cubrirse:
+    si el straddle vale $5 y la acción cotiza a $100 → el mercado espera ±5% de movimiento.
+    """
+    try:
+        import pandas as pd
+        t = yf.Ticker(ticker)
+
+        # Precio actual
+        info        = t.info
+        stock_price = (info.get("regularMarketPrice") or info.get("currentPrice")
+                       or info.get("previousClose"))
+        if not stock_price:
+            return {"error": "No price data available", "available": False}
+
+        # Vencimientos disponibles
+        expirations = t.options
+        if not expirations:
+            return {"error": "No options data available", "available": False}
+
+        # Selecciona el vencimiento más cercano DESPUÉS del earnings
+        target_expiry = None
+        if earnings_date and earnings_date != "—":
+            try:
+                earn_dt = datetime.date.fromisoformat(earnings_date)
+                for exp in expirations:
+                    if datetime.date.fromisoformat(exp) >= earn_dt:
+                        target_expiry = exp
+                        break
+            except Exception:
+                pass
+        if not target_expiry:
+            target_expiry = expirations[0]  # fallback: vencimiento más próximo
+
+        # Cadena de opciones
+        chain = t.option_chain(target_expiry)
+        calls = chain.calls
+        puts  = chain.puts
+
+        if calls.empty or puts.empty:
+            return {"error": "Empty option chain", "available": False}
+
+        # Strike ATM: el más cercano al precio actual
+        atm_strike = float(calls["strike"].iloc[
+            (calls["strike"] - stock_price).abs().argsort().iloc[0]
+        ])
+
+        # Precio mid = (bid + ask) / 2
+        def mid(df, strike):
+            row = df[df["strike"] == strike]
+            if row.empty:
+                return None
+            b = float(row["bid"].iloc[0])
+            a = float(row["ask"].iloc[0])
+            return (b + a) / 2 if (b + a) > 0 else float(row["lastPrice"].iloc[0])
+
+        call_mid = mid(calls, atm_strike)
+        put_mid  = mid(puts,  atm_strike)
+
+        if call_mid is None or put_mid is None:
+            return {"error": "Cannot price straddle", "available": False}
+
+        straddle         = call_mid + put_mid
+        implied_move_pct = round((straddle / stock_price) * 100, 2)
+
+        return {
+            "available":        True,
+            "stockPrice":       round(stock_price, 2),
+            "expiry":           target_expiry,
+            "atmStrike":        atm_strike,
+            "callMid":          round(call_mid, 2),
+            "putMid":           round(put_mid,  2),
+            "straddle":         round(straddle, 2),
+            "impliedMovePct":   implied_move_pct,
+            "label":            f"±{implied_move_pct}%",
+        }
+    except Exception as e:
+        return {"error": str(e), "available": False}
+
+
+def skill_get_historical_earnings_moves(ticker: str, eps_quarters: list[dict]) -> dict:
+    """
+    Calcula el movimiento histórico REAL del precio en los días de publicación de resultados.
+
+    Compara el implied move del mercado con lo que la acción HA movido históricamente
+    en earnings. Si implied > histórico, las opciones son caras. Si implied < histórico,
+    son baratas (oportunidad de volatilidad).
+
+    Retorna:
+      - moves: lista de movimientos reales (%)
+      - avg_abs_move: media del valor absoluto
+      - max_move: el mayor movimiento observado
+      - opciones_caras: True si implied > avg_hist (el mercado sobreestima el movimiento)
+    """
+    try:
+        import pandas as pd
+        if not eps_quarters:
+            return {"available": False, "moves": []}
+
+        t    = yf.Ticker(ticker)
+        hist = t.history(period="2y", interval="1d")
+        if hist.empty:
+            return {"available": False, "moves": []}
+
+        hist.index = hist.index.tz_localize(None) if hist.index.tzinfo else hist.index
+
+        moves = []
+        for q in eps_quarters:
+            fecha_s = q.get("quarter", "")
+            if not fecha_s:
+                continue
+            try:
+                fecha = datetime.datetime.fromisoformat(fecha_s)
+                # Busca el precio de cierre del día siguiente al earnings
+                loc   = hist.index.searchsorted(fecha)
+                if loc + 1 < len(hist):
+                    close_before = float(hist["Close"].iloc[loc])
+                    close_after  = float(hist["Close"].iloc[loc + 1])
+                    move_pct     = round(((close_after - close_before) / close_before) * 100, 2)
+                    moves.append({
+                        "quarter": fecha_s[:10],
+                        "movePct": move_pct,
+                        "direction": "up" if move_pct > 0 else "down",
+                    })
+            except Exception:
+                continue
+
+        if not moves:
+            return {"available": False, "moves": []}
+
+        abs_moves   = [abs(m["movePct"]) for m in moves]
+        avg_abs     = round(sum(abs_moves) / len(abs_moves), 2)
+        max_move    = round(max(abs_moves), 2)
+
+        return {
+            "available":    True,
+            "moves":        moves,
+            "avgAbsMove":   avg_abs,
+            "maxMove":      max_move,
+            "nSamples":     len(moves),
+        }
+    except Exception as e:
+        return {"available": False, "moves": [], "error": str(e)}
+
+
 def skill_get_news(ticker: str, max_items: int = 6) -> list[dict]:
     """Obtiene noticias recientes de Yahoo Finance para el ticker."""
     try:
@@ -263,7 +419,9 @@ def skill_update_eps_memory(memory: dict, ticker: str, eps_data: dict) -> dict:
 
 def generate_briefing_with_claude(ticker: str, earnings_date: str, dias: int,
                                    company_info: dict, eps_data: dict,
-                                   supply_chain: dict, memory: dict) -> dict:
+                                   supply_chain: dict, memory: dict,
+                                   implied_move: dict | None = None,
+                                   hist_moves: dict | None = None) -> dict:
     """Llama a Claude API con todos los datos y obtiene el briefing estructurado."""
 
     client = anthropic.Anthropic()  # usa ANTHROPIC_API_KEY del entorno
@@ -323,6 +481,38 @@ SUPPLY CHAIN EXPOSURE:
         contexto += "Key customers:\n"
         for c in supply_chain["clientes"]:
             contexto += f"  - {c['ticker']} ({c['nombre']}): {c['dependencia']}% of supplier revenue, ~{c['lag']} day lag\n"
+
+    # Implied move (options market)
+    if implied_move and implied_move.get("available"):
+        im = implied_move
+        contexto += f"""
+OPTIONS MARKET — IMPLIED MOVE:
+- ATM straddle price: ${im['straddle']} (call ${im['callMid']} + put ${im['putMid']})
+- Stock price: ${im['stockPrice']}  |  ATM strike: ${im['atmStrike']}
+- Implied move for earnings: {im['label']}  (expiry: {im['expiry']})
+"""
+    else:
+        contexto += "\nOPTIONS MARKET: No options data available.\n"
+
+    # Historical earnings moves
+    if hist_moves and hist_moves.get("available"):
+        hm = hist_moves
+        contexto += f"""
+HISTORICAL EARNINGS MOVES (last {hm['nSamples']} quarters):
+- Average absolute move: ±{hm['avgAbsMove']}%
+- Max observed move: ±{hm['maxMove']}%
+- Individual moves: {', '.join(f"{m['movePct']:+.1f}%" for m in hm['moves'][-4:])}
+"""
+        if implied_move and implied_move.get("available"):
+            delta = round(implied_move["impliedMovePct"] - hm["avgAbsMove"], 2)
+            if delta > 1.5:
+                contexto += f"→ Options are EXPENSIVE: market is pricing {delta:.1f}pp MORE than the historical average move.\n"
+            elif delta < -1.5:
+                contexto += f"→ Options are CHEAP: market is pricing {abs(delta):.1f}pp LESS than the historical average move.\n"
+            else:
+                contexto += f"→ Options are FAIRLY PRICED relative to historical earnings volatility.\n"
+    else:
+        contexto += "\nHISTORICAL MOVES: Insufficient data.\n"
 
     contexto += "\nGenerate the pre-earnings briefing as JSON per the format specified."
 
@@ -386,6 +576,30 @@ def procesar_ticker(ticker: str, earnings_date: str, dias: int,
     noticias = skill_get_news(ticker)
     print(f"OK — {len(noticias)} articles")
 
+    print(f"    · Options implied move...", end=" ", flush=True)
+    implied_move = skill_get_implied_move(ticker, earnings_date)
+    if implied_move.get("available"):
+        print(f"OK — straddle {implied_move['label']} (exp {implied_move['expiry']})")
+    else:
+        print(f"N/A — {implied_move.get('error', 'no data')}")
+
+    print(f"    · Historical earnings moves...", end=" ", flush=True)
+    hist_moves = skill_get_historical_earnings_moves(ticker, eps_data.get("quarters", []))
+    if hist_moves.get("available"):
+        print(f"OK — avg ±{hist_moves['avgAbsMove']}% ({hist_moves['nSamples']} quarters)")
+    else:
+        print("N/A")
+
+    # Diagnóstico implied vs histórico
+    if implied_move.get("available") and hist_moves.get("available"):
+        delta = implied_move["impliedMovePct"] - hist_moves["avgAbsMove"]
+        if delta > 1.5:
+            print(f"    ⚠  Options EXPENSIVE: implied {implied_move['impliedMovePct']}% vs hist avg {hist_moves['avgAbsMove']}%")
+        elif delta < -1.5:
+            print(f"    ✓  Options CHEAP: implied {implied_move['impliedMovePct']}% vs hist avg {hist_moves['avgAbsMove']}%")
+        else:
+            print(f"    ·  Options fairly priced ({implied_move['impliedMovePct']}% implied vs {hist_moves['avgAbsMove']}% hist)")
+
     # Actualiza memoria
     memory = skill_update_eps_memory(memory, ticker, eps_data)
 
@@ -393,7 +607,8 @@ def procesar_ticker(ticker: str, earnings_date: str, dias: int,
     try:
         briefing = generate_briefing_with_claude(
             ticker, earnings_date, dias,
-            company_info, eps_data, supply_chain, memory
+            company_info, eps_data, supply_chain, memory,
+            implied_move, hist_moves,
         )
         print("OK")
     except Exception as e:
@@ -413,6 +628,8 @@ def procesar_ticker(ticker: str, earnings_date: str, dias: int,
         "quarters":      eps_data.get("quarters", []),
         "supplyChain":   supply_chain,
         "noticias":      noticias,
+        "impliedMove":   implied_move,
+        "histMoves":     hist_moves,
         "briefing":      briefing,
         "generadoEn":    datetime.datetime.now().isoformat(),
     }

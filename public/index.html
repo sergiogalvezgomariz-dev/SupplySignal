@@ -1968,21 +1968,42 @@ async function cargarBriefings() {
       const bf = b.briefing;
       const sc = b.supplyChain || {};
       const relaciones = [...(sc.proveedores||[]), ...(sc.clientes||[])];
+      const im  = b.impliedMove  || {};
+      const hm  = b.histMoves    || {};
+
+      // Compara implied vs histórico
+      const impliedPct = im.available ? im.impliedMovePct : null;
+      const histPct    = hm.available ? hm.avgAbsMove     : null;
+      const optDelta   = (impliedPct != null && histPct != null) ? (impliedPct - histPct) : null;
+      const optLabel   = optDelta == null ? "" :
+                         optDelta >  1.5  ? `<span style="background:#fee2e2;color:#b91c1c;font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:3px;letter-spacing:.5px">OPTS EXPENSIVE</span>` :
+                         optDelta < -1.5  ? `<span style="background:#d1fae5;color:#065f46;font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:3px;letter-spacing:.5px">OPTS CHEAP</span>` :
+                                            `<span style="background:#f3f4f6;color:#6b7280;font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:3px;letter-spacing:.5px">FAIRLY PRICED</span>`;
 
       html += `<div class="card" style="margin-bottom:20px;padding:0;overflow:hidden">
         <!-- Header -->
-        <div style="background:var(--navy);color:#fff;padding:16px 22px;display:flex;justify-content:space-between;align-items:flex-start">
-          <div>
-            <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+        <div style="background:var(--navy);color:#fff;padding:16px 22px;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap">
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap">
               <span style="font-family:var(--f-mono);font-size:1.2rem;font-weight:700">${b.ticker}</span>
               ${streakBadge(b.beatStreak || 0)}
             </div>
-            <div style="font-style:italic;font-size:.9rem;opacity:.85;line-height:1.4;max-width:640px">"${bf.headline}"</div>
+            <div style="font-style:italic;font-size:.9rem;opacity:.85;line-height:1.4">"${bf.headline}"</div>
           </div>
-          <div style="text-align:right;min-width:130px">
-            <div style="font-size:.75rem;opacity:.6;letter-spacing:.5px;text-transform:uppercase">Next Earnings</div>
-            <div style="font-family:var(--f-mono);font-size:.95rem;font-weight:600;margin-top:2px">${b.earningsDate}</div>
-            <div style="font-size:.78rem;opacity:.6;margin-top:2px">in ${b.diasRestantes} days</div>
+          <!-- Bloque derecho: earnings date + implied move -->
+          <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-end;flex-shrink:0">
+            <div style="text-align:right">
+              <div style="font-size:.7rem;opacity:.55;letter-spacing:.5px;text-transform:uppercase">Next Earnings</div>
+              <div style="font-family:var(--f-mono);font-size:.95rem;font-weight:600;margin-top:1px">${b.earningsDate}</div>
+              <div style="font-size:.75rem;opacity:.55;margin-top:1px">in ${b.diasRestantes} days</div>
+            </div>
+            ${im.available ? `
+            <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 14px;text-align:center;min-width:110px">
+              <div style="font-size:.65rem;opacity:.6;letter-spacing:.8px;text-transform:uppercase;margin-bottom:4px">Implied Move</div>
+              <div style="font-family:var(--f-mono);font-size:1.5rem;font-weight:700;color:#F0C96A;line-height:1">${im.label}</div>
+              ${histPct != null ? `<div style="font-size:.68rem;opacity:.55;margin-top:3px">hist avg ±${histPct}%</div>` : ""}
+              <div style="margin-top:6px">${optLabel}</div>
+            </div>` : ""}
           </div>
         </div>
 
@@ -2033,6 +2054,24 @@ async function cargarBriefings() {
             </div>` : ""}
           </div>
         </div>
+
+        <!-- Options strip: implied vs histórico -->
+        ${im.available ? `
+        <div style="background:#f8f9fc;border-top:1px solid #f3f4f6;border-bottom:1px solid #f3f4f6;padding:10px 20px;display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:.68rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#6b7280">Options Market</span>
+            <span style="font-family:var(--f-mono);font-size:.95rem;font-weight:700;color:var(--navy)">${im.label}</span>
+            <span style="font-size:.72rem;color:#9ca3af">straddle $${im.straddle} · exp ${im.expiry}</span>
+          </div>
+          ${histPct != null ? `
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:.68rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#6b7280">Hist. avg</span>
+            <span style="font-family:var(--f-mono);font-size:.95rem;font-weight:700;color:var(--navy)">±${histPct}%</span>
+            <span style="font-size:.72rem;color:#9ca3af">${hm.nSamples} quarters · max ±${hm.maxMove}%</span>
+          </div>
+          <div>${optLabel}</div>` : ""}
+          ${bf.options_read ? `<div style="flex:1;min-width:200px;font-size:.78rem;color:#4b5563;line-height:1.5;border-left:2px solid #e5e7eb;padding-left:14px;margin-left:4px">${bf.options_read}</div>` : ""}
+        </div>` : ""}
 
         <!-- Footer: riesgos, catalizadores, watch list, noticias -->
         <div class="briefing-footer-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:0">
