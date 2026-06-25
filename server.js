@@ -430,6 +430,74 @@ app.get("/api/correlaciones", (req, res) => {
   catch(e) { res.status(500).json({ error: "Failed to parse correlaciones" }); }
 });
 
+// Cron endpoint — Vercel llama a esto cada noche a las 06:00 UTC
+// También se puede llamar manualmente: GET /api/cron/warmup
+app.get("/api/cron/warmup", (req, res) => {
+  // Protección mínima: solo Vercel Cron o token manual
+  const auth = req.headers["authorization"] || req.query.token || "";
+  const secret = process.env.CRON_SECRET || "supplysignal_cron";
+  if (auth !== `Bearer ${secret}` && auth !== secret) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  const intelDir = path.join(__dirname, "output", "company_intel");
+  if (!fs.existsSync(intelDir)) fs.mkdirSync(intelDir, { recursive: true });
+
+  // Lanza pregenerate_intel.py en background (no bloquea la respuesta)
+  const { spawn } = require("child_process");
+  const proc = spawn("python", [
+    path.join(__dirname, "pregenerate_intel.py"),
+  ], {
+    cwd: __dirname,
+    stdio: ["ignore", "pipe", "pipe"],
+    detached: true,
+  });
+
+  let log = "";
+  proc.stdout.on("data", d => { log += d; });
+  proc.stderr.on("data", d => { log += d; });
+  proc.on("close", code => {
+    console.log(`[Cron warmup] exit ${code}\n${log.slice(0, 500)}`);
+  });
+  proc.unref(); // no bloquea el proceso principal
+
+  res.json({
+    status: "started",
+    message: "Pre-generation running in background",
+    startedAt: new Date().toISOString(),
+  });
+});
+
+// Warmup rápido: pre-calienta la caché de un ticker concreto si está expirada
+// El frontend llama a este endpoint en background para cada ticker al abrir el tab
+app.get("/api/company/warmup/:ticker", async (req, res) => {
+  const ticker = req.params.ticker.toUpperCase();
+  if (!/^[A-Z0-9.\-]{1,10}$/.test(ticker))
+    return res.status(400).json({ error: "Invalid ticker" });
+
+  const cacheFile = path.join(__dirname, "output", "company_intel", `${ticker}.json`);
+
+  // Si la caché es fresca, responde inmediatamente
+  if (fs.existsSync(cacheFile)) {
+    try {
+      const cached  = JSON.parse(fs.readFileSync(cacheFile, "utf8"));
+      const expires = cached.cacheExpires;
+      if (expires && new Date(expires) > new Date())
+        return res.json({ status: "fresh", ticker });
+    } catch(e) {}
+  }
+
+  // Lanza el agente en background sin esperar respuesta
+  const { spawn } = require("child_process");
+  const proc = spawn("python", [
+    path.join(__dirname, "company_intel_agent.py"),
+    "--ticker", ticker,
+  ], { cwd: __dirname, stdio: "ignore", detached: true });
+  proc.unref();
+
+  res.json({ status: "warming", ticker });
+});
+
 // Company Intel: agrega Yahoo Finance + SEC EDGAR + supply chain con caché 24h
 app.get("/api/company/:ticker", async (req, res) => {
   const ticker = req.params.ticker.toUpperCase();

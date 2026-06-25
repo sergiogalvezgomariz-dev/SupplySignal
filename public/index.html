@@ -2738,6 +2738,13 @@ async function inicializarIntel() {
     grid.innerHTML = renderGroup("Customers", clientes) + renderGroup("Suppliers", proveedores);
     intelGridRendered = true;
 
+    // Option A — Pre-warm: lanza fetch en background para todos los tickers
+    // Esto llena la caché de 24h; los clicks posteriores serán instantáneos
+    const allTickers = [...clientes, ...proveedores].map(([t]) => t);
+    allTickers.forEach(ticker => {
+      fetch(`/api/company/warmup/${ticker}`).catch(() => {});
+    });
+
   } catch(e) {
     grid.innerHTML = `<div class="state-block">
       <div class="state-label">Error loading companies</div>
