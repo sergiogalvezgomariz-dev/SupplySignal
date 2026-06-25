@@ -1037,6 +1037,128 @@ footer {
 .sc-chip-name   { font-size: 11px; color: var(--gray-600); }
 .sc-chip-dep    { font-size: 10px; color: var(--gray-400); border-left: 1px solid var(--gray-200); padding-left: 6px; }
 
+/* ── Company Intel grid ───────────────────────────────────────────────── */
+.intel-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.intel-group-label {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--gray-400);
+  margin: 20px 0 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--gray-100);
+}
+.intel-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-top: 3px solid var(--navy);
+  padding: 16px 18px 14px;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color .15s, box-shadow .15s, transform .1s;
+  position: relative;
+  overflow: hidden;
+}
+.intel-btn:hover {
+  border-color: var(--navy);
+  box-shadow: 0 4px 14px rgba(0,31,91,.12);
+  transform: translateY(-2px);
+}
+.intel-btn:active { transform: translateY(0); }
+.intel-btn.loading {
+  pointer-events: none;
+  opacity: .7;
+}
+.intel-btn-ticker {
+  font-family: var(--f-mono);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1;
+  margin-bottom: 5px;
+}
+.intel-btn-name {
+  font-size: 11px;
+  color: var(--gray-600);
+  line-height: 1.35;
+  margin-bottom: 10px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.intel-btn-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-top: auto;
+}
+.intel-btn-price {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--navy);
+}
+.intel-btn-chg {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  font-weight: 600;
+}
+.intel-btn-action {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  color: var(--gray-400);
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.intel-btn-action .dl-icon { font-size: 11px; }
+.intel-btn-spinner {
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,.85);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--navy);
+  letter-spacing: .4px;
+}
+.spin {
+  width: 20px; height: 20px;
+  border: 2.5px solid var(--gray-200);
+  border-top-color: var(--navy);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 768px) {
+  .intel-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .intel-btn  { padding: 12px 14px 12px; }
+  .intel-btn-ticker { font-size: 1rem; }
+}
+@media (max-width: 480px) {
+  .intel-grid { grid-template-columns: 1fr 1fr; }
+}
+
 /* ── Print / PDF ──────────────────────────────────────────────────────── */
 #pdf-overlay { display: none !important; }
 
@@ -1345,32 +1467,25 @@ footer {
     <div class="section-intro">
       <div class="si-left">
         <div class="si-title">Company Intelligence</div>
-        <div class="si-sub">Yahoo Finance · SEC EDGAR · Supply Chain — caché 24h por ticker</div>
+        <div class="si-sub">Selecciona una compañía para descargar su informe ejecutivo · Yahoo Finance · SEC EDGAR · Supply Chain</div>
       </div>
-      <button class="btn btn-primary" onclick="descargarIntelPDF()" id="btn-pdf" style="display:none">
-        ↓ Download PDF
-      </button>
     </div>
 
-    <!-- Buscador de ticker -->
-    <div style="display:flex;gap:10px;margin-bottom:28px;max-width:380px">
-      <input id="intel-ticker-input" type="text" placeholder="Ticker (ej. AAPL, MU, NVDA)"
-             style="flex:1;border:1px solid var(--gray-200);padding:10px 14px;font-family:var(--f-mono);
-                    font-size:14px;color:var(--navy);outline:none;text-transform:uppercase"
-             onkeydown="if(event.key==='Enter') buscarIntel()"
-             oninput="this.value=this.value.toUpperCase()">
-      <button class="btn btn-primary" onclick="buscarIntel()" style="padding:10px 20px;white-space:nowrap">
-        Analyze
-      </button>
+    <!-- Grid de compañías -->
+    <div id="intel-company-grid">
+      <div class="state-block"><div class="state-label">Loading companies…</div></div>
     </div>
 
-    <!-- Resultado -->
-    <div id="intel-result">
-      <div class="state-block">
-        <div class="state-label">Enter a ticker to start</div>
-        <div class="state-sub">Only tickers covered in pares.json will have supply chain data.<br>
-        Financial data and SEC filings are available for any US-listed company.</div>
+    <!-- Panel de previsualización (se muestra tras clicar) -->
+    <div id="intel-preview-wrap" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin:28px 0 16px;padding-top:24px;border-top:1px solid var(--gray-100)">
+        <div id="intel-preview-title" style="font-family:var(--f-serif);font-size:1.1rem;color:var(--navy)"></div>
+        <div style="display:flex;gap:8px">
+          <button class="btn" style="border:1px solid var(--gray-200);background:white;color:var(--navy)" onclick="cerrarPreview()">✕ Close</button>
+          <button class="btn btn-primary" onclick="descargarIntelPDF()" id="btn-pdf">↓ Download PDF</button>
+        </div>
       </div>
+      <div id="intel-result"></div>
     </div>
   </div>
 
@@ -1713,7 +1828,7 @@ function cambiarPestana(id, btn) {
   }
   if (id === "bot")      { cargarBot(); verificarInforme(); }
   if (id === "earnings") { cargarBriefings(); cargarPostmortem(); cargarEarnings(); }
-  if (id === "intel")    { cambiarPestanaIntel(); }
+  if (id === "intel")    { inicializarIntel(); }
 }
 
 async function inicializarCharts() {
@@ -2581,37 +2696,110 @@ async function cargarEarnings() {
 }
 
 // ── Company Intel ─────────────────────────────────────────────────────────
-let intelDataGlobal = null;
+let intelDataGlobal   = null;
+let intelGridRendered = false;
 
-function cambiarPestanaIntel() {
-  const input = document.getElementById("intel-ticker-input");
-  if (input) input.focus();
-}
+async function inicializarIntel() {
+  if (intelGridRendered) return;
+  const grid = document.getElementById("intel-company-grid");
 
-async function buscarIntel() {
-  const ticker = document.getElementById("intel-ticker-input").value.trim().toUpperCase();
-  if (!ticker) return;
-  const cont = document.getElementById("intel-result");
-  document.getElementById("btn-pdf").style.display = "none";
-  intelDataGlobal = null;
-  cont.innerHTML = `<div class="state-block">
-    <div class="state-label">Loading ${ticker}…</div>
-    <div class="state-sub">Fetching Yahoo Finance · SEC EDGAR · Supply Chain<br>
-    First load may take 5–10 seconds. Cached for 24 h.</div>
-  </div>`;
   try {
-    const r    = await fetch(`/api/company/${ticker}`);
-    if (!r.ok) { const e = await r.json(); throw new Error(e.error || r.status); }
-    const data = await r.json();
-    intelDataGlobal = data;
-    renderIntel(data);
-    document.getElementById("btn-pdf").style.display = "inline-flex";
+    // Usa /api/prices para obtener todos los tickers con nombre y precio live
+    const r    = await fetch("/api/prices");
+    const resp = await r.json();
+    const precios = resp.precios || {};
+
+    // Separa clientes y proveedores puros
+    const clientes    = Object.entries(precios).filter(([, d]) => d.esCliente);
+    const proveedores = Object.entries(precios).filter(([, d]) => !d.esCliente && d.precio != null);
+
+    function renderGroup(label, items) {
+      if (!items.length) return "";
+      return `<div class="intel-group-label">${label} <span style="font-weight:400;color:var(--gray-200)">(${items.length})</span></div>
+      <div class="intel-grid">
+        ${items.map(([ticker, d]) => {
+          const chg    = d.variacionPct;
+          const chgFmt = chg != null ? `${chg >= 0 ? "+" : ""}${chg.toFixed(2)}%` : "";
+          const chgCol = chg == null ? "var(--gray-400)" : chg >= 0 ? "var(--green)" : "var(--red)";
+          const priceFmt = d.precio != null ? `$${d.precio.toFixed(2)}` : "—";
+          return `<button class="intel-btn" id="intel-btn-${ticker}" onclick="clickIntelCompany('${ticker}')">
+            <div class="intel-btn-ticker">${ticker}</div>
+            <div class="intel-btn-name">${d.nombre || ticker}</div>
+            <div class="intel-btn-footer">
+              <span class="intel-btn-price">${priceFmt}</span>
+              <span class="intel-btn-chg" style="color:${chgCol}">${chgFmt}</span>
+            </div>
+            <div class="intel-btn-action"><span class="dl-icon">↓</span> Executive Report</div>
+          </button>`;
+        }).join("")}
+      </div>`;
+    }
+
+    grid.innerHTML = renderGroup("Customers", clientes) + renderGroup("Suppliers", proveedores);
+    intelGridRendered = true;
+
   } catch(e) {
-    cont.innerHTML = `<div class="state-block">
-      <div class="state-label">Error loading ${ticker}</div>
+    grid.innerHTML = `<div class="state-block">
+      <div class="state-label">Error loading companies</div>
       <div class="state-sub">${e.message}</div>
     </div>`;
   }
+}
+
+async function clickIntelCompany(ticker) {
+  // Muestra spinner en el botón
+  const btn = document.getElementById(`intel-btn-${ticker}`);
+  if (btn) {
+    btn.classList.add("loading");
+    btn.insertAdjacentHTML("beforeend",
+      `<div class="intel-btn-spinner" id="spin-${ticker}">
+        <div class="spin"></div>
+        <span>Loading…</span>
+      </div>`);
+  }
+
+  // Cierra cualquier preview anterior
+  document.getElementById("intel-preview-wrap").style.display = "none";
+  intelDataGlobal = null;
+
+  try {
+    const r = await fetch(`/api/company/${ticker}`);
+    if (!r.ok) { const e = await r.json(); throw new Error(e.error || r.status); }
+    const data = await r.json();
+    intelDataGlobal = data;
+
+    // Muestra preview
+    const f = data.financials || {};
+    document.getElementById("intel-preview-title").textContent =
+      `${ticker} — ${f.nombre || ticker}  ·  Executive Report`;
+    const wrap = document.getElementById("intel-preview-wrap");
+    wrap.style.display = "block";
+    renderIntel(data);
+
+    // Scroll al panel
+    wrap.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    // Auto-descarga PDF tras render
+    setTimeout(() => descargarIntelPDF(), 300);
+
+  } catch(e) {
+    document.getElementById("intel-result").innerHTML = `<div class="state-block">
+      <div class="state-label">Error loading ${ticker}</div>
+      <div class="state-sub">${e.message}</div>
+    </div>`;
+    document.getElementById("intel-preview-wrap").style.display = "block";
+  } finally {
+    // Quita spinner del botón
+    if (btn) {
+      btn.classList.remove("loading");
+      document.getElementById(`spin-${ticker}`)?.remove();
+    }
+  }
+}
+
+function cerrarPreview() {
+  document.getElementById("intel-preview-wrap").style.display = "none";
+  intelDataGlobal = null;
 }
 
 function extLink(url, label) {
