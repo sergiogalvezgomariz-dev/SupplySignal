@@ -954,6 +954,174 @@ footer {
   nav button { padding: 0 12px; font-size: 10.5px; }
   .si-title  { font-size: 17px; }
 }
+
+/* ── Company Intel ────────────────────────────────────────────────────── */
+.intel-card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-top: 3px solid var(--navy);
+  margin-bottom: 20px;
+}
+.intel-section-title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--gray-400);
+  margin-bottom: 10px;
+}
+.intel-kv-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px 20px;
+}
+.intel-kv { display: flex; flex-direction: column; gap: 2px; }
+.intel-k  { font-size: 10px; font-weight: 600; letter-spacing: .8px; text-transform: uppercase; color: var(--gray-400); }
+.intel-v  { font-family: var(--f-mono); font-size: 13px; font-weight: 500; color: var(--navy); }
+.intel-v.pos { color: var(--green); }
+.intel-v.neg { color: var(--red); }
+
+.source-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  color: var(--blue);
+  text-decoration: none;
+  border: 1px solid var(--gray-200);
+  padding: 3px 9px;
+  border-radius: 3px;
+  transition: background .12s;
+}
+.source-link:hover { background: var(--gray-50); }
+.source-link svg { width: 10px; height: 10px; fill: currentColor; }
+
+.filing-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--gray-100);
+  flex-wrap: wrap;
+}
+.filing-row:last-child { border-bottom: none; }
+.filing-badge {
+  font-family: var(--f-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 3px;
+  min-width: 52px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.badge-10k  { background: #e0e8ff; color: #0044cc; }
+.badge-10q  { background: #e8f4ff; color: #0066aa; }
+.badge-8k   { background: #fff3e0; color: #c85a00; }
+.badge-def  { background: #f3f0ff; color: #5500aa; }
+.badge-other{ background: var(--gray-50); color: var(--gray-600); }
+
+.sc-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  padding: 6px 12px;
+  border-radius: 4px;
+}
+.sc-chip-ticker { font-family: var(--f-mono); font-size: 13px; font-weight: 700; color: var(--navy); }
+.sc-chip-name   { font-size: 11px; color: var(--gray-600); }
+.sc-chip-dep    { font-size: 10px; color: var(--gray-400); border-left: 1px solid var(--gray-200); padding-left: 6px; }
+
+/* ── Print / PDF ──────────────────────────────────────────────────────── */
+#pdf-overlay { display: none !important; }
+
+@media print {
+  /* Oculta toda la web */
+  body > *:not(#pdf-overlay) { display: none !important; }
+  #pdf-overlay {
+    display: block !important;
+    position: fixed;
+    inset: 0;
+    background: white;
+    z-index: 9999;
+    padding: 0;
+  }
+  #pdf-content { padding: 0; }
+
+  /* Estilos del PDF */
+  .pdf-page {
+    width: 100%;
+    font-family: Arial, sans-serif;
+    font-size: 11pt;
+    color: #1e2533;
+    line-height: 1.5;
+  }
+  .pdf-cover {
+    padding: 60px 56px 40px;
+    border-bottom: 3px solid #C8962A;
+    page-break-after: always;
+  }
+  .pdf-cover-eyebrow {
+    font-size: 9pt;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #8A95A8;
+    margin-bottom: 20px;
+  }
+  .pdf-cover-title {
+    font-size: 28pt;
+    font-weight: 700;
+    color: #001F5B;
+    line-height: 1.15;
+    margin-bottom: 6px;
+  }
+  .pdf-cover-sub {
+    font-size: 16pt;
+    color: #C8962A;
+    margin-bottom: 32px;
+  }
+  .pdf-cover-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 40px; max-width: 440px; }
+  .pdf-cover-meta-k { font-size: 8.5pt; font-weight: 700; color: #8A95A8; text-transform: uppercase; letter-spacing: .5px; }
+  .pdf-cover-meta-v { font-size: 10pt; color: #1e2533; }
+  .pdf-cover-disclaimer { margin-top: 48px; font-size: 8pt; color: #8A95A8; font-style: italic; border-top: 1px solid #e8ebf0; padding-top: 14px; }
+
+  .pdf-body { padding: 36px 56px; }
+  .pdf-h1 {
+    font-size: 14pt; font-weight: 700; color: #001F5B;
+    border-bottom: 2px solid #001F5B; padding-bottom: 5px;
+    margin: 28px 0 12px;
+  }
+  .pdf-h2 { font-size: 11pt; font-weight: 700; color: #4F5A6E; margin: 18px 0 8px; }
+  .pdf-kv-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px 16px; margin-bottom: 16px; }
+  .pdf-kv { display: flex; flex-direction: column; gap: 2px; }
+  .pdf-k  { font-size: 7.5pt; font-weight: 700; letter-spacing: .6px; text-transform: uppercase; color: #8A95A8; }
+  .pdf-v  { font-size: 11pt; font-weight: 700; color: #001F5B; font-family: "Courier New", monospace; }
+  .pdf-desc { font-size: 9.5pt; color: #4F5A6E; line-height: 1.6; margin-bottom: 16px; background: #f7f8fa; padding: 10px 14px; border-left: 3px solid #C8962A; }
+  .pdf-table { width: 100%; border-collapse: collapse; font-size: 9pt; margin-bottom: 14px; }
+  .pdf-table th { background: #001F5B; color: white; padding: 5px 8px; text-align: left; font-size: 8pt; letter-spacing: .4px; }
+  .pdf-table td { padding: 5px 8px; border-bottom: 1px solid #e8ebf0; vertical-align: top; }
+  .pdf-table tr:nth-child(even) td { background: #f7f8fa; }
+  .pdf-chip { display: inline-block; background: #f0f4ff; border: 1px solid #d0dbf0; color: #001F5B; font-size: 8.5pt; font-weight: 700; padding: 2px 8px; border-radius: 3px; margin: 2px; font-family: "Courier New", monospace; }
+  .pdf-source { font-size: 7.5pt; color: #8A95A8; font-style: italic; margin-bottom: 4px; }
+  .pdf-footer {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    padding: 8px 56px; background: white;
+    border-top: 1px solid #e8ebf0;
+    font-size: 7.5pt; color: #8A95A8;
+    display: flex; justify-content: space-between;
+  }
+  .pdf-beat { color: #0A6E3F; font-weight: 700; }
+  .pdf-miss { color: #B81C1C; font-weight: 700; }
+  .pdf-pos  { color: #0A6E3F; }
+  .pdf-neg  { color: #B81C1C; }
+  a { color: #001F5B !important; }
+}
 </style>
 </head>
 <body>
@@ -979,6 +1147,7 @@ footer {
       <button onclick="cambiarPestana('charts', this)">Live Charts</button>
       <button onclick="cambiarPestana('bot', this)">Execution</button>
       <button onclick="cambiarPestana('earnings', this)">Earnings</button>
+      <button onclick="cambiarPestana('intel', this)">Company Intel</button>
     </nav>
 
     <div class="header-right">
@@ -1171,7 +1340,46 @@ footer {
     </div>
   </div>
 
+  <!-- ══ COMPANY INTEL ══════════════════════════════════════════════════ -->
+  <div id="pestaña-intel" class="pestaña">
+    <div class="section-intro">
+      <div class="si-left">
+        <div class="si-title">Company Intelligence</div>
+        <div class="si-sub">Yahoo Finance · SEC EDGAR · Supply Chain — caché 24h por ticker</div>
+      </div>
+      <button class="btn btn-primary" onclick="descargarIntelPDF()" id="btn-pdf" style="display:none">
+        ↓ Download PDF
+      </button>
+    </div>
+
+    <!-- Buscador de ticker -->
+    <div style="display:flex;gap:10px;margin-bottom:28px;max-width:380px">
+      <input id="intel-ticker-input" type="text" placeholder="Ticker (ej. AAPL, MU, NVDA)"
+             style="flex:1;border:1px solid var(--gray-200);padding:10px 14px;font-family:var(--f-mono);
+                    font-size:14px;color:var(--navy);outline:none;text-transform:uppercase"
+             onkeydown="if(event.key==='Enter') buscarIntel()"
+             oninput="this.value=this.value.toUpperCase()">
+      <button class="btn btn-primary" onclick="buscarIntel()" style="padding:10px 20px;white-space:nowrap">
+        Analyze
+      </button>
+    </div>
+
+    <!-- Resultado -->
+    <div id="intel-result">
+      <div class="state-block">
+        <div class="state-label">Enter a ticker to start</div>
+        <div class="state-sub">Only tickers covered in pares.json will have supply chain data.<br>
+        Financial data and SEC filings are available for any US-listed company.</div>
+      </div>
+    </div>
+  </div>
+
 </div><!-- /page-wrap -->
+
+<!-- ══ PRINT OVERLAY (PDF) ══════════════════════════════════════════════════ -->
+<div id="pdf-overlay" style="display:none">
+  <div id="pdf-content"></div>
+</div>
 
 <footer>
   <div class="footer-inner">
@@ -1505,6 +1713,7 @@ function cambiarPestana(id, btn) {
   }
   if (id === "bot")      { cargarBot(); verificarInforme(); }
   if (id === "earnings") { cargarBriefings(); cargarPostmortem(); cargarEarnings(); }
+  if (id === "intel")    { cambiarPestanaIntel(); }
 }
 
 async function inicializarCharts() {
@@ -2369,6 +2578,477 @@ async function cargarEarnings() {
   } catch(e) {
     cont.innerHTML = `<div class="state-block"><div class="state-label">Connection error</div></div>`;
   }
+}
+
+// ── Company Intel ─────────────────────────────────────────────────────────
+let intelDataGlobal = null;
+
+function cambiarPestanaIntel() {
+  const input = document.getElementById("intel-ticker-input");
+  if (input) input.focus();
+}
+
+async function buscarIntel() {
+  const ticker = document.getElementById("intel-ticker-input").value.trim().toUpperCase();
+  if (!ticker) return;
+  const cont = document.getElementById("intel-result");
+  document.getElementById("btn-pdf").style.display = "none";
+  intelDataGlobal = null;
+  cont.innerHTML = `<div class="state-block">
+    <div class="state-label">Loading ${ticker}…</div>
+    <div class="state-sub">Fetching Yahoo Finance · SEC EDGAR · Supply Chain<br>
+    First load may take 5–10 seconds. Cached for 24 h.</div>
+  </div>`;
+  try {
+    const r    = await fetch(`/api/company/${ticker}`);
+    if (!r.ok) { const e = await r.json(); throw new Error(e.error || r.status); }
+    const data = await r.json();
+    intelDataGlobal = data;
+    renderIntel(data);
+    document.getElementById("btn-pdf").style.display = "inline-flex";
+  } catch(e) {
+    cont.innerHTML = `<div class="state-block">
+      <div class="state-label">Error loading ${ticker}</div>
+      <div class="state-sub">${e.message}</div>
+    </div>`;
+  }
+}
+
+function extLink(url, label) {
+  if (!url) return label || "—";
+  return `<a href="${url}" target="_blank" rel="noopener" class="source-link">
+    ${label}
+    <svg viewBox="0 0 12 12"><path d="M10 1H7V2.5h1.79L4.15 7.15l1.06 1.06L9.5 3.71V5.5H11V2a1 1 0 0 0-1-1zM2 3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V7H7.5v2.5h-5v-5H5V3z"/></svg>
+  </a>`;
+}
+
+function filingBadge(form) {
+  const cls = form === "10-K" ? "badge-10k" : form === "10-Q" ? "badge-10q" :
+              form === "8-K"  ? "badge-8k"  : form.startsWith("DEF") ? "badge-def" : "badge-other";
+  return `<span class="filing-badge ${cls}">${form}</span>`;
+}
+
+function kv(label, value, cls = "") {
+  return `<div class="intel-kv">
+    <div class="intel-k">${label}</div>
+    <div class="intel-v ${cls}">${value ?? "—"}</div>
+  </div>`;
+}
+
+function renderIntel(data) {
+  const cont = document.getElementById("intel-result");
+  const f    = data.financials  || {};
+  const e    = data.edgar       || {};
+  const sc   = data.supplyChain || {};
+  const cached = data._fromCache ? `<span style="font-size:10px;color:var(--gray-400);font-style:italic"> · cached until ${data.cacheExpires?.slice(0,16)}</span>` : "";
+
+  const chgCls  = (f.changePct || 0) >= 0 ? "pos" : "neg";
+  const chgFmt  = f.changePct != null ? `${f.changePct >= 0 ? "+" : ""}${f.changePct.toFixed(2)}%` : "—";
+  const priceFmt = f.precio != null ? `${f.currency === "EUR" ? "€" : "$"}${f.precio.toFixed(2)}` : "—";
+
+  let html = "";
+
+  // ── HEADER ──────────────────────────────────────────────────────────────
+  html += `<div class="intel-card">
+    <div style="background:var(--navy);color:#fff;padding:18px 22px;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:14px">
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px">
+          <span style="font-family:var(--f-mono);font-size:1.5rem;font-weight:700">${data.ticker}</span>
+          <span style="font-size:.9rem;opacity:.75">${f.nombre || ""}</span>
+        </div>
+        <div style="font-size:.78rem;opacity:.55;letter-spacing:.3px">${f.sector || "—"} &nbsp;·&nbsp; ${f.industria || "—"} &nbsp;·&nbsp; ${f.pais || "—"}</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div style="font-family:var(--f-mono);font-size:1.6rem;font-weight:700;line-height:1">${priceFmt}</div>
+        <div style="font-family:var(--f-mono);font-size:.9rem;color:${(f.changePct||0)>=0?"#6ee7b7":"#fca5a5"};margin-top:3px">${chgFmt} today</div>
+        <div style="font-size:.7rem;opacity:.5;margin-top:3px">${f.marketState || ""}</div>
+      </div>
+    </div>
+
+    <!-- Fuente y caché -->
+    <div style="padding:8px 22px;background:var(--gray-50);border-bottom:1px solid var(--gray-100);display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      ${extLink(f.sourceUrl, "Yahoo Finance")}
+      ${e.available ? extLink(e.companyPage, "SEC EDGAR") : ""}
+      ${cached}
+      <span style="margin-left:auto;font-size:10px;color:var(--gray-400)">Generated: ${data.generadoEn?.slice(0,16) || "—"}</span>
+    </div>
+
+    <!-- Métricas clave -->
+    <div style="padding:16px 22px;border-bottom:1px solid var(--gray-100)">
+      <div class="intel-section-title">Key Metrics</div>
+      <div class="intel-kv-grid">
+        ${kv("Market Cap",    f.marketCapFmt)}
+        ${kv("EV",            f.evFmt)}
+        ${kv("Revenue (TTM)", f.revenueFmt)}
+        ${kv("EBITDA",        f.ebitdaFmt)}
+        ${kv("Net Income",    f.netIncomeFmt)}
+        ${kv("P/E (trail.)",  f.peRatio)}
+        ${kv("P/E (fwd.)",    f.fwdPE)}
+        ${kv("EV/EBITDA",     f.evEbitda)}
+        ${kv("P/B",           f.pbRatio)}
+        ${kv("Beta",          f.beta)}
+        ${kv("Gross Margin",  f.grossMargin)}
+        ${kv("Op. Margin",    f.opMargin)}
+        ${kv("Net Margin",    f.netMargin)}
+        ${kv("ROE",           f.roe)}
+        ${kv("ROA",           f.roa)}
+        ${kv("Debt/Equity",   f.debtEquity)}
+        ${kv("Current Ratio", f.currentRatio)}
+        ${kv("Div. Yield",    f.dividendYield)}
+        ${kv("52W High",      f.w52High ? `$${f.w52High}` : "—")}
+        ${kv("52W Low",       f.w52Low  ? `$${f.w52Low}`  : "—")}
+        ${kv("EPS (trail.)",  f.epsTrailing ? `$${f.epsTrailing}` : "—")}
+        ${kv("EPS (fwd.)",    f.epsForward  ? `$${f.epsForward}`  : "—")}
+        ${f.earningsDate ? kv("Next Earnings", f.earningsDate) : ""}
+        ${f.employees ? kv("Employees", Number(f.employees).toLocaleString("en-US")) : ""}
+      </div>
+    </div>
+
+    <!-- Descripción -->
+    ${f.descripcion ? `
+    <div style="padding:14px 22px;border-bottom:1px solid var(--gray-100)">
+      <div class="intel-section-title">Business Description</div>
+      <div style="font-size:.83rem;color:var(--gray-600);line-height:1.7">${f.descripcion}</div>
+    </div>` : ""}
+  </div>`;
+
+  // ── EPS HISTORY ──────────────────────────────────────────────────────────
+  if (f.quarters?.length) {
+    html += `<div class="intel-card">
+      <div style="padding:16px 22px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <div class="intel-section-title" style="margin:0">EPS History — Last 4 Quarters</div>
+          ${extLink(f.sourceUrl + "/financials", "Yahoo Financials")}
+        </div>
+        <table style="width:100%;border-collapse:collapse;font-size:12px">
+          <thead><tr style="border-bottom:2px solid var(--navy)">
+            <th style="text-align:left;padding:5px 8px;font-size:10px;color:var(--gray-400);font-weight:600;letter-spacing:.5px">QUARTER</th>
+            <th style="text-align:right;padding:5px 8px;font-size:10px;color:var(--gray-400);font-weight:600;letter-spacing:.5px">ACTUAL</th>
+            <th style="text-align:right;padding:5px 8px;font-size:10px;color:var(--gray-400);font-weight:600;letter-spacing:.5px">ESTIMATE</th>
+            <th style="text-align:right;padding:5px 8px;font-size:10px;color:var(--gray-400);font-weight:600;letter-spacing:.5px">SURPRISE</th>
+            <th style="text-align:center;padding:5px 8px;font-size:10px;color:var(--gray-400);font-weight:600;letter-spacing:.5px">RESULT</th>
+          </tr></thead>
+          <tbody>
+          ${f.quarters.map((q, i) => {
+            const beat = q.beat === true; const miss = q.beat === false;
+            const color = beat ? "var(--green)" : miss ? "var(--red)" : "var(--gray-400)";
+            const label = beat ? "▲ BEAT" : miss ? "▼ MISS" : "—";
+            const bg = i % 2 === 0 ? "white" : "var(--gray-50)";
+            return `<tr style="background:${bg}">
+              <td style="padding:6px 8px;font-size:11px;color:var(--gray-600)">${q.quarter}</td>
+              <td style="padding:6px 8px;text-align:right;font-family:var(--f-mono);font-weight:600;color:var(--navy)">$${q.epsActual ?? "—"}</td>
+              <td style="padding:6px 8px;text-align:right;font-family:var(--f-mono);color:var(--gray-400)">$${q.epsEstimate ?? "—"}</td>
+              <td style="padding:6px 8px;text-align:right;font-family:var(--f-mono);color:${color};font-weight:600">
+                ${q.surprisePct != null ? (q.surprisePct > 0 ? "+" : "") + q.surprisePct.toFixed(1) + "%" : "—"}
+              </td>
+              <td style="padding:6px 8px;text-align:center;font-size:10.5px;font-weight:700;color:${color}">${label}</td>
+            </tr>`;
+          }).join("")}
+          </tbody>
+        </table>
+        ${f.epsNextQ != null ? `
+        <div style="margin-top:12px;padding:10px 14px;background:var(--gray-50);border-left:3px solid var(--gold);display:flex;gap:24px;flex-wrap:wrap">
+          <div class="intel-kv">${kv("Next Q EPS Est.", f.epsNextQ ? "$"+f.epsNextQ : "—")}</div>
+          ${f.revNextQ ? `<div class="intel-kv">${kv("Next Q Rev. Est.", "$" + (f.revNextQ/1e9).toFixed(1) + "B")}</div>` : ""}
+          ${f.earningsDate ? `<div class="intel-kv">${kv("Earnings Date", f.earningsDate)}</div>` : ""}
+        </div>` : ""}
+      </div>
+    </div>`;
+  }
+
+  // ── SEC EDGAR FILINGS ────────────────────────────────────────────────────
+  if (e.available && e.filings?.length) {
+    const byType = e.latestByType || {};
+    html += `<div class="intel-card">
+      <div style="padding:16px 22px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+          <div class="intel-section-title" style="margin:0">SEC EDGAR Filings</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            ${extLink(e.companyPage, "All Filings")}
+            ${byType["10-K"] ? extLink(byType["10-K"].docUrl, "Latest 10-K") : ""}
+            ${byType["10-Q"] ? extLink(byType["10-Q"].docUrl, "Latest 10-Q") : ""}
+          </div>
+        </div>
+        <div style="font-size:10px;color:var(--gray-400);margin-bottom:12px">CIK: ${e.cikPadded} &nbsp;·&nbsp; ${e.companyName}</div>
+        ${e.filings.slice(0, 12).map(fil => `
+        <div class="filing-row">
+          ${filingBadge(fil.form)}
+          <span style="font-size:11px;font-weight:600;color:var(--navy);font-family:var(--f-mono)">${fil.date}</span>
+          <span style="font-size:11px;color:var(--gray-600);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${fil.description || "—"}</span>
+          <div style="display:flex;gap:6px;flex-shrink:0">
+            ${fil.docUrl   ? extLink(fil.docUrl,   "Document") : ""}
+            ${fil.indexUrl ? extLink(fil.indexUrl, "Index")    : ""}
+          </div>
+        </div>`).join("")}
+      </div>
+    </div>`;
+  }
+
+  // ── SUPPLY CHAIN ─────────────────────────────────────────────────────────
+  if (sc.totalRelaciones > 0) {
+    html += `<div class="intel-card">
+      <div style="padding:16px 22px">
+        <div class="intel-section-title">Supply Chain Relationships</div>`;
+
+    if (sc.suppliers?.length) {
+      html += `<div style="margin-bottom:14px">
+        <div style="font-size:11px;font-weight:600;color:var(--gray-600);margin-bottom:8px">
+          Suppliers <span style="font-weight:400;color:var(--gray-400)">(${data.ticker} is the customer)</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          ${sc.suppliers.map(s => `
+          <div class="sc-chip">
+            <div>
+              <span class="sc-chip-ticker">${extLink(s.yahooUrl, s.ticker)}</span>
+            </div>
+            <span class="sc-chip-name">${s.nombre}</span>
+            ${s.dependencia ? `<span class="sc-chip-dep">${s.dependencia}% revenue · ${s.lag}d lag</span>` : ""}
+          </div>`).join("")}
+        </div>
+      </div>`;
+    }
+
+    if (sc.customers?.length) {
+      html += `<div>
+        <div style="font-size:11px;font-weight:600;color:var(--gray-600);margin-bottom:8px">
+          Customers <span style="font-weight:400;color:var(--gray-400)">(${data.ticker} is the supplier)</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          ${sc.customers.map(c => `
+          <div class="sc-chip">
+            <div>
+              <span class="sc-chip-ticker">${extLink(c.yahooUrl, c.ticker)}</span>
+            </div>
+            <span class="sc-chip-name">${c.nombre}</span>
+            ${c.dependencia ? `<span class="sc-chip-dep">${c.dependencia}% dep · ${c.lag}d lag</span>` : ""}
+          </div>`).join("")}
+        </div>
+      </div>`;
+    }
+
+    html += `<div style="margin-top:10px;font-size:10.5px;color:var(--gray-400)">
+      Source: pares.json (Cohen &amp; Frazzini supply chain model)
+    </div></div></div>`;
+  }
+
+  // ── RECENT NEWS ──────────────────────────────────────────────────────────
+  if (f.news?.length) {
+    html += `<div class="intel-card">
+      <div style="padding:16px 22px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <div class="intel-section-title" style="margin:0">Recent News</div>
+          ${extLink(`https://finance.yahoo.com/quote/${data.ticker}/news`, "Yahoo News")}
+        </div>
+        <div style="display:flex;flex-direction:column;gap:0">
+          ${f.news.map((n, i) => `
+          <div style="padding:10px 0;${i < f.news.length-1 ? "border-bottom:1px solid var(--gray-100)" : ""}">
+            <a href="${n.url}" target="_blank" rel="noopener"
+               style="font-size:.83rem;font-weight:500;color:var(--gray-800);text-decoration:none;line-height:1.45;display:block;margin-bottom:4px"
+               onmouseover="this.style.color='var(--navy)'" onmouseout="this.style.color='var(--gray-800)'">
+              ${n.title}
+            </a>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span style="font-size:.7rem;font-weight:600;color:var(--gold)">${n.provider}</span>
+              ${n.date ? `<span style="font-size:.68rem;color:var(--gray-400)">${n.date}</span>` : ""}
+            </div>
+          </div>`).join("")}
+        </div>
+      </div>
+    </div>`;
+  }
+
+  cont.innerHTML = html;
+}
+
+// ── PDF Download ───────────────────────────────────────────────────────────
+function descargarIntelPDF() {
+  const data = intelDataGlobal;
+  if (!data) return;
+  const f  = data.financials  || {};
+  const e  = data.edgar       || {};
+  const sc = data.supplyChain || {};
+
+  const now     = new Date().toLocaleDateString("en-US", { year:"numeric", month:"long", day:"numeric" });
+  const priceFmt = f.precio != null ? `${f.currency === "EUR" ? "€" : "$"}${f.precio.toFixed(2)}` : "—";
+  const chgFmt   = f.changePct != null ? `${f.changePct >= 0 ? "+" : ""}${f.changePct.toFixed(2)}%` : "—";
+
+  function pdfKV(label, value) {
+    return `<div class="pdf-kv"><div class="pdf-k">${label}</div><div class="pdf-v">${value ?? "—"}</div></div>`;
+  }
+  function pdfFiling(fil) {
+    const label = fil.form === "10-K" ? "Annual Report" : fil.form === "10-Q" ? "Quarterly Report" :
+                  fil.form === "8-K"  ? "Material Event" : fil.form;
+    return `<tr>
+      <td><strong>${fil.form}</strong></td>
+      <td>${fil.date}</td>
+      <td>${label}${fil.description ? " — " + fil.description : ""}</td>
+      <td>${fil.docUrl ? `<a href="${fil.docUrl}" target="_blank">View Document ↗</a>` : "—"}</td>
+    </tr>`;
+  }
+
+  const content = `<div class="pdf-page">
+
+    <!-- PORTADA -->
+    <div class="pdf-cover">
+      <div class="pdf-cover-eyebrow">SupplySignal Research Platform · Company Intelligence Report</div>
+      <div class="pdf-cover-title">${data.ticker}</div>
+      <div class="pdf-cover-sub">${f.nombre || data.ticker}</div>
+      <div class="pdf-cover-meta">
+        <div><div class="pdf-cover-meta-k">Sector</div><div class="pdf-cover-meta-v">${f.sector || "—"}</div></div>
+        <div><div class="pdf-cover-meta-k">Industry</div><div class="pdf-cover-meta-v">${f.industria || "—"}</div></div>
+        <div><div class="pdf-cover-meta-k">Country</div><div class="pdf-cover-meta-v">${f.pais || "—"}</div></div>
+        <div><div class="pdf-cover-meta-k">Currency</div><div class="pdf-cover-meta-v">${f.currency || "USD"}</div></div>
+        <div><div class="pdf-cover-meta-k">Price</div><div class="pdf-cover-meta-v">${priceFmt} (${chgFmt})</div></div>
+        <div><div class="pdf-cover-meta-k">Market Cap</div><div class="pdf-cover-meta-v">${f.marketCapFmt || "—"}</div></div>
+        <div><div class="pdf-cover-meta-k">Report Date</div><div class="pdf-cover-meta-v">${now}</div></div>
+        <div><div class="pdf-cover-meta-k">Data Sources</div><div class="pdf-cover-meta-v">Yahoo Finance · SEC EDGAR · SupplySignal pares.json</div></div>
+      </div>
+      <div class="pdf-cover-disclaimer">
+        For research purposes only. Not investment advice. MiFID II compliant.
+        Data sourced from Yahoo Finance (<a href="${f.sourceUrl}">${f.sourceUrl}</a>)
+        ${e.available ? `, SEC EDGAR (<a href="${e.companyPage}">${e.companyPage}</a>)` : ""}.
+        Past performance is not indicative of future results.
+      </div>
+    </div>
+
+    <!-- CUERPO -->
+    <div class="pdf-body">
+
+      <!-- 1. Business Description -->
+      ${f.descripcion ? `
+      <div class="pdf-h1">1. Business Overview</div>
+      <div class="pdf-source">Source: Yahoo Finance · <a href="${f.sourceUrl}">${f.sourceUrl}</a></div>
+      <div class="pdf-desc">${f.descripcion}</div>
+      ` : ""}
+
+      <!-- 2. Key Financial Metrics -->
+      <div class="pdf-h1">2. Key Financial Metrics</div>
+      <div class="pdf-source">Source: Yahoo Finance · <a href="${f.sourceUrl}/financials">${f.sourceUrl}/financials</a></div>
+      <div class="pdf-h2">Valuation</div>
+      <div class="pdf-kv-grid">
+        ${pdfKV("Market Cap",    f.marketCapFmt)}
+        ${pdfKV("Enterprise Val.", f.evFmt)}
+        ${pdfKV("P/E (trailing)", f.peRatio ?? "—")}
+        ${pdfKV("P/E (forward)",  f.fwdPE ?? "—")}
+        ${pdfKV("EV / EBITDA",    f.evEbitda ?? "—")}
+        ${pdfKV("P/B Ratio",      f.pbRatio ?? "—")}
+        ${pdfKV("Beta",           f.beta ?? "—")}
+        ${pdfKV("Div. Yield",     f.dividendYield)}
+      </div>
+      <div class="pdf-h2">Profitability & Size</div>
+      <div class="pdf-kv-grid">
+        ${pdfKV("Revenue (TTM)",  f.revenueFmt)}
+        ${pdfKV("EBITDA",         f.ebitdaFmt)}
+        ${pdfKV("Net Income",     f.netIncomeFmt)}
+        ${pdfKV("Gross Margin",   f.grossMargin)}
+        ${pdfKV("Op. Margin",     f.opMargin)}
+        ${pdfKV("Net Margin",     f.netMargin)}
+        ${pdfKV("ROE",            f.roe)}
+        ${pdfKV("ROA",            f.roa)}
+      </div>
+      <div class="pdf-h2">Financial Health</div>
+      <div class="pdf-kv-grid">
+        ${pdfKV("Debt / Equity",  f.debtEquity ?? "—")}
+        ${pdfKV("Current Ratio",  f.currentRatio ?? "—")}
+        ${pdfKV("52W High",       f.w52High ? "$"+f.w52High : "—")}
+        ${pdfKV("52W Low",        f.w52Low  ? "$"+f.w52Low  : "—")}
+        ${pdfKV("EPS (trailing)", f.epsTrailing ? "$"+f.epsTrailing : "—")}
+        ${pdfKV("EPS (forward)",  f.epsForward  ? "$"+f.epsForward  : "—")}
+        ${pdfKV("Employees",      f.employees ? Number(f.employees).toLocaleString("en-US") : "—")}
+        ${pdfKV("Next Earnings",  f.earningsDate || "—")}
+      </div>
+
+      <!-- 3. EPS History -->
+      ${f.quarters?.length ? `
+      <div class="pdf-h1">3. EPS History — Last 4 Quarters</div>
+      <div class="pdf-source">Source: Yahoo Finance · <a href="${f.sourceUrl}/financials">${f.sourceUrl}/financials</a></div>
+      <table class="pdf-table">
+        <thead><tr><th>Quarter</th><th>EPS Actual</th><th>EPS Estimate</th><th>Surprise %</th><th>Result</th></tr></thead>
+        <tbody>
+        ${f.quarters.map(q => {
+          const beat = q.beat === true; const miss = q.beat === false;
+          return `<tr>
+            <td>${q.quarter}</td>
+            <td><strong>$${q.epsActual ?? "—"}</strong></td>
+            <td>$${q.epsEstimate ?? "—"}</td>
+            <td class="${beat ? "pdf-pos" : miss ? "pdf-neg" : ""}">${q.surprisePct != null ? (q.surprisePct > 0 ? "+" : "") + q.surprisePct.toFixed(1) + "%" : "—"}</td>
+            <td class="${beat ? "pdf-beat" : miss ? "pdf-miss" : ""}">${beat ? "▲ BEAT" : miss ? "▼ MISS" : "—"}</td>
+          </tr>`;
+        }).join("")}
+        </tbody>
+      </table>
+      ${f.epsNextQ != null ? `<p style="font-size:9pt;color:#4F5A6E">Next quarter consensus EPS estimate: <strong>$${f.epsNextQ}</strong>${f.revNextQ ? ` &nbsp;·&nbsp; Revenue estimate: <strong>$${(f.revNextQ/1e9).toFixed(1)}B</strong>` : ""}${f.earningsDate ? ` &nbsp;·&nbsp; Expected earnings date: <strong>${f.earningsDate}</strong>` : ""}</p>` : ""}
+      ` : ""}
+
+      <!-- 4. SEC Filings -->
+      ${e.available && e.filings?.length ? `
+      <div class="pdf-h1">4. SEC EDGAR Filings</div>
+      <div class="pdf-source">Source: SEC EDGAR · <a href="${e.companyPage}">${e.companyPage}</a> &nbsp;·&nbsp; CIK: ${e.cikPadded}</div>
+      <table class="pdf-table">
+        <thead><tr><th>Form</th><th>Date</th><th>Description</th><th>Link</th></tr></thead>
+        <tbody>${e.filings.slice(0, 12).map(pdfFiling).join("")}</tbody>
+      </table>
+      ` : ""}
+
+      <!-- 5. Supply Chain -->
+      ${sc.totalRelaciones > 0 ? `
+      <div class="pdf-h1">5. Supply Chain Relationships</div>
+      <div class="pdf-source">Source: SupplySignal pares.json — Cohen &amp; Frazzini (2008) supply chain model</div>
+      ${sc.suppliers?.length ? `
+        <div class="pdf-h2">Suppliers (${data.ticker} is the customer)</div>
+        <table class="pdf-table">
+          <thead><tr><th>Ticker</th><th>Company</th><th>Revenue Dependency</th><th>Historical Lag</th><th>Source</th></tr></thead>
+          <tbody>${sc.suppliers.map(s => `<tr>
+            <td><strong>${s.ticker}</strong></td>
+            <td>${s.nombre}</td>
+            <td>${s.dependencia != null ? s.dependencia + "%" : "—"}</td>
+            <td>${s.lag != null ? s.lag + " days" : "—"}</td>
+            <td>${s.fuente}</td>
+          </tr>`).join("")}</tbody>
+        </table>` : ""}
+      ${sc.customers?.length ? `
+        <div class="pdf-h2">Customers (${data.ticker} is the supplier)</div>
+        <table class="pdf-table">
+          <thead><tr><th>Ticker</th><th>Company</th><th>Revenue Dependency</th><th>Historical Lag</th><th>Source</th></tr></thead>
+          <tbody>${sc.customers.map(c => `<tr>
+            <td><strong>${c.ticker}</strong></td>
+            <td>${c.nombre}</td>
+            <td>${c.dependencia != null ? c.dependencia + "%" : "—"}</td>
+            <td>${c.lag != null ? c.lag + " days" : "—"}</td>
+            <td>${c.fuente}</td>
+          </tr>`).join("")}</tbody>
+        </table>` : ""}
+      ` : ""}
+
+      <!-- 6. Recent News -->
+      ${f.news?.length ? `
+      <div class="pdf-h1">6. Recent News</div>
+      <div class="pdf-source">Source: Yahoo Finance · <a href="https://finance.yahoo.com/quote/${data.ticker}/news">finance.yahoo.com/quote/${data.ticker}/news</a></div>
+      <table class="pdf-table">
+        <thead><tr><th>Date</th><th>Headline</th><th>Source</th></tr></thead>
+        <tbody>${f.news.map(n => `<tr>
+          <td style="white-space:nowrap">${n.date}</td>
+          <td><a href="${n.url}" target="_blank">${n.title}</a></td>
+          <td>${n.provider}</td>
+        </tr>`).join("")}</tbody>
+      </table>
+      ` : ""}
+
+    </div><!-- /pdf-body -->
+
+    <div class="pdf-footer">
+      <span>SupplySignal Research Platform · For research purposes only · Not investment advice · MiFID II compliant</span>
+      <span>${now}</span>
+    </div>
+  </div>`;
+
+  document.getElementById("pdf-content").innerHTML = content;
+  document.getElementById("pdf-overlay").style.display = "block";
+  window.print();
+  // Restaura tras imprimir
+  setTimeout(() => {
+    document.getElementById("pdf-overlay").style.display = "none";
+  }, 1000);
 }
 
 // ── Init ──────────────────────────────────────────────────────────────────

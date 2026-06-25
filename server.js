@@ -430,6 +430,51 @@ app.get("/api/correlaciones", (req, res) => {
   catch(e) { res.status(500).json({ error: "Failed to parse correlaciones" }); }
 });
 
+// Company Intel: agrega Yahoo Finance + SEC EDGAR + supply chain con caché 24h
+app.get("/api/company/:ticker", async (req, res) => {
+  const ticker = req.params.ticker.toUpperCase();
+  if (!/^[A-Z0-9.\-]{1,10}$/.test(ticker))
+    return res.status(400).json({ error: "Invalid ticker" });
+
+  const cacheFile = path.join(__dirname, "output", "company_intel", `${ticker}.json`);
+
+  // Sirve caché si es válida (< 24h)
+  if (fs.existsSync(cacheFile)) {
+    try {
+      const cached = JSON.parse(fs.readFileSync(cacheFile, "utf8"));
+      const expires = cached.cacheExpires;
+      if (expires && new Date(expires) > new Date()) {
+        cached._fromCache = true;
+        return res.json(cached);
+      }
+    } catch(e) { /* cache corrupta, recalcula */ }
+  }
+
+  // Caché expirada o inexistente → ejecuta el agente Python
+  res.setHeader("Content-Type", "application/json");
+  const { spawn } = require("child_process");
+  const proc = spawn("python", [
+    path.join(__dirname, "company_intel_agent.py"),
+    "--ticker", ticker,
+  ], { cwd: __dirname, stdio: ["ignore", "pipe", "pipe"] });
+
+  let out = "", err = "";
+  proc.stdout.on("data", d => { out += d; });
+  proc.stderr.on("data", d => { err += d; });
+  proc.on("close", code => {
+    if (code !== 0) {
+      return res.status(500).json({ error: "Agent failed", detail: err.slice(0, 300) });
+    }
+    try {
+      const data = JSON.parse(fs.readFileSync(cacheFile, "utf8"));
+      data._fromCache = false;
+      res.json(data);
+    } catch(e) {
+      res.status(500).json({ error: "Could not read output file" });
+    }
+  });
+});
+
 // Postmortem del agente post-earnings
 app.get("/api/postmortem", (req, res) => {
   const ruta = path.join(__dirname, "output", "postmortem.json");
