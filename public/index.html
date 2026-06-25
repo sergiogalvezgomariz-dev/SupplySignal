@@ -1127,6 +1127,39 @@ footer {
   gap: 4px;
 }
 .intel-btn-action .dl-icon { font-size: 11px; }
+/* Estados de caché */
+.intel-btn.warming {
+  border-top-color: var(--gray-300);
+}
+.intel-btn.warming .intel-btn-action {
+  color: var(--gray-300);
+}
+.intel-btn.cache-ready {
+  border-top-color: var(--green);
+}
+.intel-btn.cache-ready .intel-btn-action {
+  color: var(--green);
+}
+.intel-cache-dot {
+  position: absolute;
+  top: 8px;
+  right: 9px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gray-300);
+}
+.intel-btn.cache-ready .intel-cache-dot {
+  background: var(--green);
+}
+.intel-btn.warming .intel-cache-dot {
+  background: var(--gray-300);
+  animation: pulse-dot 1.4s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: .25; }
+}
 .intel-btn-spinner {
   position: absolute;
   inset: 0;
@@ -2722,14 +2755,15 @@ async function inicializarIntel() {
           const chgFmt = chg != null ? `${chg >= 0 ? "+" : ""}${chg.toFixed(2)}%` : "";
           const chgCol = chg == null ? "var(--gray-400)" : chg >= 0 ? "var(--green)" : "var(--red)";
           const priceFmt = d.precio != null ? `$${d.precio.toFixed(2)}` : "—";
-          return `<button class="intel-btn" id="intel-btn-${ticker}" onclick="clickIntelCompany('${ticker}')">
+          return `<button class="intel-btn warming" id="intel-btn-${ticker}" onclick="clickIntelCompany('${ticker}')">
+            <div class="intel-cache-dot" id="dot-${ticker}" title="Preparing cache…"></div>
             <div class="intel-btn-ticker">${ticker}</div>
             <div class="intel-btn-name">${d.nombre || ticker}</div>
             <div class="intel-btn-footer">
               <span class="intel-btn-price">${priceFmt}</span>
               <span class="intel-btn-chg" style="color:${chgCol}">${chgFmt}</span>
             </div>
-            <div class="intel-btn-action"><span class="dl-icon">↓</span> Executive Report</div>
+            <div class="intel-btn-action" id="action-${ticker}"><span class="dl-icon">⏳</span> Preparing…</div>
           </button>`;
         }).join("")}
       </div>`;
@@ -2739,11 +2773,43 @@ async function inicializarIntel() {
     intelGridRendered = true;
 
     // Option A — Pre-warm: lanza fetch en background para todos los tickers
-    // Esto llena la caché de 24h; los clicks posteriores serán instantáneos
+    // Actualiza el estado visual de cada botón cuando su caché está lista
     const allTickers = [...clientes, ...proveedores].map(([t]) => t);
     allTickers.forEach(ticker => {
-      fetch(`/api/company/warmup/${ticker}`).catch(() => {});
+      fetch(`/api/company/warmup/${ticker}`)
+        .then(r => r.json())
+        .then(data => {
+          const btn    = document.getElementById(`intel-btn-${ticker}`);
+          const action = document.getElementById(`action-${ticker}`);
+          const dot    = document.getElementById(`dot-${ticker}`);
+          if (!btn) return;
+          if (data.status === "fresh" || data.status === "warming") {
+            // "fresh" = ya estaba en caché; "warming" = se lanzó la generación
+            // Para "warming" esperamos que el agente termine (~8s) y volvemos a preguntar
+            if (data.status === "warming") {
+              // Reintento tras 12s para marcar como listo
+              setTimeout(() => {
+                fetch(`/api/company/warmup/${ticker}`)
+                  .then(r => r.json())
+                  .then(() => markReady(ticker))
+                  .catch(() => markReady(ticker));
+              }, 12000);
+            } else {
+              markReady(ticker);
+            }
+          }
+        })
+        .catch(() => {});
     });
+
+    function markReady(ticker) {
+      const btn    = document.getElementById(`intel-btn-${ticker}`);
+      const action = document.getElementById(`action-${ticker}`);
+      if (!btn) return;
+      btn.classList.remove("warming");
+      btn.classList.add("cache-ready");
+      if (action) action.innerHTML = '<span class="dl-icon">↓</span> Executive Report';
+    }
 
   } catch(e) {
     grid.innerHTML = `<div class="state-block">
