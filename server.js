@@ -468,33 +468,20 @@ app.get("/api/cron/warmup", (req, res) => {
   });
 });
 
-// Warmup rápido: pre-calienta la caché de un ticker concreto si está expirada
-// El frontend llama a este endpoint en background para cada ticker al abrir el tab
+const { buildCompanyIntel, cacheIsFresh } = require("./company_intel_js");
+
+// Warmup: pre-calienta la caché de un ticker en background
+// El frontend llama a este endpoint para cada ticker al abrir el tab
 app.get("/api/company/warmup/:ticker", async (req, res) => {
   const ticker = req.params.ticker.toUpperCase();
   if (!/^[A-Z0-9.\-]{1,10}$/.test(ticker))
     return res.status(400).json({ error: "Invalid ticker" });
 
-  const cacheFile = path.join(__dirname, "output", "company_intel", `${ticker}.json`);
+  if (cacheIsFresh(ticker))
+    return res.json({ status: "fresh", ticker });
 
-  // Si la caché es fresca, responde inmediatamente
-  if (fs.existsSync(cacheFile)) {
-    try {
-      const cached  = JSON.parse(fs.readFileSync(cacheFile, "utf8"));
-      const expires = cached.cacheExpires;
-      if (expires && new Date(expires) > new Date())
-        return res.json({ status: "fresh", ticker });
-    } catch(e) {}
-  }
-
-  // Lanza el agente en background sin esperar respuesta
-  const { spawn } = require("child_process");
-  const proc = spawn("python", [
-    path.join(__dirname, "company_intel_agent.py"),
-    "--ticker", ticker,
-  ], { cwd: __dirname, stdio: "ignore", detached: true });
-  proc.unref();
-
+  // Lanza la generación en background sin bloquear
+  buildCompanyIntel(ticker).catch(e => console.error(`[warmup ${ticker}] ${e.message}`));
   res.json({ status: "warming", ticker });
 });
 
@@ -507,40 +494,22 @@ app.get("/api/company/:ticker", async (req, res) => {
   const cacheFile = path.join(__dirname, "output", "company_intel", `${ticker}.json`);
 
   // Sirve caché si es válida (< 24h)
-  if (fs.existsSync(cacheFile)) {
+  if (cacheIsFresh(ticker)) {
     try {
       const cached = JSON.parse(fs.readFileSync(cacheFile, "utf8"));
-      const expires = cached.cacheExpires;
-      if (expires && new Date(expires) > new Date()) {
-        cached._fromCache = true;
-        return res.json(cached);
-      }
+      cached._fromCache = true;
+      return res.json(cached);
     } catch(e) { /* cache corrupta, recalcula */ }
   }
 
-  // Caché expirada o inexistente → ejecuta el agente Python
-  res.setHeader("Content-Type", "application/json");
-  const { spawn } = require("child_process");
-  const proc = spawn("python", [
-    path.join(__dirname, "company_intel_agent.py"),
-    "--ticker", ticker,
-  ], { cwd: __dirname, stdio: ["ignore", "pipe", "pipe"] });
-
-  let out = "", err = "";
-  proc.stdout.on("data", d => { out += d; });
-  proc.stderr.on("data", d => { err += d; });
-  proc.on("close", code => {
-    if (code !== 0) {
-      return res.status(500).json({ error: "Agent failed", detail: err.slice(0, 300) });
-    }
-    try {
-      const data = JSON.parse(fs.readFileSync(cacheFile, "utf8"));
-      data._fromCache = false;
-      res.json(data);
-    } catch(e) {
-      res.status(500).json({ error: "Could not read output file" });
-    }
-  });
+  // Caché expirada o inexistente → genera en Node.js (sin Python)
+  try {
+    const data = await buildCompanyIntel(ticker);
+    data._fromCache = false;
+    res.json(data);
+  } catch(e) {
+    res.status(500).json({ error: "Agent failed", detail: e.message });
+  }
 });
 
 // Postmortem del agente post-earnings
