@@ -249,7 +249,7 @@ def get_earnings_data(ticker: str) -> dict:
     except Exception:
         pass
 
-    # Resolución: EDGAR gana si tiene fecha futura
+    # Resolución: solo se guarda como proximoEarnings si la fecha es futura
     hoy = datetime.date.today()
     fecha_final = None
     source      = "none"
@@ -260,10 +260,8 @@ def get_earnings_data(ticker: str) -> dict:
     elif fecha_yf and fecha_yf >= hoy:
         fecha_final = fecha_yf
         source      = "yahoo"
-    elif fecha_yf:
-        # Yahoo tiene una fecha pasada (puede ser la última reportada)
-        fecha_final = fecha_yf
-        source      = "yahoo_past"
+    # Si la fecha es pasada, se descarta (Yahoo devolvió el último earnings ya publicado)
+    # Se guarda en ultimaFechaConocida para referencia, pero no en proximoEarnings
 
     fecha_str      = fecha_final.isoformat() if fecha_final else None
     dias_restantes = (fecha_final - hoy).days if fecha_final else None
@@ -278,8 +276,9 @@ def get_earnings_data(ticker: str) -> dict:
         "diasRestantes":    dias_restantes,
         "fechaSource":      source,
         "edgarUrl":         edgar_url,
-        "fechaYahoo":       fecha_yf.isoformat()   if fecha_yf   else None,
-        "fechaEdgar":       fecha_edgar.isoformat() if fecha_edgar else None,
+        "fechaYahoo":         fecha_yf.isoformat()                      if fecha_yf   else None,
+        "fechaEdgar":         fecha_edgar.isoformat()                    if fecha_edgar else None,
+        "ultimaFechaConocida": fecha_yf.isoformat() if fecha_yf and not fecha_final else None,
         "epsEstimado":      extras.get("epsEstimado"),
         "epsEstimadoAlto":  extras.get("epsEstimadoAlto"),
         "epsEstimadoBajo":  extras.get("epsEstimadoBajo"),

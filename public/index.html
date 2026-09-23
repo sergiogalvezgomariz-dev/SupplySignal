@@ -2627,9 +2627,13 @@ async function cargarEarnings() {
       return;
     }
 
-    const hoy     = new Date();
-    const con     = list.filter(e => e.proximoEarnings).sort((a,b) => a.proximoEarnings.localeCompare(b.proximoEarnings));
-    const sin     = list.filter(e => !e.proximoEarnings);
+    const hoy     = new Date(); hoy.setHours(0,0,0,0);
+    const hoyStr  = hoy.toISOString().slice(0,10);
+    // Solo fechas futuras; las pasadas que queden en el JSON se ignoran
+    const con     = list
+      .filter(e => e.proximoEarnings && e.proximoEarnings >= hoyStr)
+      .sort((a,b) => a.proximoEarnings.localeCompare(b.proximoEarnings));
+    const sin     = list.filter(e => !e.proximoEarnings || e.proximoEarnings < hoyStr);
     const upd     = data.actualizadoEn ? new Date(data.actualizadoEn).toLocaleString("es-ES") : "—";
 
     // Agrupa por mes
@@ -2676,10 +2680,22 @@ async function cargarEarnings() {
 
     let html = `<div style="font-size:11px;color:var(--gray-400);margin-bottom:20px;letter-spacing:.3px">
       Last updated: <strong style="color:var(--gray-700)">${upd}</strong> &nbsp;·&nbsp;
-      ${con.length} companies with dates &nbsp;·&nbsp;
+      ${con.length} companies with confirmed dates &nbsp;·&nbsp;
+      ${sin.length} pending announcement &nbsp;·&nbsp;
       <span style="color:#b91c1c">■</span> &lt;7 days &nbsp;
       <span style="color:#C8962A">■</span> &lt;14 days
     </div>`;
+
+    if (con.length === 0) {
+      html += `<div style="background:var(--surface);border:1px solid #e5e7eb;border-radius:10px;padding:28px 24px;text-align:center;margin-bottom:20px">
+        <div style="font-size:1.1rem;font-weight:600;color:var(--gray-700);margin-bottom:8px">No upcoming earnings dates announced yet</div>
+        <div style="font-size:.85rem;color:var(--gray-400);line-height:1.6">
+          Most companies have already reported Q2/Q3 earnings. Next round of dates will be
+          confirmed by companies over the coming weeks.<br>
+          The calendar will update automatically once companies announce their Q4 reporting schedule.
+        </div>
+      </div>`;
+    }
 
     for (const [mes, empresas] of Object.entries(porMes)) {
       html += `<div style="margin-bottom:28px">
@@ -2717,8 +2733,9 @@ async function cargarEarnings() {
     }
 
     if (sin.length) {
-      html += `<div style="font-size:.8rem;color:var(--gray-400);margin-top:8px">
-        No date available: ${sin.map(e=>e.ticker).join(", ")}
+      html += `<div style="font-size:.8rem;color:var(--gray-400);margin-top:16px;padding:12px 16px;background:#f9fafb;border-radius:8px;border:1px solid #e5e7eb">
+        <span style="font-weight:600;color:var(--gray-600)">Pending announcement (${sin.length}):</span>
+        <span style="margin-left:6px">${sin.map(e=>e.ticker).join(" · ")}</span>
       </div>`;
     }
 

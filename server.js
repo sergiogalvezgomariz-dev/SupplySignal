@@ -509,7 +509,8 @@ app.get("/api/cron/earnings", async (req, res) => {
         let fechaStr = null, diasRestantes = null;
         if (dates.length) {
           const d = new Date(typeof dates[0] === "object" && dates[0].toISOString ? dates[0] : dates[0]);
-          if (!isNaN(d)) {
+          if (!isNaN(d) && d >= today) {
+            // Solo guardamos fechas futuras; si Yahoo devuelve una pasada la ignoramos
             fechaStr = d.toISOString().slice(0, 10);
             diasRestantes = Math.round((d - today) / 86400000);
           }
