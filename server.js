@@ -469,6 +469,97 @@ app.get("/api/cron/warmup", (req, res) => {
 });
 
 const { buildCompanyIntel, cacheIsFresh } = require("./company_intel_js");
+const { runBriefingAgent }               = require("./briefing_agent_js");
+
+// ── Earnings crons ────────────────────────────────────────────────────────────
+
+function cronAuth(req) {
+  const auth   = req.headers["authorization"] || req.query.token || "";
+  const secret = process.env.CRON_SECRET || "supplysignal_cron";
+  return auth === `Bearer ${secret}` || auth === secret;
+}
+
+// Cron 1 — Actualiza earnings.json con fechas de Yahoo + EDGAR
+// Vercel lo llama a las 05:00 UTC (antes del briefing)
+// También: GET /api/cron/earnings?token=supplysignal_cron
+app.get("/api/cron/earnings", async (req, res) => {
+  if (!cronAuth(req)) return res.status(401).json({ error: "Unauthorized" });
+
+  // En Vercel no hay Python, así que actualizamos las fechas directamente
+  // desde Yahoo Finance usando yahoo-finance2 (misma fuente que earnings_bot.py)
+  res.json({ status: "started", message: "Earnings calendar update running", startedAt: new Date().toISOString() });
+
+  try {
+    const yf2    = require("yahoo-finance2");
+    const yf     = new yf2.default({ suppressNotices: ["yahooSurvey"] });
+    const pares  = JSON.parse(fs.readFileSync(path.join(__dirname, "pares.json"), "utf8")).pares;
+    const tickers = [...new Set([
+      ...pares.map(p => p.cliente).filter(Boolean),
+      ...pares.map(p => p.proveedor).filter(Boolean),
+    ])].sort();
+
+    const today  = new Date(); today.setHours(0,0,0,0);
+    const results = [];
+
+    for (const ticker of tickers) {
+      try {
+        const summary = await yf.quoteSummary(ticker, { modules: ["calendarEvents"] }).catch(() => ({}));
+        const cal     = summary.calendarEvents || {};
+        const dates   = cal.earnings?.earningsDate || [];
+        let fechaStr = null, diasRestantes = null;
+        if (dates.length) {
+          const d = new Date(typeof dates[0] === "object" && dates[0].toISOString ? dates[0] : dates[0]);
+          if (!isNaN(d)) {
+            fechaStr = d.toISOString().slice(0, 10);
+            diasRestantes = Math.round((d - today) / 86400000);
+          }
+        }
+        results.push({ ticker, proximoEarnings: fechaStr, diasRestantes, fechaSource: "yahoo", ok: !!fechaStr });
+      } catch {}
+      await new Promise(r => setTimeout(r, 300)); // rate limit
+    }
+
+    const outFile = path.join(__dirname, "output", "earnings.json");
+    const existing = fs.existsSync(outFile) ? JSON.parse(fs.readFileSync(outFile, "utf8")) : { earnings: [] };
+    // Merge: update fetched tickers, keep rest
+    const updated = existing.earnings.map(e => results.find(r => r.ticker === e.ticker) || e);
+    for (const r of results) if (!updated.find(u => u.ticker === r.ticker)) updated.push(r);
+    fs.writeFileSync(outFile, JSON.stringify({
+      actualizadoEn: new Date().toISOString(),
+      total: updated.length,
+      conFecha: updated.filter(e => e.proximoEarnings).length,
+      earnings: updated,
+    }, null, 2), "utf8");
+    console.log(`[Cron earnings] Updated ${results.length} tickers`);
+  } catch(e) {
+    console.error(`[Cron earnings] Error: ${e.message}`);
+  }
+});
+
+// Cron 2 — Genera briefings para earnings en los próximos 14 días
+// Vercel lo llama a las 05:30 UTC (después de actualizar fechas)
+// También: GET /api/cron/briefings?token=supplysignal_cron
+app.get("/api/cron/briefings", async (req, res) => {
+  if (!cronAuth(req)) return res.status(401).json({ error: "Unauthorized" });
+
+  res.json({ status: "started", message: "Briefing generation running in background", startedAt: new Date().toISOString() });
+
+  // Corre en background sin bloquear la respuesta
+  runBriefingAgent({ days: 14 })
+    .then(out => console.log(`[Cron briefings] Generated ${out.total} briefings`))
+    .catch(e  => console.error(`[Cron briefings] Error: ${e.message}`));
+});
+
+// Trigger manual de briefing para un ticker concreto
+// GET /api/briefings/refresh/:ticker?token=xxx  o  GET /api/briefings/refresh?token=xxx
+app.get("/api/briefings/refresh/:ticker?", async (req, res) => {
+  if (!cronAuth(req)) return res.status(401).json({ error: "Unauthorized" });
+  const ticker = req.params.ticker?.toUpperCase() || null;
+  res.json({ status: "started", ticker: ticker || "all", startedAt: new Date().toISOString() });
+  runBriefingAgent({ days: 14, ticker })
+    .then(out => console.log(`[Briefing refresh] ${ticker || "all"}: ${out.total} briefings`))
+    .catch(e  => console.error(`[Briefing refresh] Error: ${e.message}`));
+});
 
 // Warmup: pre-calienta la caché de un ticker en background
 // El frontend llama a este endpoint para cada ticker al abrir el tab
