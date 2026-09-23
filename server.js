@@ -485,8 +485,6 @@ function cronAuth(req) {
 app.get("/api/cron/earnings", async (req, res) => {
   if (!cronAuth(req)) return res.status(401).json({ error: "Unauthorized" });
 
-  // En Vercel no hay Python, así que actualizamos las fechas directamente
-  // desde Yahoo Finance usando yahoo-finance2 (misma fuente que earnings_bot.py)
   res.json({ status: "started", message: "Earnings calendar update running", startedAt: new Date().toISOString() });
 
   try {
@@ -503,33 +501,120 @@ app.get("/api/cron/earnings", async (req, res) => {
 
     for (const ticker of tickers) {
       try {
-        const summary = await yf.quoteSummary(ticker, { modules: ["calendarEvents"] }).catch(() => ({}));
-        const cal     = summary.calendarEvents || {};
-        const dates   = cal.earnings?.earningsDate || [];
-        let fechaStr = null, diasRestantes = null;
+        const modules = ["calendarEvents", "earningsHistory", "earningsTrend", "financialData", "recommendationTrend", "price"];
+        const summary = await yf.quoteSummary(ticker, { modules }).catch(() => ({}));
+
+        // ── Próxima fecha ──────────────────────────────────────────────────
+        const cal   = summary.calendarEvents || {};
+        const dates = cal.earnings?.earningsDate || [];
+        let fechaStr = null, diasRestantes = null, callTime = null;
         if (dates.length) {
           const d = new Date(typeof dates[0] === "object" && dates[0].toISOString ? dates[0] : dates[0]);
           if (!isNaN(d) && d >= today) {
-            // Solo guardamos fechas futuras; si Yahoo devuelve una pasada la ignoramos
-            fechaStr = d.toISOString().slice(0, 10);
+            fechaStr      = d.toISOString().slice(0, 10);
             diasRestantes = Math.round((d - today) / 86400000);
+            // Yahoo devuelve 2 fechas cuando la hora exacta es TBD (rango)
+            callTime = dates.length > 1 ? "TBD" : "TNS";
           }
         }
-        results.push({ ticker, proximoEarnings: fechaStr, diasRestantes, fechaSource: "yahoo", ok: !!fechaStr });
-      } catch {}
-      await new Promise(r => setTimeout(r, 300)); // rate limit
+
+        // ── EPS estimates (calendarEvents) ─────────────────────────────────
+        const epsEstimado     = cal.earnings?.earningsAverage  ?? null;
+        const epsEstimadoAlto = cal.earnings?.earningsHigh     ?? null;
+        const epsEstimadoBajo = cal.earnings?.earningsLow      ?? null;
+        const revenueEstimado = cal.earnings?.revenueAverage   ?? null;
+
+        // ── Historial últimos 4 trimestres ─────────────────────────────────
+        const historialEPS = (summary.earningsHistory?.history || []).slice(0, 4).map(h => ({
+          periodo:   h.period   ?? null,
+          fecha:     h.quarter  ? new Date(h.quarter).toISOString().slice(0, 10) : null,
+          estimado:  h.epsEstimate   != null ? +h.epsEstimate.toFixed(3)   : null,
+          real:      h.actual        != null ? +h.actual.toFixed(3)        : null,
+          sorpresa:  h.surprisePercent != null ? +( h.surprisePercent * 100).toFixed(2) : null,
+        }));
+
+        // ── Estimaciones de analistas (earningsTrend) ──────────────────────
+        const trend0 = summary.earningsTrend?.trend?.[0] || {};  // current quarter
+        const epsConsenso   = trend0.earningsEstimate?.avg     ?? epsEstimado;
+        const revenueConsenso = trend0.revenueEstimate?.avg    ?? revenueEstimado;
+        const crecimientoRevenue = trend0.revenueEstimate?.growth != null
+          ? +(trend0.revenueEstimate.growth * 100).toFixed(1) : null;
+        const crecimientoEPS = trend0.earningsEstimate?.growth != null
+          ? +(trend0.earningsEstimate.growth * 100).toFixed(1) : null;
+        const numAnalistas = trend0.earningsEstimate?.numberOfAnalysts ?? null;
+
+        // ── Analistas (financialData + recommendationTrend) ────────────────
+        const fin = summary.financialData || {};
+        const rec = summary.recommendationTrend?.trend?.[0] || {};
+        const recomendacion      = fin.recommendationKey  ?? null;  // "buy", "hold", etc.
+        const recomendacionScore = fin.recommendationMean != null
+          ? +fin.recommendationMean.toFixed(2) : null;              // 1=strongBuy … 5=strongSell
+        const precioObjetivo     = fin.targetMeanPrice    ?? null;
+        const precioActual       = summary.price?.regularMarketPrice ?? null;
+        const upside = precioObjetivo && precioActual
+          ? +(((precioObjetivo - precioActual) / precioActual) * 100).toFixed(1) : null;
+        const totalAnalistas = (rec.strongBuy ?? 0) + (rec.buy ?? 0) + (rec.hold ?? 0) + (rec.sell ?? 0) + (rec.strongSell ?? 0);
+        const desglose = totalAnalistas > 0 ? {
+          strongBuy:  rec.strongBuy  ?? 0,
+          buy:        rec.buy        ?? 0,
+          hold:       rec.hold       ?? 0,
+          sell:       rec.sell       ?? 0,
+          strongSell: rec.strongSell ?? 0,
+        } : null;
+
+        // ── Info básica (price module) ─────────────────────────────────────
+        const p = summary.price || {};
+        const nombre     = p.shortName  || p.longName  || ticker;
+        const sector     = p.sector     ?? null;
+        const industria  = p.industry   ?? null;
+        const marketCap  = p.marketCap  ?? null;
+
+        results.push({
+          ticker,
+          nombre,
+          sector,
+          industria,
+          marketCap,
+          proximoEarnings:     fechaStr,
+          callTime,
+          diasRestantes,
+          fechaSource:         "yahoo",
+          ok:                  !!fechaStr,
+          // Estimaciones próximo trimestre
+          epsEstimado:         epsConsenso,
+          epsEstimadoAlto,
+          epsEstimadoBajo,
+          revenueEstimado:     revenueConsenso,
+          crecimientoRevenue,
+          crecimientoEPS,
+          numAnalistas,
+          // Historial EPS
+          historialEPS,
+          // Analistas
+          recomendacion,
+          recomendacionScore,
+          precioObjetivo,
+          precioActual,
+          upside,
+          desgloseAnalistas:   desglose,
+        });
+      } catch(err) {
+        console.error(`[Cron earnings] ${ticker}: ${err.message}`);
+        results.push({ ticker, proximoEarnings: null, diasRestantes: null, ok: false });
+      }
+      await new Promise(r => setTimeout(r, 400)); // rate limit
     }
 
-    const outFile = path.join(__dirname, "output", "earnings.json");
-    const existing = fs.existsSync(outFile) ? JSON.parse(fs.readFileSync(outFile, "utf8")) : { earnings: [] };
-    // Merge: update fetched tickers, keep rest
-    const updated = existing.earnings.map(e => results.find(r => r.ticker === e.ticker) || e);
+    const outFile  = path.join(__dirname, "output", "earnings.json");
+    const existing = fs.existsSync(outFile)
+      ? JSON.parse(fs.readFileSync(outFile, "utf8")) : { earnings: [] };
+    const updated  = existing.earnings.map(e => results.find(r => r.ticker === e.ticker) || e);
     for (const r of results) if (!updated.find(u => u.ticker === r.ticker)) updated.push(r);
     fs.writeFileSync(outFile, JSON.stringify({
       actualizadoEn: new Date().toISOString(),
-      total: updated.length,
-      conFecha: updated.filter(e => e.proximoEarnings).length,
-      earnings: updated,
+      total:         updated.length,
+      conFecha:      updated.filter(e => e.proximoEarnings).length,
+      earnings:      updated,
     }, null, 2), "utf8");
     console.log(`[Cron earnings] Updated ${results.length} tickers`);
   } catch(e) {

@@ -1,517 +1,2046 @@
 {
-  "actualizadoEn": "2026-06-12T14:56:41.705976",
+  "actualizadoEn": "2026-09-23T14:29:46.022Z",
   "total": 34,
   "conFecha": 33,
   "earnings": [
     {
       "ticker": "AAPL",
       "nombre": "Apple Inc.",
-      "sector": "Technology",
-      "industria": "Consumer Electronics",
-      "marketCap": 4342023192576,
-      "proximoEarnings": "2026-07-30",
-      "diasRestantes": 48,
-      "epsEstimado": 1.8954,
-      "epsEstimadoAlto": 1.99,
-      "epsEstimadoBajo": 1.83,
-      "revenueEstimado": 109023320870,
-      "epsActual": 8.25,
-      "ok": true
+      "sector": null,
+      "industria": null,
+      "marketCap": 4920573952000,
+      "proximoEarnings": "2026-10-29",
+      "callTime": "TNS",
+      "diasRestantes": 37,
+      "fechaSource": "yahoo",
+      "ok": true,
+      "epsEstimado": 1.97754,
+      "epsEstimadoAlto": 2.07,
+      "epsEstimadoBajo": 1.93,
+      "revenueEstimado": 113624521680,
+      "crecimientoRevenue": 10.9,
+      "crecimientoEPS": 6.9,
+      "numAnalistas": 27,
+      "historialEPS": [
+        {
+          "periodo": "-4q",
+          "fecha": "2025-09-30",
+          "estimado": 1.77,
+          "real": null,
+          "sorpresa": 4.52
+        },
+        {
+          "periodo": "-3q",
+          "fecha": "2025-12-31",
+          "estimado": 2.671,
+          "real": null,
+          "sorpresa": 6.34
+        },
+        {
+          "periodo": "-2q",
+          "fecha": "2026-03-31",
+          "estimado": 1.943,
+          "real": null,
+          "sorpresa": 3.46
+        },
+        {
+          "periodo": "-1q",
+          "fecha": "2026-06-30",
+          "estimado": 1.892,
+          "real": null,
+          "sorpresa": 6.74
+        }
+      ],
+      "recomendacion": "buy",
+      "recomendacionScore": 2.2,
+      "precioObjetivo": 328.22205,
+      "precioActual": 337.16,
+      "upside": -2.7,
+      "desgloseAnalistas": {
+        "strongBuy": 6,
+        "buy": 19,
+        "hold": 13,
+        "sell": 3,
+        "strongSell": 3
+      }
     },
     {
       "ticker": "ACHR",
       "nombre": "Archer Aviation Inc.",
-      "sector": "Industrials",
-      "industria": "Aerospace & Defense",
-      "marketCap": 4043184128,
-      "proximoEarnings": "2026-08-10",
-      "diasRestantes": 59,
-      "epsEstimado": -0.2212,
-      "epsEstimadoAlto": -0.2212,
-      "epsEstimadoBajo": -0.2212,
-      "revenueEstimado": 1963710,
-      "epsActual": -1.1,
-      "ok": true
+      "sector": null,
+      "industria": null,
+      "marketCap": 4296749568,
+      "proximoEarnings": "2026-11-05",
+      "callTime": "TNS",
+      "diasRestantes": 44,
+      "fechaSource": "yahoo",
+      "ok": true,
+      "epsEstimado": -0.24503,
+      "epsEstimadoAlto": -0.23006,
+      "epsEstimadoBajo": -0.26,
+      "revenueEstimado": 3567430,
+      "crecimientoRevenue": 0,
+      "crecimientoEPS": -112.1,
+      "numAnalistas": 2,
+      "historialEPS": [
+        {
+          "periodo": "-4q",
+          "fecha": "2025-09-30",
+          "estimado": -0.2,
+          "real": null,
+          "sorpresa": 42.3
+        },
+        {
+          "periodo": "-3q",
+          "fecha": "2025-12-31",
+          "estimado": -0.168,
+          "real": null,
+          "sorpresa": 18.08
+        },
+        {
+          "periodo": "-2q",
+          "fecha": "2026-03-31",
+          "estimado": -0.244,
+          "real": null,
+          "sorpresa": 23.48
+        },
+        {
+          "periodo": "-1q",
+          "fecha": "2026-06-30",
+          "estimado": -0.251,
+          "real": null,
+          "sorpresa": 12.61
+        }
+      ],
+      "recomendacion": "none",
+      "recomendacionScore": null,
+      "precioObjetivo": 10.61111,
+      "precioActual": 5.58,
+      "upside": 90.2,
+      "desgloseAnalistas": {
+        "strongBuy": 2,
+        "buy": 4,
+        "hold": 3,
+        "sell": 0,
+        "strongSell": 0
+      }
     },
     {
       "ticker": "ALB",
       "nombre": "Albemarle Corporation",
-      "sector": "Basic Materials",
-      "industria": "Specialty Chemicals",
-      "marketCap": 18758684672,
-      "proximoEarnings": "2026-07-29",
-      "diasRestantes": 47,
-      "epsEstimado": 3.0746,
-      "epsEstimadoAlto": 4.59,
-      "epsEstimadoBajo": 2.39,
-      "revenueEstimado": 1545601460,
-      "epsActual": -3.42,
-      "ok": true
+      "sector": null,
+      "industria": null,
+      "marketCap": 13326311424,
+      "proximoEarnings": "2026-11-04",
+      "callTime": "TNS",
+      "diasRestantes": 43,
+      "fechaSource": "yahoo",
+      "ok": true,
+      "epsEstimado": 2.5591,
+      "epsEstimadoAlto": 3.4,
+      "epsEstimadoBajo": 1.7897,
+      "revenueEstimado": 1527786280,
+      "crecimientoRevenue": 16.8,
+      "crecimientoEPS": 1446.9,
+      "numAnalistas": 15,
+      "historialEPS": [
+        {
+          "periodo": "-4q",
+          "fecha": "2025-09-30",
+          "estimado": -0.877,
+          "real": null,
+          "sorpresa": 78.33
+        },
+        {
+          "periodo": "-3q",
+          "fecha": "2025-12-31",
+          "estimado": -0.488,
+          "real": null,
+          "sorpresa": -8.6
+        },
+        {
+          "periodo": "-2q",
+          "fecha": "2026-03-31",
+          "estimado": 1.313,
+          "real": null,
+          "sorpresa": 124.6
+        },
+        {
+          "periodo": "-1q",
+          "fecha": "2026-06-30",
+          "estimado": 3.241,
+          "real": null,
+          "sorpresa": 15.71
+        }
+      ],
+      "recomendacion": "buy",
+      "recomendacionScore": 1.95,
+      "precioObjetivo": 171.564,
+      "precioActual": 112.93,
+      "upside": 51.9,
+      "desgloseAnalistas": {
+        "strongBuy": 3,
+        "buy": 10,
+        "hold": 9,
+        "sell": 0,
+        "strongSell": 0
+      }
     },
     {
       "ticker": "ALV",
       "nombre": "Autoliv, Inc.",
-      "sector": "Consumer Cyclical",
-      "industria": "Auto Parts",
-      "marketCap": 9672342528,
-      "proximoEarnings": "2026-07-17",
-      "diasRestantes": 35,
-      "epsEstimado": 2.3809,
-      "epsEstimadoAlto": 2.67,
-      "epsEstimadoBajo": 2.239,
-      "revenueEstimado": 2752683760,
-      "epsActual": 9.29,
-      "ok": true
+      "sector": null,
+      "industria": null,
+      "marketCap": 8463292416,
+      "proximoEarnings": "2026-10-23",
+      "callTime": "TNS",
+      "diasRestantes": 31,
+      "fechaSource": "yahoo",
+      "ok": true,
+      "epsEstimado": 2.18379,
+      "epsEstimadoAlto": 2.27887,
+      "epsEstimadoBajo": 2.06,
+      "revenueEstimado": 2718724890,
+      "crecimientoRevenue": 0.5,
+      "crecimientoEPS": -5.9,
+      "numAnalistas": 7,
+      "historialEPS": [
+        {
+          "periodo": "-4q",
+          "fecha": "2025-09-30",
+          "estimado": 2.088,
+          "real": null,
+          "sorpresa": 11.12
+        },
+        {
+          "periodo": "-3q",
+          "fecha": "2025-12-31",
+          "estimado": 2.88,
+          "real": null,
+          "sorpresa": 10.75
+        },
+        {
+          "periodo": "-2q",
+          "fecha": "2026-03-31",
+          "estimado": 1.821,
+          "real": null,
+          "sorpresa": 12.6
+        },
+        {
+          "periodo": "-1q",
+          "fecha": "2026-06-30",
+          "estimado": 2.481,
+          "real": null,
+          "sorpresa": -2.04
+        }
+      ],
+      "recomendacion": "buy",
+      "recomendacionScore": 2,
+      "precioObjetivo": 133.875,
+      "precioActual": 115.56,
+      "upside": 15.8,
+      "desgloseAnalistas": {
+        "strongBuy": 5,
+        "buy": 6,
+        "hold": 6,
+        "sell": 0,
+        "strongSell": 0
+      }
     },
     {
       "ticker": "AMAT",
       "nombre": "Applied Materials, Inc.",
-      "sector": "Technology",
-      "industria": "Semiconductor Equipment & Materials",
-      "marketCap": 438773743616,
-      "proximoEarnings": "2026-08-13",
-      "diasRestantes": 62,
-      "epsEstimado": 3.3832,
-      "epsEstimadoAlto": 3.56,
-      "epsEstimadoBajo": 3.17,
-      "revenueEstimado": 8999562680,
-      "epsActual": 10.61,
-      "ok": true
+      "sector": null,
+      "industria": null,
+      "marketCap": 368133996544,
+      "proximoEarnings": "2026-11-12",
+      "callTime": "TNS",
+      "diasRestantes": 51,
+      "fechaSource": "yahoo",
+      "ok": true,
+      "epsEstimado": 4.06032,
+      "epsEstimadoAlto": 4.25,
+      "epsEstimadoBajo": 4.02,
+      "revenueEstimado": 10307645750,
+      "crecimientoRevenue": 51.6,
+      "crecimientoEPS": 87.1,
+      "numAnalistas": 25,
+      "historialEPS": [
+        {
+          "periodo": "-4q",
+          "fecha": "2025-10-31",
+          "estimado": 2.094,
+          "real": null,
+          "sorpresa": 3.65
+        },
+        {
+          "periodo": "-3q",
+          "fecha": "2026-01-31",
+          "estimado": 2.206,
+          "real": null,
+          "sorpresa": 7.89
+        },
+        {
+          "periodo": "-2q",
+          "fecha": "2026-04-30",
+          "estimado": 2.685,
+          "real": null,
+          "sorpresa": 6.5
+        },
+        {
+          "periodo": "-1q",
+          "fecha": "2026-07-31",
+          "estimado": 3.394,
+          "real": null,
+          "sorpresa": 3.11
+        }
+      ],
+      "recomendacion": "strong_buy",
+      "recomendacionScore": 1.46,
+      "precioObjetivo": 640.8857,
+      "precioActual": 463.88,
+      "upside": 38.2,
+      "desgloseAnalistas": {
+        "strongBuy": 4,
+        "buy": 28,
+        "hold": 7,
+        "sell": 0,
+        "strongSell": 0
+      }
     },
     {
       "ticker": "AMD",
       "nombre": "Advanced Micro Devices, Inc.",
-      "sector": "Technology",
-      "industria": "Semiconductors",
-      "marketCap": 796466872320,
-      "proximoEarnings": "2026-08-04",
-      "diasRestantes": 53,
-      "epsEstimado": 1.6056,
-      "epsEstimadoAlto": 1.74,
-      "epsEstimadoBajo": 1.48,
-      "revenueEstimado": 11280788020,
-      "epsActual": 2.98,
-      "ok": true
+      "sector": null,
+      "industria": null,
+      "marketCap": 996658642944,
+      "proximoEarnings": "2026-11-03",
+      "callTime": "TNS",
+      "diasRestantes": 42,
+      "fechaSource": "yahoo",
+      "ok": true,
+      "epsEstimado": 1.92579,
+      "epsEstimadoAlto": 2.03,
+      "epsEstimadoBajo": 1.72,
+      "revenueEstimado": 12997554620,
+      "crecimientoRevenue": 40.6,
+      "crecimientoEPS": 60.5,
+      "numAnalistas": 39,
+      "historialEPS": [
+        {
+          "periodo": "-4q",
+          "fecha": "2025-09-30",
+          "estimado": 1.171,
+          "real": null,
+          "sorpresa": 2.48
+        },
+        {
+          "periodo": "-3q",
+          "fecha": "2025-12-31",
+          "estimado": 1.319,
+          "real": null,
+          "sorpresa": 15.98
+        },
+        {
+          "periodo": "-2q",
+          "fecha": "2026-03-31",
+          "estimado": 1.295,
+          "real": null,
+          "sorpresa": 5.82
+        },
+        {
+          "periodo": "-1q",
+          "fecha": "2026-06-30",
+          "estimado": 1.608,
+          "real": null,
+          "sorpresa": 3.21
+        }
+      ],
+      "recomendacion": "strong_buy",
+      "recomendacionScore": 1.49,
+      "precioObjetivo": 616.508,
+      "precioActual": 610.52,
+      "upside": 1,
+      "desgloseAnalistas": {
+        "strongBuy": 5,
+        "buy": 39,
+        "hold": 11,
+        "sell": 0,
+        "strongSell": 0
+      }
     },
     {
       "ticker": "AMZN",
       "nombre": "Amazon.com, Inc.",
-      "sector": "Consumer Cyclical",
-      "industria": "Internet Retail",
-      "marketCap": 2597949538304,
-      "proximoEarnings": "2026-07-30",
-      "diasRestantes": 48,
-      "epsEstimado": 1.8137,
-      "epsEstimadoAlto": 2.1,
-      "epsEstimadoBajo": 1.56,
-      "revenueEstimado": 195709314190,
-      "epsActual": 7.63,
-      "ok": true
+      "sector": null,
+      "industria": null,
+      "marketCap": 2686223384576,
+      "proximoEarnings": "2026-10-29",
+      "callTime": "TNS",
+      "diasRestantes": 37,
+      "fechaSource": "yahoo",
+      "ok": true,
+      "epsEstimado": 1.94636,
+      "epsEstimadoAlto": 2.23,
+      "epsEstimadoBajo": 1.72,
+      "revenueEstimado": 202129749700,
+      "crecimientoRevenue": 12.2,
+      "crecimientoEPS": -0.2,
+      "numAnalistas": 43,
+      "historialEPS": [
+        {
+          "periodo": "-4q",
+          "fecha": "2025-09-30",
+          "estimado": 1.558,
+          "real": null,
+          "sorpresa": 25.2
+        },
+        {
+          "periodo": "-3q",
+          "fecha": "2025-12-31",
+          "estimado": 1.96,
+          "real": null,
+          "sorpresa": -0.49
+        },
+        {
+          "periodo": "-2q",
+          "fecha": "2026-03-31",
+          "estimado": 1.653,
+          "real": null,
+          "sorpresa": 68.18
+        },
+        {
+          "periodo": "-1q",
+          "fecha": "2026-06-30",
+          "estimado": 1.825,
+          "real": null,
+          "sorpresa": 215.02
+        }
+      ],
+      "recomendacion": "strong_buy",
+      "recomendacionScore": 1.32,
+      "precioObjetivo": 329.28864,
+      "precioActual": 249.04,
+      "upside": 32.2,
+      "desgloseAnalistas": {
+        "strongBuy": 15,
+        "buy": 42,
+        "hold": 2,
+        "sell": 0,
+        "strongSell": 0
+      }
     },
     {
       "ticker": "CRUS",
       "nombre": "Cirrus Logic, Inc.",
-      "sector": "Technology",
-      "industria": "Semiconductors",
-      "marketCap": 8220261376,
-      "proximoEarnings": "2026-08-04",
-      "diasRestantes": 53,
-      "epsEstimado": 1.8157,
-      "epsEstimadoAlto": 1.82,
-      "epsEstimadoBajo": 1.8,
-      "revenueEstimado": 460259600,
-      "epsActual": 7.85,
-      "ok": true
+      "sector": null,
+      "industria": null,
+      "marketCap": 5975767552,
+      "proximoEarnings": "2026-11-03",
+      "callTime": "TNS",
+      "diasRestantes": 42,
+      "fechaSource": "yahoo",
+      "ok": true,
+      "epsEstimado": 2.4288,
+      "epsEstimadoAlto": 2.44,
+      "epsEstimadoBajo": 2.42,
+      "revenueEstimado": 540369000,
+      "crecimientoRevenue": -3.7,
+      "crecimientoEPS": -14.2,
+      "numAnalistas": 5,
+      "historialEPS": [
+        {
+          "periodo": "-4q",
+          "fecha": "2025-09-30",
+          "estimado": 2.376,
+          "real": null,
+          "sorpresa": 19.1
+        },
+        {
+          "periodo": "-3q",
+          "fecha": "2025-12-31",
+          "estimado": 2.436,
+          "real": null,
+          "sorpresa": 21.92
+        },
+        {
+          "periodo": "-2q",
+          "fecha": "2026-03-31",
+          "estimado": 1.761,
+          "real": null,
+          "sorpresa": 10.74
+        },
+        {
+          "periodo": "-1q",
+          "fecha": "2026-06-30",
+          "estimado": 1.815,
+          "real": null,
+          "sorpresa": 1.39
+        }
+      ],
+      "recomendacion": "buy",
+      "recomendacionScore": 1.8,
+      "precioObjetivo": 165,
+      "precioActual": 119.235,
+      "upside": 38.4,
+      "desgloseAnalistas": {
+        "strongBuy": 0,
+        "buy": 3,
+        "hold": 2,
+        "sell": 0,
+        "strongSell": 0
+      }
     },
     {
       "ticker": "DELL",
       "nombre": "Dell Technologies Inc.",
-      "sector": "Technology",
-      "industria": "Computer Hardware",
-      "marketCap": 253701865472,
-      "proximoEarnings": "2026-09-03",
-      "diasRestantes": 83,
-      "epsEstimado": 4.8797,
-      "epsEstimadoAlto": 5.19,
-      "epsEstimadoBajo": 4.75,
-      "revenueEstimado": 44376167490,
-      "epsActual": 12.57,
-      "ok": true
+      "sector": null,
+      "industria": null,
+      "marketCap": 353402028032,
+      "proximoEarnings": "2026-11-27",
+      "callTime": "TNS",
+      "diasRestantes": 66,
+      "fechaSource": "yahoo",
+      "ok": true,
+      "epsEstimado": 6.55748,
+      "epsEstimadoAlto": 7.37,
+      "epsEstimadoBajo": 6.40725,
+      "revenueEstimado": 49189581750,
+      "crecimientoRevenue": 82.2,
+      "crecimientoEPS": 153.2,
+      "numAnalistas": 24,
+      "historialEPS": [
+        {
+          "periodo": "-4q",
+          "fecha": "2025-10-31",
+          "estimado": 2.477,
+          "real": null,
+          "sorpresa": 4.55
+        },
+        {
+          "periodo": "-3q",
+          "fecha": "2026-01-31",
+          "estimado": 3.513,
+          "real": null,
+          "sorpresa": 10.74
+        },
+        {
+          "periodo": "-2q",
+          "fecha": "2026-04-30",
+          "estimado": 2.964,
+          "real": null,
+          "sorpresa": 63.99
+        },
+        {
+          "periodo": "-1q",
+          "fecha": "2026-07-31",
+          "estimado": 4.918,
+          "real": null,
+          "sorpresa": 43.14
+        }
+      ],
+      "recomendacion": "buy",
+      "recomendacionScore": 1.83,
+      "precioObjetivo": 577.36,
+      "precioActual": 555.8272,
+      "upside": 3.9,
+      "desgloseAnalistas": {
+        "strongBuy": 6,
+        "buy": 14,
+        "hold": 9,
+        "sell": 0,
+        "strongSell": 0
+      }
     },
     {
       "ticker": "F",
       "nombre": "Ford Motor Company",
-      "sector": "Consumer Cyclical",
-      "industria": "Auto Manufacturers",
-      "marketCap": 58614829056,
-      "proximoEarnings": "2026-07-29",
-      "diasRestantes": 47,
-      "epsEstimado": 0.3369,
-      "epsEstimadoAlto": 0.41,
-      "epsEstimadoBajo": 0.23,
-      "revenueEstimado": 44768281390,
-      "epsActual": -1.55,
-      "ok": true
+      "sector": null,
+      "industria": null,
+      "marketCap": 51380170752,
+      "proximoEarnings": "2026-10-22",
+      "callTime": "TNS",
+      "diasRestantes": 30,
+      "fechaSource": "yahoo",
+      "ok": true,
+      "epsEstimado": 0.41465,
+      "epsEstimadoAlto": 0.51,
+      "epsEstimadoBajo": 0.33,
+      "revenueEstimado": 46884218110,
+      "crecimientoRevenue": -0.6,
+      "crecimientoEPS": -7.9,
+      "numAnalistas": 14,
+      "historialEPS": [
+        {
+          "periodo": "-4q",
+          "fecha": "2025-09-30",
+          "estimado": 0.359,
+          "real": null,
+          "sorpresa": 25.41
+        },
+        {
+          "periodo": "-3q",
+          "fecha": "2025-12-31",
+          "estimado": 0.194,
+          "real": null,
+          "sorpresa": -32.87
+        },
+        {
+          "periodo": "-2q",
+          "fecha": "2026-03-31",
+          "estimado": 0.185,
+          "real": null,
+          "sorpresa": 256.64
+        },
+        {
+          "periodo": "-1q",
+          "fecha": "2026-06-30",
+          "estimado": 0.346,
+          "real": null,
+          "sorpresa": 21.27
+        }
+      ],
+      "recomendacion": "buy",
+      "recomendacionScore": 2.35,
+      "precioObjetivo": 16.12333,
+      "precioActual": 12.885,
+      "upside": 25.1,
+      "desgloseAnalistas": {
+        "strongBuy": 3,
+        "buy": 5,
+        "hold": 12,
+        "sell": 0,
+        "strongSell": 0
+      }
     },
     {
       "ticker": "GM",
       "nombre": "General Motors Company",
-      "sector": "Consumer Cyclical",
-      "industria": "Auto Manufacturers",
-      "marketCap": 72899633152,
-      "proximoEarnings": "2026-07-21",
-      "diasRestantes": 39,
-      "epsEstimado": 3.1935,
-      "epsEstimadoAlto": 3.51,
-      "epsEstimadoBajo": 2.4,
-      "revenueEstimado": 46944775440,
-      "epsActual": 2.74,
-      "ok": true
+      "sector": null,
+      "industria": null,
+      "marketCap": 75363418112,
+      "proximoEarnings": "2026-10-20",
+      "callTime": "TNS",
+      "diasRestantes": 28,
+      "fechaSource": "yahoo",
+      "ok": true,
+      "epsEstimado": 3.59821,
+      "epsEstimadoAlto": 4.344,
+      "epsEstimadoBajo": 3.28,
+      "revenueEstimado": 48575392870,
+      "crecimientoRevenue": 0,
+      "crecimientoEPS": 28.5,
+      "numAnalistas": 16,
+      "historialEPS": [
+        {
+          "periodo": "-4q",
+          "fecha": "2025-09-30",
+          "estimado": 2.323,
+          "real": null,
+          "sorpresa": 20.55
+        },
+        {
+          "periodo": "-3q",
+          "fecha": "2025-12-31",
+          "estimado": 2.268,
+          "real": null,
+          "sorpresa": 10.65
+        },
+        {
+          "periodo": "-2q",
+          "fecha": "2026-03-31",
+          "estimado": 2.639,
+          "real": null,
+          "sorpresa": 40.19
+        },
+        {
+          "periodo": "-1q",
+          "fecha": "2026-06-30",
+          "estimado": 3.188,
+          "real": null,
+          "sorpresa": 12
+        }
+      ],
+      "recomendacion": "buy",
+      "recomendacionScore": 1.6,
+      "precioObjetivo": 104.21739,
+      "precioActual": 83.325,
+      "upside": 25.1,
+      "desgloseAnalistas": {
+        "strongBuy": 7,
+        "buy": 13,
+        "hold": 4,
+        "sell": 0,
+        "strongSell": 0
+      }
     },
     {
       "ticker": "GOOGL",
       "nombre": "Alphabet Inc.",
-      "sector": "Communication Services",
-      "industria": "Internet Content & Information",
-      "marketCap": 4362981605376,
-      "proximoEarnings": "2026-07-23",
-      "diasRestantes": 41,
-      "epsEstimado": 2.8779,
-      "epsEstimadoAlto": 3.13,
-      "epsEstimadoBajo": 2.6,
-      "revenueEstimado": 116678355480,
-      "epsActual": 13.09,
-      "ok": true
+      "sector": null,
+      "industria": null,
+      "marketCap": 4177012195328,
+      "proximoEarnings": "2026-10-28",
+      "callTime": "TNS",
+      "diasRestantes": 36,
+      "fechaSource": "yahoo",
+      "ok": true,
+      "epsEstimado": 3.01896,
+      "epsEstimadoAlto": 3.68,
+      "epsEstimadoBajo": 2.64,
+      "revenueEstimado": 127298017980,
+      "crecimientoRevenue": 24.4,
+      "crecimientoEPS": 5.2,
+      "numAnalistas": 42,
+      "historialEPS": [
+        {
+          "periodo": "-4q",
+          "fecha": "2025-09-30",
+          "estimado": 2.262,
+          "real": null,
+          "sorpresa": 26.88
+        },
+        {
+          "periodo": "-3q",
+          "fecha": "2025-12-31",
+          "estimado": 2.635,
+          "real": null,
+          "sorpresa": 7.01
+        },
+        {
+          "periodo": "-2q",
+          "fecha": "2026-03-31",
+          "estimado": 2.667,
+          "real": null,
+          "sorpresa": 91.59
+        },
+        {
+          "periodo": "-1q",
+          "fecha": "2026-06-30",
+          "estimado": 2.899,
+          "real": null,
+          "sorpresa": 214.23
+        }
+      ],
+      "recomendacion": "strong_buy",
+      "recomendacionScore": 1.38,
+      "precioObjetivo": 429.45557,
+      "precioActual": 341.54,
+      "upside": 25.7,
+      "desgloseAnalistas": {
+        "strongBuy": 13,
+        "buy": 43,
+        "hold": 5,
+        "sell": 0,
+        "strongSell": 0
+      }
     },
     {
       "ticker": "GXO",
       "nombre": "GXO Logistics, Inc.",
-      "sector": "Industrials",
-      "industria": "Integrated Freight & Logistics",
-      "marketCap": 5730570752,
-      "proximoEarnings": "2026-08-04",
-      "diasRestantes": 53,
-      "epsEstimado": 0.5892,
-      "epsEstimadoAlto": 0.64,
-      "epsEstimadoBajo": 0.56,
-      "revenueEstimado": 3462368680,
-      "epsActual": 1.12,
-      "ok": true
+      "sector": null,
+      "industria": null,
+      "marketCap": 5225602560,
+      "proximoEarnings": "2026-11-03",
+      "callTime": "TNS",
+      "diasRestantes": 42,
+      "fechaSource": "yahoo",
+      "ok": true,
+      "epsEstimado": 0.86793,
+      "epsEstimadoAlto": 0.95,
+      "epsEstimadoBajo": 0.82564,
+      "revenueEstimado": 3545662230,
+      "crecimientoRevenue": 4.4,
+      "crecimientoEPS": 9.9,
+      "numAnalistas": 16,
+      "historialEPS": [
+        {
+          "periodo": "-4q",
+          "fecha": "2025-09-30",
+          "estimado": 0.783,
+          "real": null,
+          "sorpresa": 0.84
+        },
+        {
+          "periodo": "-3q",
+          "fecha": "2025-12-31",
+          "estimado": 0.835,
+          "real": null,
+          "sorpresa": 4.24
+        },
+        {
+          "periodo": "-2q",
+          "fecha": "2026-03-31",
+          "estimado": 0.37,
+          "real": null,
+          "sorpresa": 35.22
+        },
+        {
+          "periodo": "-1q",
+          "fecha": "2026-06-30",
+          "estimado": 0.584,
+          "real": null,
+          "sorpresa": 1.03
+        }
+      ],
+      "recomendacion": "none",
+      "recomendacionScore": null,
+      "precioObjetivo": 68.70588,
+      "precioActual": 45.565,
+      "upside": 50.8,
+      "desgloseAnalistas": {
+        "strongBuy": 4,
+        "buy": 12,
+        "hold": 1,
+        "sell": 0,
+        "strongSell": 0
+      }
     },
     {
       "ticker": "INTC",
       "nombre": "Intel Corporation",
-      "sector": "Technology",
-      "industria": "Semiconductors",
-      "marketCap": 587840946176,
-      "proximoEarnings": "2026-07-23",
-      "diasRestantes": 41,
-      "epsEstimado": 0.2113,
-      "epsEstimadoAlto": 0.3263,
-      "epsEstimadoBajo": 0.2,
-      "revenueEstimado": 14403979090,
-      "epsActual": -0.6,
-      "ok": true
+      "sector": null,
+      "industria": null,
+      "marketCap": 636050604032,
+      "proximoEarnings": "2026-10-22",
+      "callTime": "TNS",
+      "diasRestantes": 30,
+      "fechaSource": "yahoo",
+      "ok": true,
+      "epsEstimado": 0.39065,
+      "epsEstimadoAlto": 0.48,
+      "epsEstimadoBajo": 0.37,
+      "revenueEstimado": 16428276720,
+      "crecimientoRevenue": 20.3,
+      "crecimientoEPS": 69.8,
+      "numAnalistas": 35,
+      "historialEPS": [
+        {
+          "periodo": "-4q",
+          "fecha": "2025-09-30",
+          "estimado": 0.007,
+          "real": null,
+          "sorpresa": 3162.41
+        },
+        {
+          "periodo": "-3q",
+          "fecha": "2025-12-31",
+          "estimado": 0.083,
+          "real": null,
+          "sorpresa": 81.51
+        },
+        {
+          "periodo": "-2q",
+          "fecha": "2026-03-31",
+          "estimado": 0.013,
+          "real": null,
+          "sorpresa": 2108.68
+        },
+        {
+          "periodo": "-1q",
+          "fecha": "2026-06-30",
+          "estimado": 0.216,
+          "real": null,
+          "sorpresa": 94.59
+        }
+      ],
+      "recomendacion": "buy",
+      "recomendacionScore": 2.47,
+      "precioObjetivo": 116.37209,
+      "precioActual": 120.325,
+      "upside": -3.3,
+      "desgloseAnalistas": {
+        "strongBuy": 1,
+        "buy": 14,
+        "hold": 32,
+        "sell": 1,
+        "strongSell": 1
+      }
     },
     {
       "ticker": "KLAC",
       "nombre": "KLA Corporation",
-      "sector": "Technology",
-      "industria": "Semiconductor Equipment & Materials",
-      "marketCap": 3150265450496,
-      "proximoEarnings": "2026-07-30",
-      "diasRestantes": 48,
-      "epsEstimado": 0.9951,
-      "epsEstimadoAlto": 1.0361,
-      "epsEstimadoBajo": 0.984,
-      "revenueEstimado": 3597830530,
-      "epsActual": 3.52,
-      "ok": true
+      "sector": null,
+      "industria": null,
+      "marketCap": 239516172288,
+      "proximoEarnings": "2026-10-28",
+      "callTime": "TNS",
+      "diasRestantes": 36,
+      "fechaSource": "yahoo",
+      "ok": true,
+      "epsEstimado": 1.17852,
+      "epsEstimadoAlto": 1.25,
+      "epsEstimadoBajo": 1.16,
+      "revenueEstimado": 4040194880,
+      "crecimientoRevenue": 25.9,
+      "crecimientoEPS": 33.8,
+      "numAnalistas": 22,
+      "historialEPS": [
+        {
+          "periodo": "-4q",
+          "fecha": "2025-09-30",
+          "estimado": 0.862,
+          "real": null,
+          "sorpresa": 2.24
+        },
+        {
+          "periodo": "-3q",
+          "fecha": "2025-12-31",
+          "estimado": 0.88,
+          "real": null,
+          "sorpresa": 0.59
+        },
+        {
+          "periodo": "-2q",
+          "fecha": "2026-03-31",
+          "estimado": 0.917,
+          "real": null,
+          "sorpresa": 2.5
+        },
+        {
+          "periodo": "-1q",
+          "fecha": "2026-06-30",
+          "estimado": 0.999,
+          "real": null,
+          "sorpresa": 5.14
+        }
+      ],
+      "recomendacion": "buy",
+      "recomendacionScore": 1.86,
+      "precioObjetivo": 233.76923,
+      "precioActual": 183.32,
+      "upside": 27.5,
+      "desgloseAnalistas": {
+        "strongBuy": 5,
+        "buy": 14,
+        "hold": 10,
+        "sell": 0,
+        "strongSell": 0
+      }
     },
     {
       "ticker": "LAC",
       "nombre": "Lithium Americas Corp.",
-      "sector": "Basic Materials",
-      "industria": "Other Industrial Metals & Mining",
-      "marketCap": 1548185472,
-      "proximoEarnings": "2026-08-13",
-      "diasRestantes": 62,
-      "epsEstimado": -0.06,
-      "epsEstimadoAlto": -0.06,
-      "epsEstimadoBajo": -0.06,
+      "sector": null,
+      "industria": null,
+      "marketCap": 1047378880,
+      "proximoEarnings": "2026-11-13",
+      "callTime": "TNS",
+      "diasRestantes": 52,
+      "fechaSource": "yahoo",
+      "ok": true,
+      "epsEstimado": -0.04,
+      "epsEstimadoAlto": -0.04,
+      "epsEstimadoBajo": -0.04,
       "revenueEstimado": 0,
-      "epsActual": -0.45,
-      "ok": true
+      "crecimientoRevenue": 0,
+      "crecimientoEPS": -18,
+      "numAnalistas": 1,
+      "historialEPS": [
+        {
+          "periodo": "-4q",
+          "fecha": "2025-09-30",
+          "estimado": -0.051,
+          "real": null,
+          "sorpresa": 33.92
+        },
+        {
+          "periodo": "-3q",
+          "fecha": "2025-12-31",
+          "estimado": -0.055,
+          "real": null,
+          "sorpresa": -358.55
+        },
+        {
+          "periodo": "-2q",
+          "fecha": "2026-03-31",
+          "estimado": -0.045,
+          "real": null,
+          "sorpresa": 40
+        },
+        {
+          "periodo": "-1q",
+          "fecha": "2026-06-30",
+          "estimado": -0.045,
+          "real": null,
+          "sorpresa": 52.53
+        }
+      ],
+      "recomendacion": "hold",
+      "recomendacionScore": 2.67,
+      "precioObjetivo": 5.61111,
+      "precioActual": 2.885,
+      "upside": 94.5,
+      "desgloseAnalistas": {
+        "strongBuy": 2,
+        "buy": 1,
+        "hold": 9,
+        "sell": 0,
+        "strongSell": 0
+      }
     },
     {
       "ticker": "LRCX",
       "nombre": "Lam Research Corporation",
-      "sector": "Technology",
-      "industria": "Semiconductor Equipment & Materials",
-      "marketCap": 453356978176,
-      "proximoEarnings": "2026-07-29",
-      "diasRestantes": 47,
-      "epsEstimado": 1.6743,
-      "epsEstimadoAlto": 1.79,
-      "epsEstimadoBajo": 1.64,
-      "revenueEstimado": 6653525220,
-      "epsActual": 5.29,
-      "ok": true
+      "sector": null,
+      "industria": null,
+      "marketCap": 376334778368,
+      "proximoEarnings": "2026-10-21",
+      "callTime": "TNS",
+      "diasRestantes": 29,
+      "fechaSource": "yahoo",
+      "ok": true,
+      "epsEstimado": 2.17902,
+      "epsEstimadoAlto": 2.28,
+      "epsEstimadoBajo": 2.09,
+      "revenueEstimado": 8135191260,
+      "crecimientoRevenue": 52.8,
+      "crecimientoEPS": 72.9,
+      "numAnalistas": 24,
+      "historialEPS": [
+        {
+          "periodo": "-4q",
+          "fecha": "2025-09-30",
+          "estimado": 1.22,
+          "real": null,
+          "sorpresa": 3.27
+        },
+        {
+          "periodo": "-3q",
+          "fecha": "2025-12-31",
+          "estimado": 1.168,
+          "real": null,
+          "sorpresa": 8.7
+        },
+        {
+          "periodo": "-2q",
+          "fecha": "2026-03-31",
+          "estimado": 1.363,
+          "real": null,
+          "sorpresa": 7.87
+        },
+        {
+          "periodo": "-1q",
+          "fecha": "2026-06-30",
+          "estimado": 1.684,
+          "real": null,
+          "sorpresa": 8.1
+        }
+      ],
+      "recomendacion": "strong_buy",
+      "recomendacionScore": 1.46,
+      "precioObjetivo": 373.7742,
+      "precioActual": 300.75,
+      "upside": 24.3,
+      "desgloseAnalistas": {
+        "strongBuy": 4,
+        "buy": 25,
+        "hold": 6,
+        "sell": 0,
+        "strongSell": 0
+      }
     },
     {
       "ticker": "META",
       "nombre": "Meta Platforms, Inc.",
-      "sector": "Communication Services",
-      "industria": "Internet Content & Information",
-      "marketCap": 1442915942400,
-      "proximoEarnings": "2026-07-29",
-      "diasRestantes": 47,
-      "epsEstimado": 7.5089,
-      "epsEstimadoAlto": 8.55,
-      "epsEstimadoBajo": 6.8,
-      "revenueEstimado": 60209152310,
-      "epsActual": 27.51,
-      "ok": true
+      "sector": null,
+      "industria": null,
+      "marketCap": 1897917579264,
+      "proximoEarnings": "2026-10-28",
+      "callTime": "TNS",
+      "diasRestantes": 36,
+      "fechaSource": "yahoo",
+      "ok": true,
+      "epsEstimado": 6.38179,
+      "epsEstimadoAlto": 7.64,
+      "epsEstimadoBajo": 3.92,
+      "revenueEstimado": 63310311800,
+      "crecimientoRevenue": 23.5,
+      "crecimientoEPS": 507.8,
+      "numAnalistas": 42,
+      "historialEPS": [
+        {
+          "periodo": "-4q",
+          "fecha": "2025-09-30",
+          "estimado": 6.707,
+          "real": null,
+          "sorpresa": -84.34
+        },
+        {
+          "periodo": "-3q",
+          "fecha": "2025-12-31",
+          "estimado": 8.223,
+          "real": null,
+          "sorpresa": 8
+        },
+        {
+          "periodo": "-2q",
+          "fecha": "2026-03-31",
+          "estimado": 6.659,
+          "real": null,
+          "sorpresa": 56.79
+        },
+        {
+          "periodo": "-1q",
+          "fecha": "2026-06-30",
+          "estimado": 7.221,
+          "real": null,
+          "sorpresa": -14.42
+        }
+      ],
+      "recomendacion": "strong_buy",
+      "recomendacionScore": 1.34,
+      "precioObjetivo": 766.37,
+      "precioActual": 745.01,
+      "upside": 2.9,
+      "desgloseAnalistas": {
+        "strongBuy": 9,
+        "buy": 47,
+        "hold": 6,
+        "sell": 0,
+        "strongSell": 0
+      }
     },
     {
       "ticker": "MGA",
-      "nombre": "Magna International Inc.",
-      "sector": "Consumer Cyclical",
-      "industria": "Auto Parts",
-      "marketCap": 17904207872,
-      "proximoEarnings": "2026-07-31",
-      "diasRestantes": 49,
-      "epsEstimado": 1.5161,
-      "epsEstimadoAlto": 1.7,
-      "epsEstimadoBajo": 1.43,
-      "revenueEstimado": 10667959570,
-      "epsActual": 2.37,
-      "ok": true
+      "nombre": "Magna International, Inc.",
+      "sector": null,
+      "industria": null,
+      "marketCap": 16885852160,
+      "proximoEarnings": "2026-10-30",
+      "callTime": "TNS",
+      "diasRestantes": 38,
+      "fechaSource": "yahoo",
+      "ok": true,
+      "epsEstimado": 1.60908,
+      "epsEstimadoAlto": 1.89,
+      "epsEstimadoBajo": 1.493,
+      "revenueEstimado": 10119847090,
+      "crecimientoRevenue": -3.3,
+      "crecimientoEPS": 21,
+      "numAnalistas": 16,
+      "historialEPS": [
+        {
+          "periodo": "-4q",
+          "fecha": "2025-09-30",
+          "estimado": 1.254,
+          "real": null,
+          "sorpresa": 6.03
+        },
+        {
+          "periodo": "-3q",
+          "fecha": "2025-12-31",
+          "estimado": 1.801,
+          "real": null,
+          "sorpresa": 21.01
+        },
+        {
+          "periodo": "-2q",
+          "fecha": "2026-03-31",
+          "estimado": 1.013,
+          "real": null,
+          "sorpresa": 36.21
+        },
+        {
+          "periodo": "-1q",
+          "fecha": "2026-06-30",
+          "estimado": 1.529,
+          "real": null,
+          "sorpresa": 21.62
+        }
+      ],
+      "recomendacion": "buy",
+      "recomendacionScore": 2.45,
+      "precioObjetivo": 73.11765,
+      "precioActual": 63.12,
+      "upside": 15.8,
+      "desgloseAnalistas": {
+        "strongBuy": 3,
+        "buy": 5,
+        "hold": 11,
+        "sell": 1,
+        "strongSell": 0
+      }
     },
     {
       "ticker": "MSFT",
       "nombre": "Microsoft Corporation",
-      "sector": "Technology",
-      "industria": "Software - Infrastructure",
-      "marketCap": 2899615154176,
-      "proximoEarnings": "2026-07-29",
-      "diasRestantes": 47,
-      "epsEstimado": 4.2374,
-      "epsEstimadoAlto": 4.89,
-      "epsEstimadoBajo": 4.07,
-      "revenueEstimado": 87663279530,
-      "epsActual": 16.78,
-      "ok": true
+      "sector": null,
+      "industria": null,
+      "marketCap": 3685410406400,
+      "proximoEarnings": "2026-10-28",
+      "callTime": "TNS",
+      "diasRestantes": 36,
+      "fechaSource": "yahoo",
+      "ok": true,
+      "epsEstimado": 4.72455,
+      "epsEstimadoAlto": 4.83363,
+      "epsEstimadoBajo": 4.43,
+      "revenueEstimado": 90659201460,
+      "crecimientoRevenue": 16.7,
+      "crecimientoEPS": 14.4,
+      "numAnalistas": 25,
+      "historialEPS": [
+        {
+          "periodo": "-4q",
+          "fecha": "2025-09-30",
+          "estimado": 3.664,
+          "real": null,
+          "sorpresa": 12.73
+        },
+        {
+          "periodo": "-3q",
+          "fecha": "2025-12-31",
+          "estimado": 3.917,
+          "real": null,
+          "sorpresa": 5.69
+        },
+        {
+          "periodo": "-2q",
+          "fecha": "2026-03-31",
+          "estimado": 4.071,
+          "real": null,
+          "sorpresa": 4.9
+        },
+        {
+          "periodo": "-1q",
+          "fecha": "2026-06-30",
+          "estimado": 4.239,
+          "real": null,
+          "sorpresa": 11.81
+        }
+      ],
+      "recomendacion": "strong_buy",
+      "recomendacionScore": 1.33,
+      "precioObjetivo": 577.26135,
+      "precioActual": 496.3151,
+      "upside": 16.3,
+      "desgloseAnalistas": {
+        "strongBuy": 14,
+        "buy": 39,
+        "hold": 2,
+        "sell": 0,
+        "strongSell": 0
+      }
     },
     {
       "ticker": "MU",
       "nombre": "Micron Technology, Inc.",
-      "sector": "Technology",
-      "industria": "Semiconductors",
-      "marketCap": 1123076407296,
-      "proximoEarnings": "2026-06-24",
-      "diasRestantes": 12,
-      "epsEstimado": 19.6563,
-      "epsEstimadoAlto": 24.08,
-      "epsEstimadoBajo": 7.53,
-      "revenueEstimado": 34286563820,
-      "epsActual": 21.21,
-      "ok": true
+      "sector": null,
+      "industria": null,
+      "marketCap": 1216042500096,
+      "proximoEarnings": "2026-09-30",
+      "callTime": "TNS",
+      "diasRestantes": 8,
+      "fechaSource": "yahoo",
+      "ok": true,
+      "epsEstimado": 31.5174,
+      "epsEstimadoAlto": 37.44,
+      "epsEstimadoBajo": 28.04,
+      "revenueEstimado": 51124917270,
+      "crecimientoRevenue": 351.8,
+      "crecimientoEPS": 940.2,
+      "numAnalistas": 33,
+      "historialEPS": [
+        {
+          "periodo": "-4q",
+          "fecha": "2025-08-31",
+          "estimado": 2.86,
+          "real": null,
+          "sorpresa": 5.94
+        },
+        {
+          "periodo": "-3q",
+          "fecha": "2025-11-30",
+          "estimado": 3.964,
+          "real": null,
+          "sorpresa": 20.58
+        },
+        {
+          "periodo": "-2q",
+          "fecha": "2026-02-28",
+          "estimado": 9.159,
+          "real": null,
+          "sorpresa": 33.21
+        },
+        {
+          "periodo": "-1q",
+          "fecha": "2026-05-31",
+          "estimado": 20.686,
+          "real": null,
+          "sorpresa": 21.39
+        }
+      ],
+      "recomendacion": "strong_buy",
+      "recomendacionScore": 1.35,
+      "precioObjetivo": 1515,
+      "precioActual": 1076.722,
+      "upside": 40.7,
+      "desgloseAnalistas": {
+        "strongBuy": 9,
+        "buy": 36,
+        "hold": 4,
+        "sell": 0,
+        "strongSell": 0
+      }
     },
     {
       "ticker": "NVDA",
       "nombre": "NVIDIA Corporation",
-      "sector": "Technology",
-      "industria": "Semiconductors",
-      "marketCap": 4962156281856,
-      "proximoEarnings": "2026-08-26",
-      "diasRestantes": 75,
-      "epsEstimado": 2.0793,
-      "epsEstimadoAlto": 2.2,
-      "epsEstimadoBajo": 2.0313,
-      "revenueEstimado": 91728642100,
-      "epsActual": 6.54,
-      "ok": true
+      "sector": null,
+      "industria": null,
+      "marketCap": 5451907334144,
+      "proximoEarnings": "2026-11-17",
+      "callTime": "TNS",
+      "diasRestantes": 56,
+      "fechaSource": "yahoo",
+      "ok": true,
+      "epsEstimado": 2.47356,
+      "epsEstimadoAlto": 2.7,
+      "epsEstimadoBajo": 2.34,
+      "revenueEstimado": 109010834070,
+      "crecimientoRevenue": 91.2,
+      "crecimientoEPS": 90.3,
+      "numAnalistas": 43,
+      "historialEPS": [
+        {
+          "periodo": "-4q",
+          "fecha": "2025-10-31",
+          "estimado": 1.256,
+          "real": null,
+          "sorpresa": 3.46
+        },
+        {
+          "periodo": "-3q",
+          "fecha": "2026-01-31",
+          "estimado": 1.538,
+          "real": null,
+          "sorpresa": 5.32
+        },
+        {
+          "periodo": "-2q",
+          "fecha": "2026-04-30",
+          "estimado": 1.772,
+          "real": null,
+          "sorpresa": 5.54
+        },
+        {
+          "periodo": "-1q",
+          "fecha": "2026-07-31",
+          "estimado": 2.091,
+          "real": null,
+          "sorpresa": 6.16
+        }
+      ],
+      "recomendacion": "strong_buy",
+      "recomendacionScore": 1.3,
+      "precioObjetivo": 327.7,
+      "precioActual": 225.7799,
+      "upside": 45.1,
+      "desgloseAnalistas": {
+        "strongBuy": 10,
+        "buy": 48,
+        "hold": 2,
+        "sell": 1,
+        "strongSell": 0
+      }
     },
     {
       "ticker": "ON",
       "nombre": "ON Semiconductor Corporation",
-      "sector": "Technology",
-      "industria": "Semiconductors",
-      "marketCap": 45085618176,
-      "proximoEarnings": "2026-08-03",
-      "diasRestantes": 52,
-      "epsEstimado": 0.7143,
-      "epsEstimadoAlto": 0.76,
-      "epsEstimadoBajo": 0.7,
-      "revenueEstimado": 1588557870,
-      "epsActual": 1.36,
-      "ok": true
+      "sector": null,
+      "industria": null,
+      "marketCap": 28295677952,
+      "proximoEarnings": "2026-11-02",
+      "callTime": "TNS",
+      "diasRestantes": 41,
+      "fechaSource": "yahoo",
+      "ok": true,
+      "epsEstimado": 0.87563,
+      "epsEstimadoAlto": 0.92,
+      "epsEstimadoBajo": 0.84139,
+      "revenueEstimado": 1702522460,
+      "crecimientoRevenue": 9.8,
+      "crecimientoEPS": 39,
+      "numAnalistas": 28,
+      "historialEPS": [
+        {
+          "periodo": "-4q",
+          "fecha": "2025-09-30",
+          "estimado": 0.591,
+          "real": null,
+          "sorpresa": 6.63
+        },
+        {
+          "periodo": "-3q",
+          "fecha": "2025-12-31",
+          "estimado": 0.624,
+          "real": null,
+          "sorpresa": 2.55
+        },
+        {
+          "periodo": "-2q",
+          "fecha": "2026-03-31",
+          "estimado": 0.615,
+          "real": null,
+          "sorpresa": 4.06
+        },
+        {
+          "periodo": "-1q",
+          "fecha": "2026-06-30",
+          "estimado": 0.715,
+          "real": null,
+          "sorpresa": 3.45
+        }
+      ],
+      "recomendacion": "buy",
+      "recomendacionScore": 2.13,
+      "precioObjetivo": 103.69231,
+      "precioActual": 72.68,
+      "upside": 42.7,
+      "desgloseAnalistas": {
+        "strongBuy": 2,
+        "buy": 12,
+        "hold": 16,
+        "sell": 0,
+        "strongSell": 0
+      }
     },
     {
       "ticker": "PCAR",
-      "nombre": "PACCAR Inc",
-      "sector": "Industrials",
-      "industria": "Farm & Heavy Construction Machinery",
-      "marketCap": 61880737792,
-      "proximoEarnings": "2026-07-21",
-      "diasRestantes": 39,
-      "epsEstimado": 1.3509,
-      "epsEstimadoAlto": 1.45,
-      "epsEstimadoBajo": 1.29,
-      "revenueEstimado": 7058500000,
-      "epsActual": 4.7,
-      "ok": true
+      "nombre": "PACCAR Inc.",
+      "sector": null,
+      "industria": null,
+      "marketCap": 59368706048,
+      "proximoEarnings": "2026-10-27",
+      "callTime": "TNS",
+      "diasRestantes": 35,
+      "fechaSource": "yahoo",
+      "ok": true,
+      "epsEstimado": 1.60144,
+      "epsEstimadoAlto": 1.76,
+      "epsEstimadoBajo": 1.47,
+      "revenueEstimado": 7604120000,
+      "crecimientoRevenue": 24.5,
+      "crecimientoEPS": 43,
+      "numAnalistas": 10,
+      "historialEPS": [
+        {
+          "periodo": "-4q",
+          "fecha": "2025-09-30",
+          "estimado": 1.151,
+          "real": null,
+          "sorpresa": -2.72
+        },
+        {
+          "periodo": "-3q",
+          "fecha": "2025-12-31",
+          "estimado": 1.055,
+          "real": null,
+          "sorpresa": 0.48
+        },
+        {
+          "periodo": "-2q",
+          "fecha": "2026-03-31",
+          "estimado": 1.16,
+          "real": null,
+          "sorpresa": -0.87
+        },
+        {
+          "periodo": "-1q",
+          "fecha": "2026-06-30",
+          "estimado": 1.357,
+          "real": null,
+          "sorpresa": 5.39
+        }
+      ],
+      "recomendacion": "buy",
+      "recomendacionScore": 2.28,
+      "precioObjetivo": 144.8,
+      "precioActual": 112.79,
+      "upside": 28.4,
+      "desgloseAnalistas": {
+        "strongBuy": 3,
+        "buy": 5,
+        "hold": 10,
+        "sell": 0,
+        "strongSell": 0
+      }
     },
     {
       "ticker": "PCRFY",
       "nombre": "PCRFY",
-      "sector": "—",
-      "industria": "—",
+      "sector": null,
+      "industria": null,
       "marketCap": null,
       "proximoEarnings": null,
+      "callTime": null,
       "diasRestantes": null,
+      "fechaSource": "yahoo",
+      "ok": false,
       "epsEstimado": null,
       "epsEstimadoAlto": null,
       "epsEstimadoBajo": null,
       "revenueEstimado": null,
-      "epsActual": null,
-      "ok": true
+      "crecimientoRevenue": null,
+      "crecimientoEPS": null,
+      "numAnalistas": null,
+      "historialEPS": [],
+      "recomendacion": null,
+      "recomendacionScore": null,
+      "precioObjetivo": null,
+      "precioActual": null,
+      "upside": null,
+      "desgloseAnalistas": null
     },
     {
       "ticker": "QCOM",
       "nombre": "QUALCOMM Incorporated",
-      "sector": "Technology",
-      "industria": "Semiconductors",
-      "marketCap": 213919842304,
-      "proximoEarnings": "2026-07-29",
-      "diasRestantes": 47,
-      "epsEstimado": 2.2283,
-      "epsEstimadoAlto": 2.52,
-      "epsEstimadoBajo": 2.152,
-      "revenueEstimado": 9660486720,
-      "epsActual": 9.3,
-      "ok": true
+      "sector": null,
+      "industria": null,
+      "marketCap": 206926036992,
+      "proximoEarnings": "2026-11-04",
+      "callTime": "TNS",
+      "diasRestantes": 43,
+      "fechaSource": "yahoo",
+      "ok": true,
+      "epsEstimado": 2.15685,
+      "epsEstimadoAlto": 2.24,
+      "epsEstimadoBajo": 2.09,
+      "revenueEstimado": 10138683770,
+      "crecimientoRevenue": -10,
+      "crecimientoEPS": -28.1,
+      "numAnalistas": 26,
+      "historialEPS": [
+        {
+          "periodo": "-4q",
+          "fecha": "2025-09-30",
+          "estimado": 2.876,
+          "real": null,
+          "sorpresa": 4.32
+        },
+        {
+          "periodo": "-3q",
+          "fecha": "2025-12-31",
+          "estimado": 3.402,
+          "real": null,
+          "sorpresa": 2.87
+        },
+        {
+          "periodo": "-2q",
+          "fecha": "2026-03-31",
+          "estimado": 2.564,
+          "real": null,
+          "sorpresa": 3.34
+        },
+        {
+          "periodo": "-1q",
+          "fecha": "2026-06-30",
+          "estimado": 2.221,
+          "real": null,
+          "sorpresa": -0.49
+        }
+      ],
+      "recomendacion": "hold",
+      "recomendacionScore": 2.57,
+      "precioObjetivo": 194.13333,
+      "precioActual": 193.74,
+      "upside": 0.2,
+      "desgloseAnalistas": {
+        "strongBuy": 2,
+        "buy": 9,
+        "hold": 23,
+        "sell": 1,
+        "strongSell": 2
+      }
     },
     {
       "ticker": "QRVO",
       "nombre": "Qorvo, Inc.",
-      "sector": "Technology",
-      "industria": "Semiconductors",
-      "marketCap": 8595415040,
-      "proximoEarnings": "2026-07-28",
-      "diasRestantes": 46,
-      "epsEstimado": 1.0568,
-      "epsEstimadoAlto": 1.3889,
-      "epsEstimadoBajo": 0.82,
-      "revenueEstimado": 746714730,
-      "epsActual": 3.62,
-      "ok": true
+      "sector": null,
+      "industria": null,
+      "marketCap": 10548227072,
+      "proximoEarnings": "2026-11-09",
+      "callTime": "TNS",
+      "diasRestantes": 48,
+      "fechaSource": "yahoo",
+      "ok": true,
+      "epsEstimado": 2.06933,
+      "epsEstimadoAlto": 2.4,
+      "epsEstimadoBajo": 1.499,
+      "revenueEstimado": 919253850,
+      "crecimientoRevenue": -13.2,
+      "crecimientoEPS": -6.8,
+      "numAnalistas": 14,
+      "historialEPS": [
+        {
+          "periodo": "-4q",
+          "fecha": "2025-09-30",
+          "estimado": 2.112,
+          "real": null,
+          "sorpresa": 5.12
+        },
+        {
+          "periodo": "-3q",
+          "fecha": "2025-12-31",
+          "estimado": 1.864,
+          "real": null,
+          "sorpresa": 16.4
+        },
+        {
+          "periodo": "-2q",
+          "fecha": "2026-03-31",
+          "estimado": 1.212,
+          "real": null,
+          "sorpresa": 39.48
+        },
+        {
+          "periodo": "-1q",
+          "fecha": "2026-06-30",
+          "estimado": 1.064,
+          "real": null,
+          "sorpresa": 54.09
+        }
+      ],
+      "recomendacion": "hold",
+      "recomendacionScore": 3,
+      "precioObjetivo": 90.16667,
+      "precioActual": 119.57,
+      "upside": -24.6,
+      "desgloseAnalistas": {
+        "strongBuy": 1,
+        "buy": 1,
+        "hold": 15,
+        "sell": 1,
+        "strongSell": 1
+      }
     },
     {
       "ticker": "RIVN",
       "nombre": "Rivian Automotive, Inc.",
-      "sector": "Consumer Cyclical",
-      "industria": "Auto Manufacturers",
-      "marketCap": 20868145152,
-      "proximoEarnings": "2026-04-30",
-      "diasRestantes": -43,
-      "epsEstimado": -0.6308,
-      "epsEstimadoAlto": -0.47,
-      "epsEstimadoBajo": -0.9,
-      "revenueEstimado": 1418682190,
-      "epsActual": -2.92,
-      "ok": true
+      "sector": null,
+      "industria": null,
+      "marketCap": 21464532992,
+      "proximoEarnings": "2026-11-03",
+      "callTime": "TNS",
+      "diasRestantes": 42,
+      "fechaSource": "yahoo",
+      "ok": true,
+      "epsEstimado": -0.73125,
+      "epsEstimadoAlto": -0.55,
+      "epsEstimadoBajo": -0.86,
+      "revenueEstimado": 1962682510,
+      "crecimientoRevenue": 26,
+      "crecimientoEPS": 23.8,
+      "numAnalistas": 11,
+      "historialEPS": [
+        {
+          "periodo": "-4q",
+          "fecha": "2025-09-30",
+          "estimado": -0.864,
+          "real": null,
+          "sorpresa": -11.14
+        },
+        {
+          "periodo": "-3q",
+          "fecha": "2025-12-31",
+          "estimado": -0.792,
+          "real": null,
+          "sorpresa": 16.65
+        },
+        {
+          "periodo": "-2q",
+          "fecha": "2026-03-31",
+          "estimado": -0.716,
+          "real": null,
+          "sorpresa": 53.92
+        },
+        {
+          "periodo": "-1q",
+          "fecha": "2026-06-30",
+          "estimado": -0.776,
+          "real": null,
+          "sorpresa": 18.85
+        }
+      ],
+      "recomendacion": "hold",
+      "recomendacionScore": 2.56,
+      "precioObjetivo": 19.30769,
+      "precioActual": 14.825,
+      "upside": 30.2,
+      "desgloseAnalistas": {
+        "strongBuy": 5,
+        "buy": 7,
+        "hold": 8,
+        "sell": 3,
+        "strongSell": 2
+      }
     },
     {
       "ticker": "SMCI",
       "nombre": "Super Micro Computer, Inc.",
-      "sector": "Technology",
-      "industria": "Computer Hardware",
-      "marketCap": 19227348992,
-      "proximoEarnings": "2026-08-04",
-      "diasRestantes": 53,
-      "epsEstimado": 0.7131,
-      "epsEstimadoAlto": 0.77,
-      "epsEstimadoBajo": 0.66,
-      "revenueEstimado": 11732728170,
-      "epsActual": 1.9,
-      "ok": true
+      "sector": null,
+      "industria": null,
+      "marketCap": 26871105536,
+      "proximoEarnings": "2026-11-03",
+      "callTime": "TNS",
+      "diasRestantes": 42,
+      "fechaSource": "yahoo",
+      "ok": true,
+      "epsEstimado": 1.03705,
+      "epsEstimadoAlto": 1.08,
+      "epsEstimadoBajo": 0.8,
+      "revenueEstimado": 14971092730,
+      "crecimientoRevenue": 198.4,
+      "crecimientoEPS": 196.3,
+      "numAnalistas": 17,
+      "historialEPS": [
+        {
+          "periodo": "-4q",
+          "fecha": "2025-09-30",
+          "estimado": 0.389,
+          "real": null,
+          "sorpresa": -10.08
+        },
+        {
+          "periodo": "-3q",
+          "fecha": "2025-12-31",
+          "estimado": 0.488,
+          "real": null,
+          "sorpresa": 41.43
+        },
+        {
+          "periodo": "-2q",
+          "fecha": "2026-03-31",
+          "estimado": 0.625,
+          "real": null,
+          "sorpresa": 34.51
+        },
+        {
+          "periodo": "-1q",
+          "fecha": "2026-06-30",
+          "estimado": 0.957,
+          "real": null,
+          "sorpresa": 77.55
+        }
+      ],
+      "recomendacion": "hold",
+      "recomendacionScore": 2.84,
+      "precioObjetivo": 42.375,
+      "precioActual": 41.54,
+      "upside": 2,
+      "desgloseAnalistas": {
+        "strongBuy": 2,
+        "buy": 3,
+        "hold": 11,
+        "sell": 2,
+        "strongSell": 1
+      }
     },
     {
       "ticker": "STM",
       "nombre": "STMicroelectronics N.V.",
-      "sector": "Technology",
-      "industria": "Semiconductors",
-      "marketCap": 69432598528,
-      "proximoEarnings": "2026-07-23",
-      "diasRestantes": 41,
-      "epsEstimado": 0.2662,
-      "epsEstimadoAlto": 0.29,
-      "epsEstimadoBajo": 0.22,
-      "revenueEstimado": 3458237500,
-      "epsActual": 0.16,
-      "ok": true
+      "sector": null,
+      "industria": null,
+      "marketCap": 46061363200,
+      "proximoEarnings": "2026-10-29",
+      "callTime": "TNS",
+      "diasRestantes": 37,
+      "fechaSource": "yahoo",
+      "ok": true,
+      "epsEstimado": 0.40832,
+      "epsEstimadoAlto": 0.43991,
+      "epsEstimadoBajo": 0.38,
+      "revenueEstimado": 3740079620,
+      "crecimientoRevenue": 17.3,
+      "crecimientoEPS": 40.8,
+      "numAnalistas": 6,
+      "historialEPS": [
+        {
+          "periodo": "-4q",
+          "fecha": "2025-09-30",
+          "estimado": 0.217,
+          "real": null,
+          "sorpresa": 33.52
+        },
+        {
+          "periodo": "-3q",
+          "fecha": "2025-12-31",
+          "estimado": 0.285,
+          "real": null,
+          "sorpresa": -61.4
+        },
+        {
+          "periodo": "-2q",
+          "fecha": "2026-03-31",
+          "estimado": 0.178,
+          "real": null,
+          "sorpresa": -27.01
+        },
+        {
+          "periodo": "-1q",
+          "fecha": "2026-06-30",
+          "estimado": 0.266,
+          "real": null,
+          "sorpresa": 16.44
+        }
+      ],
+      "recomendacion": "buy",
+      "recomendacionScore": 1.93,
+      "precioObjetivo": 75.04167,
+      "precioActual": 51.635,
+      "upside": 45.3,
+      "desgloseAnalistas": {
+        "strongBuy": 1,
+        "buy": 7,
+        "hold": 6,
+        "sell": 0,
+        "strongSell": 0
+      }
     },
     {
       "ticker": "SWKS",
       "nombre": "Skyworks Solutions, Inc.",
-      "sector": "Technology",
-      "industria": "Semiconductors",
-      "marketCap": 10939026432,
-      "proximoEarnings": "2026-08-04",
-      "diasRestantes": 53,
-      "epsEstimado": 1.0325,
-      "epsEstimadoAlto": 1.0981,
-      "epsEstimadoBajo": 0.95,
-      "revenueEstimado": 925613120,
-      "epsActual": 2.4,
-      "ok": true
+      "sector": null,
+      "industria": null,
+      "marketCap": 13700478976,
+      "proximoEarnings": "2026-11-03",
+      "callTime": "TNS",
+      "diasRestantes": 42,
+      "fechaSource": "yahoo",
+      "ok": true,
+      "epsEstimado": 1.27319,
+      "epsEstimadoAlto": 1.31396,
+      "epsEstimadoBajo": 1.25,
+      "revenueEstimado": 1036028220,
+      "crecimientoRevenue": -5.8,
+      "crecimientoEPS": -27.7,
+      "numAnalistas": 21,
+      "historialEPS": [
+        {
+          "periodo": "-4q",
+          "fecha": "2025-09-30",
+          "estimado": 1.533,
+          "real": null,
+          "sorpresa": 14.82
+        },
+        {
+          "periodo": "-3q",
+          "fecha": "2025-12-31",
+          "estimado": 1.399,
+          "real": null,
+          "sorpresa": 10.08
+        },
+        {
+          "periodo": "-2q",
+          "fecha": "2026-03-31",
+          "estimado": 1.044,
+          "real": null,
+          "sorpresa": 10.1
+        },
+        {
+          "periodo": "-1q",
+          "fecha": "2026-06-30",
+          "estimado": 1.031,
+          "real": null,
+          "sorpresa": 4.79
+        }
+      ],
+      "recomendacion": "hold",
+      "recomendacionScore": 3,
+      "precioObjetivo": 68.35294,
+      "precioActual": 91.09,
+      "upside": -25,
+      "desgloseAnalistas": {
+        "strongBuy": 1,
+        "buy": 1,
+        "hold": 19,
+        "sell": 1,
+        "strongSell": 1
+      }
     },
     {
       "ticker": "TSLA",
       "nombre": "Tesla, Inc.",
-      "sector": "Consumer Cyclical",
-      "industria": "Auto Manufacturers",
-      "marketCap": 1499097071616,
-      "proximoEarnings": "2026-07-22",
-      "diasRestantes": 40,
-      "epsEstimado": 0.4541,
-      "epsEstimadoAlto": 0.59,
-      "epsEstimadoBajo": 0.2648,
-      "revenueEstimado": 24634836150,
-      "epsActual": 1.08,
-      "ok": true
+      "sector": null,
+      "industria": null,
+      "marketCap": 1500411723776,
+      "proximoEarnings": "2026-10-21",
+      "callTime": "TNS",
+      "diasRestantes": 29,
+      "fechaSource": "yahoo",
+      "ok": true,
+      "epsEstimado": 0.4544,
+      "epsEstimadoAlto": 0.6,
+      "epsEstimadoBajo": 0.3,
+      "revenueEstimado": 27500849980,
+      "crecimientoRevenue": -2.1,
+      "crecimientoEPS": -9.1,
+      "numAnalistas": 25,
+      "historialEPS": [
+        {
+          "periodo": "-4q",
+          "fecha": "2025-09-30",
+          "estimado": 0.559,
+          "real": null,
+          "sorpresa": -10.53
+        },
+        {
+          "periodo": "-3q",
+          "fecha": "2025-12-31",
+          "estimado": 0.451,
+          "real": null,
+          "sorpresa": 10.96
+        },
+        {
+          "periodo": "-2q",
+          "fecha": "2026-03-31",
+          "estimado": 0.35,
+          "real": null,
+          "sorpresa": 17.15
+        },
+        {
+          "periodo": "-1q",
+          "fecha": "2026-06-30",
+          "estimado": 0.542,
+          "real": null,
+          "sorpresa": -39.15
+        }
+      ],
+      "recomendacion": "buy",
+      "recomendacionScore": 2.35,
+      "precioObjetivo": 396.93738,
+      "precioActual": 379.8946,
+      "upside": 4.5,
+      "desgloseAnalistas": {
+        "strongBuy": 4,
+        "buy": 15,
+        "hold": 20,
+        "sell": 2,
+        "strongSell": 2
+      }
     },
     {
       "ticker": "TSM",
-      "nombre": "Taiwan Semiconductor Manufacturing Company Limited",
-      "sector": "Technology",
-      "industria": "Semiconductors",
-      "marketCap": 2183868579840,
-      "proximoEarnings": "2026-07-16",
-      "diasRestantes": 34,
-      "epsEstimado": 3.7409,
-      "epsEstimadoAlto": 3.82,
-      "epsEstimadoBajo": 3.67,
-      "revenueEstimado": 1261639796270,
-      "epsActual": 11.62,
-      "ok": true
+      "nombre": "Taiwan Semiconductor Manufactur",
+      "sector": null,
+      "industria": null,
+      "marketCap": 2309225709568,
+      "proximoEarnings": "2026-10-15",
+      "callTime": "TNS",
+      "diasRestantes": 23,
+      "fechaSource": "yahoo",
+      "ok": true,
+      "epsEstimado": 4.4614,
+      "epsEstimadoAlto": 4.72,
+      "epsEstimadoBajo": 4.26,
+      "revenueEstimado": 1454935426950,
+      "crecimientoRevenue": 47,
+      "crecimientoEPS": 52.8,
+      "numAnalistas": 9,
+      "historialEPS": [
+        {
+          "periodo": "-4q",
+          "fecha": "2025-09-30",
+          "estimado": 2.625,
+          "real": null,
+          "sorpresa": 11.23
+        },
+        {
+          "periodo": "-3q",
+          "fecha": "2025-12-31",
+          "estimado": 2.976,
+          "real": null,
+          "sorpresa": 5.53
+        },
+        {
+          "periodo": "-2q",
+          "fecha": "2026-03-31",
+          "estimado": 3.334,
+          "real": null,
+          "sorpresa": 4.68
+        },
+        {
+          "periodo": "-1q",
+          "fecha": "2026-06-30",
+          "estimado": 3.887,
+          "real": null,
+          "sorpresa": 10.89
+        }
+      ],
+      "recomendacion": "strong_buy",
+      "recomendacionScore": 1.38,
+      "precioObjetivo": 552.2594,
+      "precioActual": 445.24,
+      "upside": 24,
+      "desgloseAnalistas": {
+        "strongBuy": 6,
+        "buy": 14,
+        "hold": 1,
+        "sell": 0,
+        "strongSell": 0
+      }
     },
     {
       "ticker": "VRT",
-      "nombre": "Vertiv Holdings Co",
-      "sector": "Industrials",
-      "industria": "Electrical Equipment & Parts",
-      "marketCap": 114418327552,
-      "proximoEarnings": "2026-07-29",
-      "diasRestantes": 47,
-      "epsEstimado": 1.4244,
-      "epsEstimadoAlto": 1.59,
-      "epsEstimadoBajo": 1.38,
-      "revenueEstimado": 3376137200,
-      "epsActual": 3.99,
-      "ok": true
+      "nombre": "Vertiv Holdings, LLC",
+      "sector": null,
+      "industria": null,
+      "marketCap": 96381788160,
+      "proximoEarnings": "2026-10-21",
+      "callTime": "TNS",
+      "diasRestantes": 29,
+      "fechaSource": "yahoo",
+      "ok": true,
+      "epsEstimado": 1.82782,
+      "epsEstimadoAlto": 1.94,
+      "epsEstimadoBajo": 1.79,
+      "revenueEstimado": 3771417040,
+      "crecimientoRevenue": 40.9,
+      "crecimientoEPS": 47.4,
+      "numAnalistas": 23,
+      "historialEPS": [
+        {
+          "periodo": "-4q",
+          "fecha": "2025-09-30",
+          "estimado": 0.992,
+          "real": null,
+          "sorpresa": 25.02
+        },
+        {
+          "periodo": "-3q",
+          "fecha": "2025-12-31",
+          "estimado": 1.296,
+          "real": null,
+          "sorpresa": 4.9
+        },
+        {
+          "periodo": "-2q",
+          "fecha": "2026-03-31",
+          "estimado": 1.012,
+          "real": null,
+          "sorpresa": 15.67
+        },
+        {
+          "periodo": "-1q",
+          "fecha": "2026-06-30",
+          "estimado": 1.428,
+          "real": null,
+          "sorpresa": 6.42
+        }
+      ],
+      "recomendacion": "strong_buy",
+      "recomendacionScore": 1.39,
+      "precioObjetivo": 338.15384,
+      "precioActual": 250.35,
+      "upside": 35.1,
+      "desgloseAnalistas": {
+        "strongBuy": 3,
+        "buy": 21,
+        "hold": 4,
+        "sell": 0,
+        "strongSell": 0
+      }
     }
   ]
 }

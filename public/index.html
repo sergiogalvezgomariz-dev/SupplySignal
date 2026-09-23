@@ -2678,6 +2678,41 @@ async function cargarEarnings() {
       return `$${(v/1e6).toFixed(0)}M`;
     };
 
+    const fmtEPS = v => v == null ? "—" : (v >= 0 ? `$${v.toFixed(2)}` : `-$${Math.abs(v).toFixed(2)}`);
+    const fmtRev = v => {
+      if (!v) return "—";
+      if (v >= 1e12) return `$${(v/1e12).toFixed(1)}T`;
+      if (v >= 1e9)  return `$${(v/1e9).toFixed(1)}B`;
+      return `$${(v/1e6).toFixed(0)}M`;
+    };
+
+    // Recomendación → texto + color
+    const fmtRec = (key, score) => {
+      const map = {
+        strongBuy:  { label: "Strong Buy",  bg: "#d1fae5", col: "#065f46" },
+        buy:        { label: "Buy",          bg: "#dcfce7", col: "#166534" },
+        hold:       { label: "Hold",         bg: "#fef3c7", col: "#92400e" },
+        sell:       { label: "Sell",         bg: "#fee2e2", col: "#991b1b" },
+        strongSell: { label: "Strong Sell",  bg: "#fca5a5", col: "#7f1d1d" },
+      };
+      const r = map[key] || { label: key || "N/A", bg: "#f3f4f6", col: "#6b7280" };
+      return `<span style="font-size:10px;background:${r.bg};color:${r.col};padding:2px 8px;border-radius:4px;font-weight:600">${r.label}</span>`;
+    };
+
+    // Historial EPS: 3 últimos trimestres como puntos de color
+    const epsHistory = hist => {
+      if (!hist || !hist.length) return "";
+      const dots = hist.slice(0, 4).map(h => {
+        if (h.sorpresa == null) return `<span style="width:8px;height:8px;border-radius:50%;background:#e5e7eb;display:inline-block;margin:0 1px" title="No data"></span>`;
+        const color = h.sorpresa >= 5 ? "#16a34a" : h.sorpresa >= 0 ? "#4ade80" : h.sorpresa >= -5 ? "#f59e0b" : "#ef4444";
+        const label = `${h.periodo}: EPS ${fmtEPS(h.real)} (est ${fmtEPS(h.estimado)}, ${h.sorpresa > 0 ? "+" : ""}${h.sorpresa}%)`;
+        return `<span style="width:8px;height:8px;border-radius:50%;background:${color};display:inline-block;margin:0 1px;cursor:default" title="${label}"></span>`;
+      });
+      return `<div style="display:flex;align-items:center;gap:2px;margin-top:2px">
+        <span style="font-size:10px;color:var(--gray-400);margin-right:3px">EPS hist.</span>${dots.join("")}
+      </div>`;
+    };
+
     let html = `<div style="font-size:11px;color:var(--gray-400);margin-bottom:20px;letter-spacing:.3px">
       Last updated: <strong style="color:var(--gray-700)">${upd}</strong> &nbsp;·&nbsp;
       ${con.length} companies with confirmed dates &nbsp;·&nbsp;
@@ -2703,28 +2738,59 @@ async function cargarEarnings() {
                     border-bottom:1px solid #e5e7eb;padding-bottom:8px;margin-bottom:12px">
           ${mesNombre(mes)}
         </div>
-        <div class="earnings-month-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px">`;
+        <div class="earnings-month-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px">`;
 
       for (const e of empresas) {
         const dias = e.diasRestantes;
+        // Upside/downside vs precio objetivo
+        const upsideHtml = e.upside != null
+          ? `<span style="font-size:10px;color:${e.upside >= 0 ? "#16a34a" : "#dc2626"};font-weight:600">${e.upside >= 0 ? "▲" : "▼"} ${Math.abs(e.upside)}% PT</span>`
+          : "";
+        // Crecimiento revenue/EPS
+        const growthHtml = e.crecimientoRevenue != null || e.crecimientoEPS != null
+          ? `<div style="font-size:10px;color:var(--gray-400);margin-top:4px">
+              ${e.crecimientoRevenue != null ? `Rev ${e.crecimientoRevenue >= 0 ? "+" : ""}${e.crecimientoRevenue}% YoY` : ""}
+              ${e.crecimientoEPS     != null ? `&nbsp;·&nbsp; EPS ${e.crecimientoEPS >= 0 ? "+" : ""}${e.crecimientoEPS}% YoY` : ""}
+            </div>` : "";
         html += `<div class="card" ${urgencia(dias)} style="padding:14px 16px">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
-            <div>
-              <span style="font-family:var(--f-mono);font-size:1rem;font-weight:600;color:var(--navy)">${e.ticker}</span>
-              <span style="font-size:.78rem;color:var(--gray-400);margin-left:6px">${fmtMktCap(e.marketCap)}</span>
+          <!-- Fila 1: ticker + badge -->
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px">
+            <div style="display:flex;align-items:baseline;gap:6px">
+              <span style="font-family:var(--f-mono);font-size:1.05rem;font-weight:700;color:var(--navy)">${e.ticker}</span>
+              <span style="font-size:.75rem;color:var(--gray-400)">${fmtMktCap(e.marketCap)}</span>
             </div>
             ${badge(dias)}
           </div>
-          <div style="font-size:.82rem;color:var(--gray-600);margin-bottom:8px;line-height:1.3">${(e.nombre||"").replace(/,.*/, "")}</div>
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <div style="font-size:.85rem;font-weight:600;color:var(--gray-800)">${fmtFecha(e.proximoEarnings)}</div>
-            <div style="text-align:right;font-size:.8rem;color:var(--gray-500)">
-              ${e.epsEstimado != null ? `EPS est. <strong style="color:var(--navy)">$${e.epsEstimado.toFixed(2)}</strong>` : ""}
+          <!-- Fila 2: nombre empresa -->
+          <div style="font-size:.8rem;color:var(--gray-500);margin-bottom:8px;line-height:1.3">${(e.nombre||"").replace(/,.*/, "")}</div>
+          <!-- Separador -->
+          <div style="border-top:1px solid #f3f4f6;margin-bottom:8px"></div>
+          <!-- Fila 3: fecha + call time -->
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+            <div style="font-size:.88rem;font-weight:600;color:var(--gray-800)">${fmtFecha(e.proximoEarnings)}</div>
+            ${e.callTime && e.callTime !== "TNS" ? `<span style="font-size:10px;background:#f3f4f6;color:#6b7280;padding:2px 6px;border-radius:4px">${e.callTime === "TBD" ? "date TBD" : e.callTime}</span>` : ""}
+          </div>
+          <!-- Fila 4: EPS + Revenue estimados -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px">
+            <div style="background:#f9fafb;border-radius:6px;padding:6px 8px">
+              <div style="font-size:10px;color:var(--gray-400);margin-bottom:2px">EPS Estimate</div>
+              <div style="font-size:.88rem;font-weight:600;color:var(--navy)">${fmtEPS(e.epsEstimado)}</div>
+              ${e.epsEstimadoBajo != null ? `<div style="font-size:9px;color:var(--gray-400)">${fmtEPS(e.epsEstimadoBajo)} – ${fmtEPS(e.epsEstimadoAlto)}</div>` : ""}
+            </div>
+            <div style="background:#f9fafb;border-radius:6px;padding:6px 8px">
+              <div style="font-size:10px;color:var(--gray-400);margin-bottom:2px">Revenue Est.</div>
+              <div style="font-size:.88rem;font-weight:600;color:var(--navy)">${fmtRev(e.revenueEstimado)}</div>
+              ${e.numAnalistas != null ? `<div style="font-size:9px;color:var(--gray-400)">${e.numAnalistas} analysts</div>` : ""}
             </div>
           </div>
-          ${e.epsEstimado != null && e.epsEstimadoBajo != null ? `
-          <div style="margin-top:6px;font-size:.75rem;color:var(--gray-400)">
-            Range: $${e.epsEstimadoBajo.toFixed(2)} – $${e.epsEstimadoAlto.toFixed(2)}
+          ${growthHtml}
+          <!-- Fila 5: historial EPS -->
+          ${epsHistory(e.historialEPS)}
+          <!-- Fila 6: recomendación + upside -->
+          ${e.recomendacion || e.upside != null ? `
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;padding-top:6px;border-top:1px solid #f3f4f6">
+            ${e.recomendacion ? fmtRec(e.recomendacion, e.recomendacionScore) : "<span></span>"}
+            ${upsideHtml}
           </div>` : ""}
         </div>`;
       }
