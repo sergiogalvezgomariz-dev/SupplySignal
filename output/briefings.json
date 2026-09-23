@@ -1,114 +1,208 @@
 {
-  "actualizadoEn": "2026-06-12T15:31:56.666832",
-  "ventanaDias": 14,
+  "actualizadoEn": "2026-09-23T14:57:58.298500",
+  "ventanaDias": 60,
   "total": 1,
   "briefings": [
     {
-      "ticker": "MU",
-      "nombre": "Micron Technology, Inc.",
-      "earningsDate": "2026-06-24",
-      "diasRestantes": 12,
-      "epsNextQ": 19.6563,
-      "epsLow": 7.53,
-      "epsHigh": 24.08,
-      "revNextQ": 34286563820,
+      "ticker": "AAPL",
+      "nombre": "Apple Inc.",
+      "earningsDate": "2026-10-29",
+      "diasRestantes": 36,
+      "epsNextQ": 1.9812,
+      "epsLow": 1.93,
+      "epsHigh": 2.07,
+      "revNextQ": 113624521680,
       "beatStreak": 4,
       "quarters": [
         {
-          "quarter": "2025-05-31",
-          "epsActual": 1.91,
-          "epsEstimate": 1.595,
-          "epsDifference": 0.32,
-          "surprisePct": 19.75,
+          "quarter": "2025-09-30",
+          "epsActual": 1.85,
+          "epsEstimate": 1.7699,
+          "epsDifference": 0.08,
+          "surprisePct": 4.52,
           "beat": true
         },
         {
-          "quarter": "2025-08-31",
-          "epsActual": 3.03,
-          "epsEstimate": 2.8602,
+          "quarter": "2025-12-31",
+          "epsActual": 2.84,
+          "epsEstimate": 2.6708,
           "epsDifference": 0.17,
-          "surprisePct": 5.94,
+          "surprisePct": 6.34,
           "beat": true
         },
         {
-          "quarter": "2025-11-30",
-          "epsActual": 4.78,
-          "epsEstimate": 3.9641,
-          "epsDifference": 0.82,
-          "surprisePct": 20.58,
+          "quarter": "2026-03-31",
+          "epsActual": 2.01,
+          "epsEstimate": 1.9427,
+          "epsDifference": 0.07,
+          "surprisePct": 3.46,
           "beat": true
         },
         {
-          "quarter": "2026-02-28",
-          "epsActual": 12.2,
-          "epsEstimate": 9.1587,
-          "epsDifference": 3.04,
-          "surprisePct": 33.21,
+          "quarter": "2026-06-30",
+          "epsActual": 2.02,
+          "epsEstimate": 1.8924,
+          "epsDifference": 0.13,
+          "surprisePct": 6.74,
           "beat": true
         }
       ],
       "supplyChain": {
-        "esCliente": false,
-        "esProveedor": true,
-        "proveedores": [],
-        "clientes": [
+        "esCliente": true,
+        "esProveedor": false,
+        "proveedores": [
           {
-            "ticker": "NVDA",
-            "nombre": "NVIDIA",
-            "dependencia": 15,
+            "ticker": "TSM",
+            "nombre": "TSMC",
+            "dependencia": 25,
+            "lag": "3-6"
+          },
+          {
+            "ticker": "QCOM",
+            "nombre": "Qualcomm",
+            "dependencia": 20,
             "lag": "3-7"
+          },
+          {
+            "ticker": "SWKS",
+            "nombre": "Skyworks",
+            "dependencia": 55,
+            "lag": "2-5"
+          },
+          {
+            "ticker": "QRVO",
+            "nombre": "Qorvo",
+            "dependencia": 30,
+            "lag": "2-6"
+          },
+          {
+            "ticker": "CRUS",
+            "nombre": "Cirrus Logic",
+            "dependencia": 80,
+            "lag": "2-5"
+          },
+          {
+            "ticker": "AMAT",
+            "nombre": "Applied Materials",
+            "dependencia": 8,
+            "lag": "4-8"
+          },
+          {
+            "ticker": "KLAC",
+            "nombre": "KLA Corporation",
+            "dependencia": 7,
+            "lag": "4-8"
           }
-        ]
+        ],
+        "clientes": []
       },
       "noticias": [
         {
-          "title": "Top Bank Doubles Micron Price Target on Memory Boom",
-          "provider": "GuruFocus.com",
-          "url": "https://finance.yahoo.com/markets/stocks/articles/top-bank-doubles-micron-price-123931457.html",
-          "fecha": "Jun 12"
+          "title": "The hidden tech trap destroying your portfolio",
+          "provider": "Yahoo Finance Video",
+          "url": "https://finance.yahoo.com/video/hidden-tech-trap-destroying-portfolio-110000499.html",
+          "fecha": "Sep 23"
         },
         {
-          "title": "Everyone's Buying NVIDIA - Here Are 2 Smarter AI Stocks for 2026",
-          "provider": "Zacks",
-          "url": "https://finance.yahoo.com/markets/stocks/articles/everyones-buying-nvidia-2-smarter-114800263.html",
-          "fecha": "Jun 12"
+          "title": "Meta’s Muse just changed the AI game",
+          "provider": "Yahoo Finance Video",
+          "url": "https://finance.yahoo.com/video/meta-muse-just-changed-ai-213133381.html",
+          "fecha": "Sep 22"
         },
         {
-          "title": "Latest News In AI Chips - AI-Powered Shift: Transforming Data Into Business Intelligence",
-          "provider": "Simply Wall St.",
-          "url": "https://finance.yahoo.com/sectors/technology/articles/latest-news-ai-chips-ai-113735040.html",
-          "fecha": "Jun 12"
+          "title": "Meta has 'enormous advantage' in rally sparked by new Muse AI",
+          "provider": "Yahoo Finance Video",
+          "url": "https://finance.yahoo.com/video/meta-enormous-advantage-rally-sparked-170402510.html",
+          "fecha": "Sep 22"
         },
         {
-          "title": "Micron and Sandisk Are Up Big During the Past Year. Can the Run Continue?",
-          "provider": "Motley Fool",
-          "url": "https://www.fool.com/investing/2026/06/12/micron-and-sandisk-are-up-big-over-the-past-year-c/",
-          "fecha": "Jun 12"
+          "title": "Apple’s iPhone 18 Demand Improves At The Margin, China Remains Weak Spot, Says UBS — Latest Target Implies 13% Downside Potential",
+          "provider": "Stocktwits",
+          "url": "https://stocktwits.com/news-articles/markets/equity/apple-s-i-phone-18-demand-improves-at-the-margin-china-remains-weak-spot-says-ubs-latest-target-implies-13-downside-potential/cZMEtpuRBJQ",
+          "fecha": "Sep 23"
         },
         {
-          "title": "Why Goldman Is Cautious on Micron Stock Ahead of Earnings",
+          "title": "Gadgets Are Going Premium—and Manufacturers Are Raking It In",
+          "provider": "The Wall Street Journal",
+          "url": "https://www.wsj.com/tech/gadgets-are-going-premiumand-manufacturers-are-raking-it-in-2fa1130e?siteid=yhoof2&yptr=yahoo",
+          "fecha": "Sep 23"
+        },
+        {
+          "title": "Muse AI Makes Meta Connect a Must Watch for Investors",
           "provider": "Barrons.com",
-          "url": "https://www.barrons.com/articles/micron-stock-price-target-goldman-earnings-f5f6475b?siteid=yhoof2&yptr=yahoo",
-          "fecha": "Jun 12"
-        },
-        {
-          "title": "2 Semiconductor Stocks to Keep an Eye On and 1 We Turn Down",
-          "provider": "StockStory",
-          "url": "https://finance.yahoo.com/markets/stocks/articles/2-semiconductor-stocks-keep-eye-102120717.html",
-          "fecha": "Jun 12"
+          "url": "https://www.barrons.com/articles/meta-connect-2026-muse-ai-1c069cf1?siteid=yhoof2&yptr=yahoo",
+          "fecha": "Sep 23"
         }
       ],
-      "briefing": {
-        "headline": "Micron heads into fiscal Q3 2026 earnings on a 4-quarter beat streak with accelerating EPS momentum, as HBM demand from NVIDIA remains the critical variable to watch.",
-        "business_context": "Micron Technology is one of the world's three primary DRAM and NAND flash manufacturers, competing directly with Samsung and SK Hynix across cloud, mobile, automotive, and embedded end markets. The company is strategically pivotal in the AI infrastructure supply chain as the leading U.S.-domiciled producer of High Bandwidth Memory (HBM), which is a key component in NVIDIA's H100, H200, and Blackwell GPU platforms. Micron's revenue trajectory is closely tied to data center capex cycles, DRAM pricing dynamics, and the rate of AI accelerator adoption by hyperscalers.",
-        "market_expectations": "Consensus estimates fiscal Q3 2026 EPS at $19.66 (range: $7.53–$24.08, indicating unusually wide dispersion) on revenue of approximately $34.29B. The wide EPS range reflects significant uncertainty around HBM3E allocation ramp, DRAM spot pricing, and potential tariff or export control impacts on China-bound shipments. Gross margin sustainability near or above the current 58.4% level will be closely scrutinized given the mix shift toward higher-ASP HBM products.",
-        "eps_trend_analysis": "Micron has delivered 4 consecutive EPS beats with accelerating magnitude: +19.75% in May 2025, +5.94% in August 2025, +20.58% in November 2025, and a substantial +33.21% beat in February 2026. Absolute EPS has grown from $1.91 to $12.20 across these four quarters, reflecting both DRAM pricing recovery and HBM mix enrichment. The pattern of accelerating beat magnitude into February 2026 sets a high bar for the upcoming print, as consensus has likely already embedded aggressive upward revisions. At $19.66 consensus EPS, the implied sequential growth is approximately 61%, which is ambitious and suggests the market is pricing in continued HBM ramp execution and favorable pricing.",
-        "supply_chain_exposure": "NVIDIA is the single most consequential customer in Micron's disclosed exposure, representing approximately 15% of supplier revenue with a reported 3–7 day demand signal lag. As NVIDIA accelerates Blackwell platform shipments to hyperscalers, HBM3E content per GPU unit directly amplifies Micron's revenue per system sold. Any softness in NVIDIA's data center GPU shipment cadence—whether from export restrictions to China, hyperscaler capex moderation, or competitive GPU alternatives—would have a direct and near-term read-through to Micron's HBM revenue line. Concentration in a single customer at 15% of revenue represents meaningful idiosyncratic risk. On the supply side, Micron sources advanced lithography equipment from ASML (EUV tools critical for 1-alpha and 1-beta DRAM nodes) and relies on specialty chemicals and substrate suppliers concentrated in Japan and Taiwan, creating potential operational risk from geopolitical disruptions.",
-        "key_risks": "1. Export control escalation or further restrictions on advanced memory shipments to China could materially impair Micron's China-facing revenue, which has historically represented a meaningful portion of NAND and commodity DRAM sales; any incremental regulatory action between now and the print date warrants close monitoring. 2. HBM supply-demand balance is tightening as SK Hynix and Samsung aggressively ramp HBM3E capacity; if Micron's HBM ASP realization or allocation share disappoints relative to elevated expectations, gross margin could compress from current levels, pressuring EPS below the already-wide consensus range.",
-        "key_catalysts": "1. A confirmed expansion of HBM3E supply agreements with NVIDIA or other hyperscalers—particularly any disclosure of HBM4 qualification progress or design wins—would signal durable pricing power and extend the revenue visibility horizon well into fiscal 2027. 2. Stronger-than-expected cloud DRAM pricing in the spot and contract markets, driven by continued hyperscaler memory density upgrades for AI inference workloads, could push both revenue and gross margin above the high end of guidance, replicating the magnitude of the February 2026 beat.",
-        "watch": ""
+      "impliedMove": {
+        "available": true,
+        "stockPrice": 339.75,
+        "expiry": "2026-10-30",
+        "atmStrike": 340.0,
+        "callMid": 11.95,
+        "putMid": 10.79,
+        "straddle": 22.74,
+        "impliedMovePct": 6.69,
+        "label": "±6.69%"
       },
-      "generadoEn": "2026-06-12T15:31:56.666791"
+      "histMoves": {
+        "available": true,
+        "moves": [
+          {
+            "quarter": "2025-09-30",
+            "movePct": 0.32,
+            "direction": "up"
+          },
+          {
+            "quarter": "2025-12-31",
+            "movePct": -0.31,
+            "direction": "down"
+          },
+          {
+            "quarter": "2026-03-31",
+            "movePct": 0.73,
+            "direction": "up"
+          },
+          {
+            "quarter": "2026-06-30",
+            "movePct": 1.73,
+            "direction": "up"
+          }
+        ],
+        "avgAbsMove": 0.77,
+        "maxMove": 1.73,
+        "nSamples": 4
+      },
+      "revisions": {
+        "available": true,
+        "trend": "falling",
+        "up7d": 1,
+        "up30d": 7,
+        "dn30d": 14,
+        "dn90d": 0,
+        "analysts": 27,
+        "epsGrowth": 0.0689,
+        "ptMean": 328.22,
+        "ptHigh": 405.0,
+        "ptLow": 215.0,
+        "ptMedian": 340.0
+      },
+      "edgar8k": {
+        "available": false,
+        "filingDate": null,
+        "edgarUrl": null
+      },
+      "briefing": {
+        "headline": "Apple enters earnings with a 4-quarter beat streak and strong margins, but falling analyst estimates and options pricing 8.7x the historical average move signal meaningful uncertainty around iPhone demand and tariff exposure.",
+        "business_context": "Apple Inc. is the world's largest company by market capitalization and the anchor customer for a dense ecosystem of semiconductor and component suppliers, several of which derive the majority of their revenues from Apple alone (Cirrus Logic at ~80%, Skyworks at ~55%). As both a bellwether for consumer electronics demand and a primary driver of advanced node semiconductor procurement from TSMC, Apple's quarterly results carry significant read-through implications across the global technology supply chain. Services revenue and iPhone unit economics are the two most closely watched financial dimensions given their outsized influence on gross margin trajectory.",
+        "market_expectations": "Consensus expects Q4 FY2026 EPS of $1.98 (range: $1.93–$2.07), representing approximately 6.9% year-over-year EPS growth. Revenue consensus stands at $113.62B. Key metrics the market will focus on include iPhone revenue and unit volumes, Services revenue growth rate and gross margin, and any forward guidance commentary on the December quarter — historically Apple's largest revenue period due to holiday iPhone demand.",
+        "eps_trend_analysis": "Apple has beaten consensus EPS estimates in each of the last four consecutive quarters, with beat magnitudes of +4.52%, +6.34%, +3.46%, and +6.74% respectively. The consistency and size of these beats suggest Apple has been either conservatively guiding or that consensus models have systematically underestimated operational leverage. However, the beat streak may itself create a higher implicit bar: with 14 of 27 covering analysts cutting estimates in the last 30 days versus only 7 raising, the downward revision trend indicates consensus may already be attempting to de-risk estimates ahead of the print, potentially narrowing the beat cushion.",
+        "supply_chain_exposure": "Apple is the primary customer for several critical suppliers, creating concentrated revenue dependency that makes supplier earnings a leading indicator for Apple's own results. Cirrus Logic (~80% Apple revenue dependency) and Skyworks (~55%) are the most exposed and their recent commentary on order trends and inventory levels is directly relevant. Qorvo (~30% dependency) and Qualcomm (~20%) provide RF and modem content respectively, with Qualcomm's transitional role in Apple modems adding a layer of uncertainty as Apple continues to develop in-house baseband capabilities. TSMC (~25% Apple dependency) is the sole advanced-node manufacturer for Apple Silicon; any capacity allocation shifts or yield commentary from TSMC would be a meaningful signal. Equipment suppliers Applied Materials and KLA Corporation have lower direct Apple dependency (~7–8%) but their capacity utilization data informs broader fab investment trends. Lag times of 2–8 days across these suppliers mean recent earnings from this cohort serve as a real-time demand signal.",
+        "key_risks": "1) Tariff and supply chain re-configuration costs: Ongoing U.S.-China trade policy uncertainty could compress gross margins if Apple is absorbing incremental costs on China-assembled products or accelerating manufacturing diversification to India and Vietnam at scale, both of which carry near-term cost headwinds. 2) iPhone demand softness in China: Apple faces intensifying competition from Huawei and domestic Android OEMs in Greater China, which has historically represented 15–20% of total revenue; a sequential or year-over-year decline in China revenue would pressure both the top line and investor sentiment on the growth narrative.",
+        "key_catalysts": "1) Services segment margin expansion: Services revenue, which carries significantly higher gross margins than hardware, has been the primary driver of blended margin improvement; an acceleration in Services growth — particularly from the App Store, Apple Intelligence-linked subscriptions, or financial services — would be a meaningful upside lever. 2) Stronger-than-expected December quarter guidance: Given that Q1 FY2027 (holiday quarter) is Apple's highest revenue period, any indication that iPhone 17 sell-through is tracking above plan or that supply constraints are not materializing would likely be well-received by the market.",
+        "options_read": "The ATM straddle is pricing an implied move of approximately ±6.69% into the October 29 earnings event, against a four-quarter average realized move of just ±0.77% and a maximum observed move of ±1.73%. The options market is pricing roughly 5.9 percentage points more volatility than recent history would suggest."
+      },
+      "generadoEn": "2026-09-23T14:57:58.298464"
     }
   ]
 }

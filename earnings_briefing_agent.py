@@ -25,6 +25,9 @@ Uso:
 """
 
 import sys
+# Fuerza UTF-8 en stdout para evitar UnicodeEncodeError en Windows (cp1252)
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 import json
 import os
 import datetime
@@ -805,7 +808,7 @@ def procesar_ticker(ticker: str, earnings_date: str, dias: int,
     if revisions.get("available"):
         trend = revisions.get("trend", "unknown")
         up, dn = revisions.get("up30d", 0), revisions.get("dn30d", 0)
-        print(f"OK — {trend.upper()} ({up}↑ / {dn}↓ in 30d)")
+        print(f"OK -- {trend.upper()} ({up}^ / {dn}v in 30d)")
     else:
         print(f"N/A — {revisions.get('error','')}")
 
@@ -836,7 +839,7 @@ def procesar_ticker(ticker: str, earnings_date: str, dias: int,
         if delta > 1.5:
             print(f"    ⚠  Options EXPENSIVE: implied {implied_move['impliedMovePct']}% vs hist avg {hist_moves['avgAbsMove']}%")
         elif delta < -1.5:
-            print(f"    ✓  Options CHEAP: implied {implied_move['impliedMovePct']}% vs hist avg {hist_moves['avgAbsMove']}%")
+            print(f"    OK Options CHEAP: implied {implied_move['impliedMovePct']}% vs hist avg {hist_moves['avgAbsMove']}%")
         else:
             print(f"    ·  Options fairly priced ({implied_move['impliedMovePct']}% implied vs {hist_moves['avgAbsMove']}% hist)")
 
