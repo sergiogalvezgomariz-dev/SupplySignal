@@ -209,7 +209,7 @@ function calcularSenales() {
     const shock = Math.abs(datosCli.variacionPct) >= UMBRAL_SHOCK;
     if (!shock) continue;
 
-    const direccion  = datosCli.variacionPct > 0 ? "COMPRA" : "VENTA";
+    const direccion  = datosCli.variacionPct > 0 ? "BUY" : "SELL";
     const puntuacion = Math.round(Math.abs(datosCli.variacionPct) * par.dependencia) / 10;
 
     senales.push({
@@ -226,9 +226,9 @@ function calcularSenales() {
       puntuacion,
       fuente:          par.fuente || "Manual",
       explicacion:
-        direccion === "COMPRA"
-          ? `${par.clienteNombre} ha subido un ${datosCli.variacionPct.toFixed(1)}% hoy. ${par.proveedorNombre} depende de ${par.clienteNombre} en ~${par.dependencia}% de sus ingresos y históricamente reacciona con ${par.lag} días de retardo.`
-          : `${par.clienteNombre} ha caído un ${Math.abs(datosCli.variacionPct).toFixed(1)}% hoy. ${par.proveedorNombre} (~${par.dependencia}% de ingresos ligados a ${par.clienteNombre}) podría caer en los próximos ${par.lag} días.`,
+        direccion === "BUY"
+          ? `${par.clienteNombre} is up ${datosCli.variacionPct.toFixed(1)}% today. ${par.proveedorNombre} derives ~${par.dependencia}% of its revenue from ${par.clienteNombre} and historically reacts with a ${par.lag}-day lag.`
+          : `${par.clienteNombre} is down ${Math.abs(datosCli.variacionPct).toFixed(1)}% today. ${par.proveedorNombre} (~${par.dependencia}% of revenue tied to ${par.clienteNombre}) may follow lower over the next ${par.lag} days.`,
     });
   }
 
