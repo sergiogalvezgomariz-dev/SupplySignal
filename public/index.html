@@ -2361,10 +2361,10 @@ async function cargarBriefings() {
               <div style="font-size:.75rem;opacity:.55;margin-top:1px">in ${b.diasRestantes} days</div>
             </div>
             ${im.available ? `
-            <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 14px;text-align:center;min-width:110px">
-              <div style="font-size:.65rem;opacity:.6;letter-spacing:.8px;text-transform:uppercase;margin-bottom:4px">Implied Move</div>
+            <div style="text-align:right;min-width:110px">
+              <div style="font-size:.65rem;opacity:.55;letter-spacing:.8px;text-transform:uppercase;margin-bottom:4px">Implied Move</div>
               <div style="font-family:var(--f-mono);font-size:1.5rem;font-weight:700;color:#F0C96A;line-height:1">${im.label}</div>
-              ${histPct != null ? `<div style="font-size:.68rem;opacity:.55;margin-top:3px">hist avg ±${histPct}%</div>` : ""}
+              ${histPct != null ? `<div style="font-size:.68rem;opacity:.5;margin-top:3px">hist avg ±${histPct}%</div>` : ""}
               <div style="margin-top:6px">${optLabel}</div>
             </div>` : ""}
           </div>
@@ -2382,14 +2382,14 @@ async function cargarBriefings() {
 
             <!-- Estimaciones numéricas -->
             <div style="display:flex;gap:16px;flex-wrap:wrap">
-              <div style="background:#f8f9fc;border-radius:8px;padding:10px 14px;flex:1;min-width:100px">
+              <div style="background:#f8f9fc;border:1px solid #e5e7eb;padding:10px 14px;flex:1;min-width:100px">
                 <div style="font-size:.7rem;color:#9ca3af;text-transform:uppercase;letter-spacing:.5px">EPS Consensus</div>
-                <div style="font-family:var(--f-mono);font-size:1.1rem;font-weight:700;color:var(--navy);margin-top:2px">$${b.epsNextQ ?? "—"}</div>
+                <div style="font-family:var(--f-mono);font-size:1.1rem;font-weight:400;color:var(--navy);margin-top:2px">$${b.epsNextQ ?? "—"}</div>
                 ${b.epsLow != null ? `<div style="font-size:.73rem;color:#9ca3af;margin-top:2px">$${b.epsLow} – $${b.epsHigh}</div>` : ""}
               </div>
-              <div style="background:#f8f9fc;border-radius:8px;padding:10px 14px;flex:1;min-width:100px">
+              <div style="background:#f8f9fc;border:1px solid #e5e7eb;padding:10px 14px;flex:1;min-width:100px">
                 <div style="font-size:.7rem;color:#9ca3af;text-transform:uppercase;letter-spacing:.5px">Revenue Est.</div>
-                <div style="font-family:var(--f-mono);font-size:1.1rem;font-weight:700;color:var(--navy);margin-top:2px">${fmtRev(b.revNextQ)}</div>
+                <div style="font-family:var(--f-mono);font-size:1.1rem;font-weight:400;color:var(--navy);margin-top:2px">${fmtRev(b.revNextQ)}</div>
               </div>
             </div>
           </div>
@@ -2413,7 +2413,7 @@ async function cargarBriefings() {
             <div style="font-size:.72rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#9ca3af;margin:14px 0 8px">Supply Chain Exposure</div>
             <div style="font-size:.82rem;color:#374151;line-height:1.6;margin-bottom:8px">${bf.supply_chain_exposure}</div>
             <div style="display:flex;flex-wrap:wrap;gap:6px">
-              ${relaciones.map(r => `<span style="background:#f0f4ff;color:#001F5B;font-family:var(--f-mono);font-size:11px;padding:3px 9px;border-radius:4px;font-weight:600">${r.ticker} <span style="font-weight:400;color:#6b7280">${r.dependencia}%</span></span>`).join("")}
+              ${relaciones.map(r => `<span style="background:#f0f4ff;color:#001F5B;font-family:var(--f-mono);font-size:11px;padding:3px 9px;border:1px solid #d0dbf0;font-weight:400">${r.ticker} <span style="color:#6b7280">${r.dependencia}%</span></span>`).join("")}
             </div>` : ""}
           </div>
         </div>
