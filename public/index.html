@@ -1659,11 +1659,24 @@ async function cargarCorrelaciones() {
 }
 
 // ── Correlaciones: refresco de precios en vivo ────────────────────────────
+function actualizarIndicadorMercado(state) {
+  const dot  = document.querySelector(".live-dot");
+  const text = document.querySelector(".live-text");
+  const ind  = document.querySelector(".live-indicator");
+  if (!dot || !text || !ind) return;
+  const open = state === "REGULAR";
+  dot.style.background       = open ? "var(--green)" : "var(--gray-400)";
+  dot.style.animationPlayState = open ? "running" : "paused";
+  ind.style.color            = open ? "var(--green)" : "var(--gray-400)";
+  text.textContent           = open ? "Market data live" : "Market closed";
+}
+
 async function refrescarCorrelaciones() {
   try {
     const r    = await fetch("/api/prices");
     const resp = await r.json();
     preciosGlobal = resp.precios || {};
+    actualizarIndicadorMercado(resp.marketState || "UNKNOWN");
     document.getElementById("update-ts").textContent =
       "Last update: " + new Date(resp.actualizadoEn).toLocaleTimeString("es-ES");
     actualizarResumen();

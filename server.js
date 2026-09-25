@@ -338,9 +338,14 @@ app.get("/api/prices", async (req, res) => {
         : [],
     };
   }
+  // Derive overall market state from any ticker (all share the same session)
+  const anyTicker = Object.values(preciosVivos)[0];
+  const marketState = anyTicker?.marketState || "UNKNOWN";
+
   res.json({
     actualizadoEn: new Date().toISOString(),
     umbralShock: UMBRAL_SHOCK,
+    marketState,
     precios: resultado,
   });
 });
