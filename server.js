@@ -131,7 +131,15 @@ function requireAuth(req, res, next) {
 app.use(requireAuth);
 
 // ── Archivos estáticos (solo tras autenticación) ──────────────────────────
-app.use(express.static(path.join(__dirname, "public")));
+// No-cache para HTML, para que el browser siempre cargue la versión más reciente
+app.use(express.static(path.join(__dirname, "public"), {
+  setHeaders(res, filePath) {
+    if (filePath.endsWith(".html")) {
+      res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+      res.setHeader("Pragma", "no-cache");
+    }
+  },
+}));
 
 // ── Configuración ─────────────────────────────────────────────────────────
 const UMBRAL_SHOCK       = 3;        // % variación diaria para activar señal
