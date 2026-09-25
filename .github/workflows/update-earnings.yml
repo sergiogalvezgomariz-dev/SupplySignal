@@ -1,0 +1,43 @@
+name: Update Earnings Calendar
+
+on:
+  schedule:
+    # 05:15 UTC weekdays (after US market close, before European open)
+    - cron: '15 5 * * 1-5'
+  workflow_dispatch:  # allow manual trigger from GitHub UI
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # needed to push the updated earnings.json
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Fetch earnings data from Yahoo Finance
+        run: node scripts/update-earnings.js
+
+      - name: Commit updated earnings.json
+        run: |
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git add output/earnings.json
+          # Only commit if something actually changed
+          git diff --staged --quiet && echo "No changes to earnings.json" || \
+            git commit -m "chore: auto-update earnings calendar $(date -u +%Y-%m-%d) [skip ci]"
+
+      - name: Push changes
+        run: git push
