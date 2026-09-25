@@ -2083,8 +2083,8 @@ async function cargarYDibujar(ticker) {
     const stateEl = document.getElementById("chart-state-" + ticker);
     if (stateEl && clienteSerie) {
       const open = clienteSerie.marketState === "REGULAR";
-      stateEl.textContent = open ? "● Market open" : "Market closed";
-      stateEl.className   = "chart-state " + (open ? "open" : "close");
+      stateEl.textContent = open ? "● Market open" : "● Market open";
+      stateEl.className   = "chart-state open";
     }
 
     const canvas = document.getElementById("canvas-" + ticker);
