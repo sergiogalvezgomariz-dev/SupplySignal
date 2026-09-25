@@ -2723,6 +2723,10 @@ async function cargarEarnings() {
       <span style="color:#C8962A">■</span> &lt;14 days
     </div>`;
 
+    html += `<p style="font-size:.78rem;color:var(--gray-400);margin-bottom:20px;line-height:1.5">
+      Buy/Sell ratings are Wall Street analyst consensus figures sourced from Yahoo Finance. SupplySignal does not provide investment advice.
+    </p>`;
+
     if (con.length === 0) {
       html += `<div style="background:var(--surface);border:1px solid #e5e7eb;border-radius:10px;padding:28px 24px;text-align:center;margin-bottom:20px">
         <div style="font-size:1.1rem;font-weight:600;color:var(--gray-700);margin-bottom:8px">No upcoming earnings dates announced yet</div>
