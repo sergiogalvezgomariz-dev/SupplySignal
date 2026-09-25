@@ -3,6 +3,22 @@
   "builds": [
     { "src": "server.js", "use": "@vercel/node" }
   ],
+  "headers": [
+    {
+      "source": "/(.*)\\.html",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" },
+        { "key": "Pragma",        "value": "no-cache" }
+      ]
+    },
+    {
+      "source": "/",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" },
+        { "key": "Pragma",        "value": "no-cache" }
+      ]
+    }
+  ],
   "routes": [
     { "src": "/(.*)", "dest": "/server.js" }
   ],
