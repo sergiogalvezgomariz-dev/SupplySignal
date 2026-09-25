@@ -2689,11 +2689,13 @@ async function cargarEarnings() {
     // Recomendación → texto + color
     const fmtRec = (key, score) => {
       const map = {
-        strongBuy:  { label: "Strong Buy",  bg: "#065f46", col: "#ffffff" },
-        buy:        { label: "Buy",          bg: "#dcfce7", col: "#166534" },
-        hold:       { label: "Hold",         bg: "#fef3c7", col: "#92400e" },
-        sell:       { label: "Sell",         bg: "#fee2e2", col: "#991b1b" },
-        strongSell: { label: "Strong Sell",  bg: "#fca5a5", col: "#7f1d1d" },
+        strongBuy:   { label: "Strong Buy",  bg: "#065f46", col: "#ffffff" },
+        strong_buy:  { label: "Strong Buy",  bg: "#065f46", col: "#ffffff" },
+        buy:         { label: "Buy",         bg: "#dcfce7", col: "#166534" },
+        hold:        { label: "Hold",        bg: "#fef3c7", col: "#92400e" },
+        sell:        { label: "Sell",        bg: "#fee2e2", col: "#991b1b" },
+        strongSell:  { label: "Strong Sell", bg: "#fca5a5", col: "#7f1d1d" },
+        strong_sell: { label: "Strong Sell", bg: "#fca5a5", col: "#7f1d1d" },
       };
       const r = map[key] || { label: key || "N/A", bg: "#f3f4f6", col: "#6b7280" };
       return `<span style="font-size:10px;background:${r.bg};color:${r.col};padding:2px 8px;border-radius:4px;font-weight:600">${r.label}</span>`;
