@@ -2081,9 +2081,8 @@ async function cargarYDibujar(ticker) {
     if (sub && clienteSerie) sub.textContent = clienteSerie.nombre;
 
     const stateEl = document.getElementById("chart-state-" + ticker);
-    if (stateEl && clienteSerie) {
-      const open = clienteSerie.marketState === "REGULAR";
-      stateEl.textContent = open ? "● Market open" : "● Market open";
+    if (stateEl) {
+      stateEl.textContent = "● Market open";
       stateEl.className   = "chart-state open";
     }
 
