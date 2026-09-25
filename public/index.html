@@ -538,7 +538,7 @@ nav button.activa {
 }
 .chart-title { font-family: var(--f-mono); font-size: 18px; font-weight: 500; color: var(--navy); }
 .chart-subtitle { font-size: 11px; color: var(--gray-400); margin-top: 2px; }
-.chart-state { display: none; }
+.chart-state, .chart-state.open, .chart-state.close { display: none !important; }
 .chart-legend {
   display: flex;
   flex-wrap: wrap;
@@ -2078,10 +2078,7 @@ async function cargarYDibujar(ticker) {
     if (sub && clienteSerie) sub.textContent = clienteSerie.nombre;
 
     const stateEl = document.getElementById("chart-state-" + ticker);
-    if (stateEl) {
-      stateEl.textContent = "● Market open";
-      stateEl.className   = "chart-state open";
-    }
+    if (stateEl) stateEl.remove();
 
     const canvas = document.getElementById("canvas-" + ticker);
     if (!canvas) return;
