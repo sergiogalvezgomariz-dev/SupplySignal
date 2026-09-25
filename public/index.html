@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1499,7 +1499,7 @@ footer {
     <div class="section-intro">
       <div class="si-left">
         <div class="si-title">Company Intelligence</div>
-        <div class="si-sub">Selecciona una compañía para descargar su informe ejecutivo · Yahoo Finance · SEC EDGAR · Supply Chain</div>
+        <div class="si-sub">Select a company to download its executive report · Yahoo Finance · SEC EDGAR · Supply Chain</div>
       </div>
     </div>
 
@@ -1677,7 +1677,7 @@ async function refrescarCorrelaciones() {
     preciosGlobal = resp.precios || {};
     actualizarIndicadorMercado(resp.marketState || "UNKNOWN");
     document.getElementById("update-ts").textContent =
-      "Last update: " + new Date(resp.actualizadoEn).toLocaleTimeString("es-ES");
+      "Last update: " + new Date(resp.actualizadoEn).toLocaleTimeString("en-US");
     actualizarResumen();
     filtrarTabla();
   } catch (e) {
@@ -1830,7 +1830,7 @@ async function cargarBot() {
     const rows = datos.operaciones.slice().reverse().map(op => {
       const lado = (op.lado === "COMPRA" || op.lado === "BUY") ? "buy" : "sell";
       return `<tr>
-        <td style="font-family:var(--f-mono);font-size:11px;color:var(--gray-400)">${new Date(op.fecha).toLocaleString("es-ES")}</td>
+        <td style="font-family:var(--f-mono);font-size:11px;color:var(--gray-400)">${new Date(op.fecha).toLocaleString("en-US")}</td>
         <td><span class="badge badge-${lado}">${op.lado}</span></td>
         <td><div class="t-sym">${op.ticker}</div><div class="t-name">${op.nombre}</div></td>
         <td class="r" style="font-family:var(--f-mono);font-weight:500;color:var(--navy)">$${op.importeUsd}</td>
@@ -1840,7 +1840,7 @@ async function cargarBot() {
     cont.innerHTML = `
       <div style="font-size:11px;color:var(--gray-400);margin-bottom:14px;letter-spacing:.3px">
         Mode: <strong style="color:var(--gray-800)">${datos.modo}</strong> &nbsp;&nbsp;
-        Last review: <strong style="color:var(--gray-800)">${datos.ultimaRevision ? new Date(datos.ultimaRevision).toLocaleString("es-ES") : "—"}</strong>
+        Last review: <strong style="color:var(--gray-800)">${datos.ultimaRevision ? new Date(datos.ultimaRevision).toLocaleString("en-US") : "—"}</strong>
       </div>
       <div class="data-table-wrap">
         <table class="data-table">
@@ -1930,7 +1930,7 @@ async function refrescarCharts() {
     })(),
   ]);
 
-  const ahora = new Date().toLocaleTimeString("es-ES");
+  const ahora = new Date().toLocaleTimeString("en-US");
   document.getElementById("charts-update-ts").textContent = `Last update: ${ahora}`;
 }
 
@@ -2260,7 +2260,7 @@ async function cargarYDibujar(ticker) {
     }
 
     const tsEl = document.getElementById("chart-ts-" + ticker);
-    if (tsEl) tsEl.textContent = new Date(data.actualizadoEn).toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" });
+    if (tsEl) tsEl.textContent = new Date(data.actualizadoEn).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
 
   } catch (e) { /* mantiene la gráfica anterior */ }
 }
@@ -2643,7 +2643,7 @@ async function cargarEarnings() {
       .filter(e => e.proximoEarnings && e.proximoEarnings >= hoyStr)
       .sort((a,b) => a.proximoEarnings.localeCompare(b.proximoEarnings));
     const sin     = list.filter(e => !e.proximoEarnings || e.proximoEarnings < hoyStr);
-    const upd     = data.actualizadoEn ? new Date(data.actualizadoEn).toLocaleString("es-ES") : "—";
+    const upd     = data.actualizadoEn ? new Date(data.actualizadoEn).toLocaleString("en-US") : "—";
 
     // Agrupa por mes
     const porMes = {};

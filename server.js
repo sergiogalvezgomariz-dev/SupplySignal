@@ -321,7 +321,7 @@ async function asegurarPrecios() {
 // Señales activas
 app.get("/api/signals", async (req, res) => {
   await asegurarPrecios();
-  if (!cacheSenales) return res.json({ generadoEn: null, umbralShock: UMBRAL_SHOCK, senales: [], errores: ["Cargando datos iniciales..."] });
+  if (!cacheSenales) return res.json({ generadoEn: null, umbralShock: UMBRAL_SHOCK, senales: [], errores: ["Loading initial data..."] });
   res.json(cacheSenales);
 });
 
@@ -430,7 +430,7 @@ app.get("/api/briefings", (req, res) => {
 // Earnings calendar
 app.get("/api/earnings", (req, res) => {
   const ruta = path.join(__dirname, "output", "earnings.json");
-  if (!fs.existsSync(ruta)) return res.json({ earnings: [], mensaje: "Ejecuta: python earnings_bot.py" });
+  if (!fs.existsSync(ruta)) return res.json({ earnings: [], mensaje: "No earnings data available yet." });
   try { res.json(JSON.parse(fs.readFileSync(ruta, "utf8"))); }
   catch(e) { res.status(500).json({ error: "Failed to parse earnings" }); }
 });
@@ -438,7 +438,7 @@ app.get("/api/earnings", (req, res) => {
 // Correlaciones históricas
 app.get("/api/correlaciones", (req, res) => {
   const ruta = path.join(__dirname, "output", "analisis_correlacion.json");
-  if (!fs.existsSync(ruta)) return res.json({ datos: [], mensaje: "Ejecuta primero: python ampliar_pares.py" });
+  if (!fs.existsSync(ruta)) return res.json({ datos: [], mensaje: "No correlation data available yet." });
   try { res.json({ datos: JSON.parse(fs.readFileSync(ruta, "utf8")) }); }
   catch(e) { res.status(500).json({ error: "Failed to parse correlaciones" }); }
 });
