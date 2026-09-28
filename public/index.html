@@ -2215,7 +2215,7 @@ function ncRenderGrid() {
       <div class="chart-legend" id="nc-legend-${c.ticker}"></div>
       <div class="chart-canvas-wrap"><canvas id="nc-canvas-${c.ticker}"></canvas></div>
       <div class="chart-footer">
-        <span id="nc-footer-${c.ticker}">${ncMode === "1W" ? "% change from Monday open" : "Intraday price"}</span>
+        <span id="nc-footer-${c.ticker}">${ncMode === "1W" ? "% change from Monday open" : "% change from today's open"}</span>
       </div>`;
     grid.appendChild(div);
   });
@@ -2280,19 +2280,16 @@ async function ncCargarYDibujar(ticker) {
       ncBuildLegend(ticker, allTickers.map(s => ({ ...s, historico: s.puntos })));
 
     } else {
-      // 1D mode — use normalized intraday series from /api/chart (same as live charts)
-      function normalizar(puntos) {
-        const vals = puntos.map(p => p.v);
-        const min  = Math.min(...vals);
-        const max  = Math.max(...vals);
-        const rng  = max - min || 1;
-        return puntos.map(p => ({ x: p.t, y: (p.v - min) / rng }));
-      }
+      // 1D mode — % change from first intraday point (market open)
       datasets = allSeries.map((s, i) => {
         const color = PALETA_YF[i % PALETA_YF.length];
+        const hist  = (s.puntos || []).filter(p => p.v != null);
+        if (!hist.length) return null;
+        const base  = hist[0].v;
+        const pts   = hist.map(p => ({ x: p.t, y: (p.v / base - 1) * 100 }));
         return {
           label:                    s.ticker,
-          data:                     normalizar(s.puntos),
+          data:                     pts,
           borderColor:              color,
           borderWidth:              s.esCliente ? 2.5 : 1.5,
           backgroundColor:          "transparent",
@@ -2305,14 +2302,18 @@ async function ncCargarYDibujar(ticker) {
           tension:                  0.2,
           spanGaps:                 true,
           _series: s,
+          _base: base,
         };
+      }).filter(Boolean);
+      // Legend for 1D: show live % change
+      const legData = allSeries.map((s, i) => {
+        const hist = (s.puntos || []).filter(p => p.v != null);
+        const base = hist[0]?.v;
+        const last = hist[hist.length - 1]?.v;
+        const pct  = (base && last) ? (last / base - 1) * 100 : null;
+        return { ticker: s.ticker, nombre: s.nombre, esCliente: s.esCliente,
+                 dependencia: s.dependencia, pct };
       });
-      // Legend for 1D
-      const legData = allSeries.map(s => ({
-        ticker: s.ticker, nombre: s.nombre, esCliente: s.esCliente,
-        moneda: s.moneda, dependencia: s.dependencia,
-        lastV: s.puntos[s.puntos.length - 1]?.v
-      }));
       ncBuildLegend1D(ticker, legData);
     }
 
@@ -2362,7 +2363,7 @@ async function ncCargarYDibujar(ticker) {
       },
     };
 
-    const yConfig = isWeekly ? {
+    const yConfig = {
       grid:   { color: "#f3f4f6", drawTicks: false },
       border: { display: false },
       ticks:  {
@@ -2371,9 +2372,6 @@ async function ncCargarYDibujar(ticker) {
         padding: 6,
         callback: v => (v >= 0 ? "+" : "") + v.toFixed(1) + "%",
       },
-    } : {
-      display: false,
-      grid:    { display: false },
     };
 
     const tooltipCallbacks = isWeekly ? {
@@ -2392,9 +2390,8 @@ async function ncCargarYDibujar(ticker) {
         return d.toLocaleTimeString("en-US", { timeZone: "America/New_York", hour: "2-digit", minute: "2-digit", hour12: false }) + " ET";
       },
       label: ctx => {
-        const si = allSeries[ctx.datasetIndex];
-        const pt = si?.puntos[ctx.dataIndex];
-        return `  ${ctx.dataset.label}   ${pt ? "$" + pt.v.toFixed(2) : ""}`;
+        const v = ctx.parsed.y;
+        return `  ${ctx.dataset.label}   ${v >= 0 ? "+" : ""}${v.toFixed(2)}%`;
       },
     };
 
@@ -2448,7 +2445,7 @@ async function ncCargarYDibujar(ticker) {
             c.restore();
           },
         },
-        ...(isWeekly ? [{
+        {
           id: "zeroline",
           afterDraw(chart) {
             const yScale = chart.scales.y;
@@ -2466,7 +2463,7 @@ async function ncCargarYDibujar(ticker) {
             c.stroke();
             c.restore();
           },
-        }] : []),
+        },
       ],
     };
 
@@ -2503,11 +2500,14 @@ function ncBuildLegend1D(ticker, legData) {
   if (!legEl) return;
   legEl.innerHTML = legData.map((s, i) => {
     const color  = PALETA_YF[i % PALETA_YF.length];
-    const precio = s.lastV ? (s.moneda === "USD" ? "$" : "") + s.lastV.toFixed(2) : "—";
+    const pct    = s.pct;
+    const pctStr = pct != null
+      ? `<span style="font-family:var(--f-mono);font-size:10.5px;color:${pct >= 0 ? "#15803d" : "#b91c1c"}">${pct >= 0 ? "+" : ""}${pct.toFixed(2)}%</span>`
+      : "";
     return `<div class="legend-item">
       <div style="width:14px;height:2px;background:${color};border-radius:1px;flex-shrink:0"></div>
       <span style="font-family:var(--f-mono);font-size:11px;font-weight:500;color:var(--gray-800)">${s.ticker}</span>
-      <span style="font-family:var(--f-mono);font-size:10.5px;color:var(--gray-600)">${precio}</span>
+      ${pctStr}
       ${s.dependencia ? `<span class="legend-dep">${s.dependencia}% dep.</span>` : ""}
     </div>`;
   }).join("");
