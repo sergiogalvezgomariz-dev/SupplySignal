@@ -684,6 +684,32 @@ nav button.activa {
   letter-spacing: .3px;
 }
 
+/* ── New Charts mode toggle ──────────────────────────────────────────── */
+.nc-mode-toggle {
+  display: flex;
+  background: var(--gray-100);
+  border-radius: 6px;
+  padding: 3px;
+  gap: 2px;
+}
+.nc-mode-btn {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .5px;
+  padding: 5px 14px;
+  border: none;
+  background: transparent;
+  color: var(--gray-400);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.nc-mode-btn.activa {
+  background: var(--navy);
+  color: #fff;
+}
+
 /* ── Precios en vivo: fila de alerta ──────────────────────────────────── */
 .alert-row td { background: #fffbea !important; }
 .alert-row-shock td { background: #fff0f0 !important; }
@@ -1279,6 +1305,7 @@ footer {
       <button onclick="cambiarPestana('senales', this)">Active Signal</button>
       <button onclick="cambiarPestana('correlaciones', this)">Corr. Monitor</button>
       <button onclick="cambiarPestana('charts', this)">Live Charts</button>
+      <button onclick="cambiarPestana('newcharts', this)">New Charts</button>
       <button onclick="cambiarPestana('bot', this)" style="display:none">Execution</button>
       <button onclick="cambiarPestana('earnings', this)">Earnings</button>
       <button onclick="cambiarPestana('network', this)">Corr. Network</button>
@@ -1498,6 +1525,33 @@ footer {
     </div>
 
     <div class="charts-grid" id="charts-grid">
+      <div class="state-block"><div class="state-label">Loading charts...</div></div>
+    </div>
+  </div>
+
+  <!-- ══ NEW CHARTS ════════════════════════════════════════════════════ -->
+  <div id="pestaña-newcharts" class="pestaña">
+    <div class="section-intro">
+      <div class="si-left">
+        <div class="si-title">Weekly Performance Charts</div>
+        <div class="si-sub">% change from week open · Customer vs. suppliers on the same axis · Toggle 1D / 1W</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <div class="nc-mode-toggle" id="nc-mode-toggle">
+          <button class="nc-mode-btn activa" onclick="ncSetMode('1W',this)">1W</button>
+          <button class="nc-mode-btn" onclick="ncSetMode('1D',this)">1D</button>
+        </div>
+        <button class="btn btn-primary" onclick="refrescarNewCharts()">Refresh</button>
+      </div>
+    </div>
+
+    <div class="charts-refresh-strip">
+      <span id="nc-update-ts">Last update: —</span>
+    </div>
+
+    <div class="charts-selector" id="nc-selector"></div>
+
+    <div class="charts-grid" id="nc-grid">
       <div class="state-block"><div class="state-label">Loading charts...</div></div>
     </div>
   </div>
@@ -2026,6 +2080,9 @@ function cambiarPestana(id, btn) {
   if (id === "charts") {
     if (!clientesDisponibles.length) inicializarCharts(); else refrescarCharts();
   }
+  if (id === "newcharts") {
+    if (!ncClientesDisponibles.length) inicializarNewCharts(); else refrescarNewCharts();
+  }
   if (id === "bot")      { cargarBot(); verificarInforme(); }
   if (id === "earnings") { cargarBriefings(); cargarPostmortem(); cargarEarnings(); }
   if (id === "intel")    { inicializarIntel(); }
@@ -2424,6 +2481,398 @@ function iniciarChartsCountdown() {
       await refrescarCharts();
     }
   }, 1000);
+}
+
+// ── New Charts (1D / 1W) ──────────────────────────────────────────────────
+let ncClientesDisponibles = [];
+let ncDatosPrecio         = {};
+let ncMode                = "1W";
+let ncChartInstancias     = {};
+let ncClientesActivos     = new Set();
+
+function ncSetMode(mode, btn) {
+  ncMode = mode;
+  document.querySelectorAll(".nc-mode-btn").forEach(b => b.classList.remove("activa"));
+  btn.classList.add("activa");
+  refrescarNewCharts();
+}
+
+async function inicializarNewCharts() {
+  try {
+    const r    = await fetch("/api/prices");
+    const resp = await r.json();
+    ncClientesDisponibles = Object.entries(resp.precios)
+      .filter(([, v]) => v.esCliente && v.suppliers?.length)
+      .map(([ticker, v]) => ({ ticker, nombre: v.nombre }));
+    ncDatosPrecio = resp.precios;
+    ncBuildSelector();
+    ncClientesActivos = new Set(ncClientesDisponibles.map(c => c.ticker));
+    await refrescarNewCharts();
+    document.getElementById("nc-update-ts").textContent =
+      "Last update: " + new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+  } catch (e) {
+    document.getElementById("nc-grid").innerHTML =
+      `<div class="state-block"><div class="state-label">Error loading data</div></div>`;
+  }
+}
+
+function ncBuildSelector() {
+  const sel = document.getElementById("nc-selector");
+  sel.innerHTML = "";
+  ncClientesDisponibles.forEach(c => {
+    const btn = document.createElement("button");
+    btn.className   = "selector-btn activa";
+    btn.textContent = c.ticker;
+    btn.dataset.ticker = c.ticker;
+    btn.onclick = () => {
+      btn.classList.toggle("activa");
+      if (btn.classList.contains("activa")) ncClientesActivos.add(c.ticker);
+      else ncClientesActivos.delete(c.ticker);
+      refrescarNewCharts();
+    };
+    sel.appendChild(btn);
+  });
+}
+
+async function refrescarNewCharts() {
+  if (!ncClientesDisponibles.length) { await inicializarNewCharts(); return; }
+  // Fetch fresh prices
+  try {
+    const r    = await fetch("/api/prices");
+    const resp = await r.json();
+    ncDatosPrecio = resp.precios;
+    document.getElementById("nc-update-ts").textContent =
+      "Last update: " + new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+  } catch (e) { /* use cached */ }
+
+  ncRenderGrid();
+  for (const c of ncClientesDisponibles) {
+    if (ncClientesActivos.has(c.ticker)) await ncCargarYDibujar(c.ticker);
+  }
+}
+
+function ncRenderGrid() {
+  const grid = document.getElementById("nc-grid");
+  ncClientesDisponibles.forEach(c => {
+    if (!ncClientesActivos.has(c.ticker)) return;
+    if (document.getElementById("nc-card-" + c.ticker)) return;
+    const div = document.createElement("div");
+    div.className = "chart-card";
+    div.id = "nc-card-" + c.ticker;
+    div.innerHTML = `
+      <div class="chart-header">
+        <div>
+          <div class="chart-title">${c.ticker}</div>
+          <div class="chart-subtitle" id="nc-sub-${c.ticker}">${c.nombre}</div>
+        </div>
+        <div id="nc-badge-${c.ticker}" style="font-family:var(--f-mono);font-size:11px;color:var(--gray-400)"></div>
+      </div>
+      <div class="chart-legend" id="nc-legend-${c.ticker}"></div>
+      <div class="chart-canvas-wrap"><canvas id="nc-canvas-${c.ticker}"></canvas></div>
+      <div class="chart-footer">
+        <span id="nc-footer-${c.ticker}">${ncMode === "1W" ? "% change from Monday open" : "Intraday price"}</span>
+      </div>`;
+    grid.appendChild(div);
+  });
+  // Remove hidden cards
+  document.querySelectorAll("[id^='nc-card-']").forEach(card => {
+    const t = card.id.replace("nc-card-", "");
+    if (!ncClientesActivos.has(t)) {
+      if (ncChartInstancias[t]) { ncChartInstancias[t].destroy(); delete ncChartInstancias[t]; }
+      card.remove();
+    }
+  });
+}
+
+async function ncCargarYDibujar(ticker) {
+  try {
+    // Fetch weekly data from /api/chart/:ticker (same endpoint used by live charts)
+    const r    = await fetch(`/api/chart/${ticker}`);
+    const data = await r.json();
+    if (!data.series?.length) return;
+
+    const allSeries = data.series;
+
+    // Build datasets based on mode
+    let datasets;
+    const modeLabel = ncMode === "1W" ? "% change from Monday open" : "Intraday price";
+    const footerEl = document.getElementById("nc-footer-" + ticker);
+    if (footerEl) footerEl.textContent = modeLabel;
+
+    if (ncMode === "1W") {
+      // For 1W: use historico from /api/prices which has the week's history
+      const pData = ncDatosPrecio[ticker];
+      if (!pData) return;
+
+      // Gather all tickers for this customer (customer + suppliers)
+      const allTickers = [
+        { ticker, nombre: pData.nombre, esCliente: true, historico: pData.historico, moneda: pData.moneda },
+        ...(pData.suppliers || []).map(s => {
+          const sp = ncDatosPrecio[s.ticker];
+          return sp ? { ticker: s.ticker, nombre: s.nombre, esCliente: false,
+                        historico: sp.historico, moneda: sp.moneda, dependencia: s.dependencia } : null;
+        }).filter(Boolean)
+      ];
+
+      datasets = allTickers.map((s, i) => {
+        const color = PALETA_YF[i % PALETA_YF.length];
+        const hist  = (s.historico || []).filter(p => p.v != null);
+        if (!hist.length) return null;
+        const base  = hist[0].v;
+        const pts   = hist.map(p => ({ x: p.t, y: (p.v / base - 1) * 100 }));
+        return {
+          label:                    s.ticker,
+          data:                     pts,
+          borderColor:              color,
+          borderWidth:              s.esCliente ? 2.5 : 1.5,
+          backgroundColor:          "transparent",
+          fill:                     false,
+          pointRadius:              0,
+          pointHoverRadius:         4,
+          pointHoverBackgroundColor: color,
+          pointHoverBorderColor:    "#fff",
+          pointHoverBorderWidth:    2,
+          tension:                  0.2,
+          spanGaps:                 true,
+          _meta: s,
+        };
+      }).filter(Boolean);
+
+      // Legend
+      ncBuildLegend(ticker, allTickers);
+
+    } else {
+      // 1D mode — use normalized intraday series from /api/chart (same as live charts)
+      function normalizar(puntos) {
+        const vals = puntos.map(p => p.v);
+        const min  = Math.min(...vals);
+        const max  = Math.max(...vals);
+        const rng  = max - min || 1;
+        return puntos.map(p => ({ x: p.t, y: (p.v - min) / rng }));
+      }
+      datasets = allSeries.map((s, i) => {
+        const color = PALETA_YF[i % PALETA_YF.length];
+        return {
+          label:                    s.ticker,
+          data:                     normalizar(s.puntos),
+          borderColor:              color,
+          borderWidth:              s.esCliente ? 2.5 : 1.5,
+          backgroundColor:          "transparent",
+          fill:                     false,
+          pointRadius:              0,
+          pointHoverRadius:         4,
+          pointHoverBackgroundColor: color,
+          pointHoverBorderColor:    "#fff",
+          pointHoverBorderWidth:    2,
+          tension:                  0.2,
+          spanGaps:                 true,
+          _series: s,
+        };
+      });
+      // Legend for 1D
+      const legData = allSeries.map(s => ({
+        ticker: s.ticker, nombre: s.nombre, esCliente: s.esCliente,
+        moneda: s.moneda, dependencia: s.dependencia,
+        lastV: s.puntos[s.puntos.length - 1]?.v
+      }));
+      ncBuildLegend1D(ticker, legData);
+    }
+
+    if (!datasets.length) return;
+
+    const canvas = document.getElementById("nc-canvas-" + ticker);
+    if (!canvas) return;
+
+    const isWeekly = ncMode === "1W";
+
+    const xConfig = isWeekly ? {
+      type: "time",
+      adapters: { date: { zone: "America/New_York" } },
+      time: {
+        unit:           "day",
+        displayFormats: { day: "EEE" },
+        tooltipFormat:  "EEE H:mm",
+      },
+      grid:   { display: false },
+      border: { display: false },
+      ticks:  {
+        color:        "#9ca3af",
+        font:         { family: "'IBM Plex Sans', sans-serif", size: 10.5 },
+        maxRotation:  0,
+        autoSkip:     true,
+        maxTicksLimit: 5,
+        padding:      6,
+      },
+    } : {
+      type: "time",
+      adapters: { date: { zone: "America/New_York" } },
+      time: {
+        unit:           "minute",
+        stepSize:       30,
+        displayFormats: { minute: "H:mm" },
+        tooltipFormat:  "H:mm",
+      },
+      grid:   { display: false },
+      border: { display: false },
+      ticks:  {
+        color:        "#9ca3af",
+        font:         { family: "'IBM Plex Sans', sans-serif", size: 10.5 },
+        maxRotation:  0,
+        autoSkip:     true,
+        maxTicksLimit: 9,
+        padding:      6,
+      },
+    };
+
+    const yConfig = isWeekly ? {
+      grid:   { color: "#f3f4f6", drawTicks: false },
+      border: { display: false },
+      ticks:  {
+        color:  "#9ca3af",
+        font:   { family: "'IBM Plex Mono', monospace", size: 10 },
+        padding: 6,
+        callback: v => (v >= 0 ? "+" : "") + v.toFixed(1) + "%",
+      },
+    } : {
+      display: false,
+      grid:    { display: false },
+    };
+
+    const tooltipCallbacks = isWeekly ? {
+      title: items => {
+        const d = new Date(items[0].parsed.x);
+        return d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })
+          + " " + d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: false }) + " ET";
+      },
+      label: ctx => {
+        const v = ctx.parsed.y;
+        return `  ${ctx.dataset.label}   ${v >= 0 ? "+" : ""}${v.toFixed(2)}%`;
+      },
+    } : {
+      title: items => {
+        const d = new Date(items[0].parsed.x);
+        return d.toLocaleTimeString("en-US", { timeZone: "America/New_York", hour: "2-digit", minute: "2-digit", hour12: false }) + " ET";
+      },
+      label: ctx => {
+        const si = allSeries[ctx.datasetIndex];
+        const pt = si?.puntos[ctx.dataIndex];
+        return `  ${ctx.dataset.label}   ${pt ? "$" + pt.v.toFixed(2) : ""}`;
+      },
+    };
+
+    const chartConfig = {
+      type: "line",
+      data: { datasets },
+      options: {
+        animation:   false,
+        responsive:  true,
+        maintainAspectRatio: false,
+        interaction: { mode: "index", intersect: false },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: "#fff",
+            borderColor:     "#e0e3eb",
+            borderWidth:     1,
+            titleColor:      "#6b7280",
+            bodyColor:       "#1f2937",
+            titleFont: { family: "'IBM Plex Sans', sans-serif", size: 11 },
+            bodyFont:  { family: "'IBM Plex Mono', monospace", size: 11.5 },
+            padding:   10,
+            boxPadding: 4,
+            callbacks: {
+              ...tooltipCallbacks,
+              labelColor: ctx => ({
+                borderColor:     ctx.dataset.borderColor,
+                backgroundColor: ctx.dataset.borderColor,
+                borderRadius:    2,
+              }),
+            },
+          },
+        },
+        scales: { x: xConfig, y: yConfig },
+      },
+      plugins: [
+        {
+          id: "crosshair",
+          afterDraw(chart) {
+            if (!chart.tooltip?._active?.length) return;
+            const x = chart.tooltip._active[0].element.x;
+            const { top, bottom } = chart.chartArea;
+            const c = chart.ctx;
+            c.save();
+            c.beginPath();
+            c.moveTo(x, top);
+            c.lineTo(x, bottom);
+            c.lineWidth   = 1;
+            c.strokeStyle = "#d1d5db";
+            c.stroke();
+            c.restore();
+          },
+        },
+        ...(isWeekly ? [{
+          id: "zeroline",
+          afterDraw(chart) {
+            const yScale = chart.scales.y;
+            if (!yScale) return;
+            const y = yScale.getPixelForValue(0);
+            const { left, right } = chart.chartArea;
+            const c = chart.ctx;
+            c.save();
+            c.beginPath();
+            c.moveTo(left, y);
+            c.lineTo(right, y);
+            c.lineWidth   = 1;
+            c.strokeStyle = "#d1d5db";
+            c.setLineDash([4, 3]);
+            c.stroke();
+            c.restore();
+          },
+        }] : []),
+      ],
+    };
+
+    if (ncChartInstancias[ticker]) {
+      ncChartInstancias[ticker].destroy();
+      delete ncChartInstancias[ticker];
+    }
+    ncChartInstancias[ticker] = new Chart(canvas, chartConfig);
+
+  } catch (e) { /* keep previous */ }
+}
+
+function ncBuildLegend(ticker, allTickers) {
+  const legEl = document.getElementById("nc-legend-" + ticker);
+  if (!legEl) return;
+  legEl.innerHTML = allTickers.map((s, i) => {
+    const color = PALETA_YF[i % PALETA_YF.length];
+    const hist  = (s.historico || []).filter(p => p.v != null);
+    const last  = hist[hist.length - 1];
+    const first = hist[0];
+    const pct   = (last && first) ? ((last.v / first.v - 1) * 100) : null;
+    const pctStr = pct != null ? `<span style="font-family:var(--f-mono);font-size:10.5px;color:${pct >= 0 ? "#15803d" : "#b91c1c"}">${pct >= 0 ? "+" : ""}${pct.toFixed(2)}%</span>` : "";
+    return `<div class="legend-item">
+      <div style="width:14px;height:2px;background:${color};border-radius:1px;flex-shrink:0"></div>
+      <span style="font-family:var(--f-mono);font-size:11px;font-weight:500;color:var(--gray-800)">${s.ticker}</span>
+      ${pctStr}
+      ${s.dependencia ? `<span class="legend-dep">${s.dependencia}% dep.</span>` : ""}
+    </div>`;
+  }).join("");
+}
+
+function ncBuildLegend1D(ticker, legData) {
+  const legEl = document.getElementById("nc-legend-" + ticker);
+  if (!legEl) return;
+  legEl.innerHTML = legData.map((s, i) => {
+    const color  = PALETA_YF[i % PALETA_YF.length];
+    const precio = s.lastV ? (s.moneda === "USD" ? "$" : "") + s.lastV.toFixed(2) : "—";
+    return `<div class="legend-item">
+      <div style="width:14px;height:2px;background:${color};border-radius:1px;flex-shrink:0"></div>
+      <span style="font-family:var(--f-mono);font-size:11px;font-weight:500;color:var(--gray-800)">${s.ticker}</span>
+      <span style="font-family:var(--f-mono);font-size:10.5px;color:var(--gray-600)">${precio}</span>
+      ${s.dependencia ? `<span class="legend-dep">${s.dependencia}% dep.</span>` : ""}
+    </div>`;
+  }).join("");
 }
 
 // ── Earnings Briefings (AI Agent) ─────────────────────────────────────────
