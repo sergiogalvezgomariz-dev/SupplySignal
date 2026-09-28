@@ -23,6 +23,7 @@
     { "src": "/(.*)", "dest": "/server.js" }
   ],
   "crons": [
-    { "path": "/api/cron/briefings", "schedule": "30 5 * * 1-5" }
+    { "path": "/api/cron/briefings",      "schedule": "30 5 * * 1-5" },
+    { "path": "/api/cron/weekly-prices",  "schedule": "*/15 13-21 * * 1-5" }
   ]
 }

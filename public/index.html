@@ -2600,23 +2600,16 @@ async function ncCargarYDibujar(ticker) {
     if (footerEl) footerEl.textContent = modeLabel;
 
     if (ncMode === "1W") {
-      // For 1W: use historico from /api/prices which has the week's history
-      const pData = ncDatosPrecio[ticker];
-      if (!pData) return;
+      // For 1W: fetch 5-day 15-min history from PercentageChartsBOT endpoint
+      const wr   = await fetch(`/api/weekly-chart/${ticker}`);
+      const wData = await wr.json();
+      if (!wData.series?.length) return;
 
-      // Gather all tickers for this customer (customer + suppliers)
-      const allTickers = [
-        { ticker, nombre: pData.nombre, esCliente: true, historico: pData.historico, moneda: pData.moneda },
-        ...(pData.suppliers || []).map(s => {
-          const sp = ncDatosPrecio[s.ticker];
-          return sp ? { ticker: s.ticker, nombre: s.nombre, esCliente: false,
-                        historico: sp.historico, moneda: sp.moneda, dependencia: s.dependencia } : null;
-        }).filter(Boolean)
-      ];
+      const allTickers = wData.series;
 
       datasets = allTickers.map((s, i) => {
         const color = PALETA_YF[i % PALETA_YF.length];
-        const hist  = (s.historico || []).filter(p => p.v != null);
+        const hist  = (s.puntos || []).filter(p => p.v != null);
         if (!hist.length) return null;
         const base  = hist[0].v;
         const pts   = hist.map(p => ({ x: p.t, y: (p.v / base - 1) * 100 }));
@@ -2639,7 +2632,7 @@ async function ncCargarYDibujar(ticker) {
       }).filter(Boolean);
 
       // Legend
-      ncBuildLegend(ticker, allTickers);
+      ncBuildLegend(ticker, allTickers.map(s => ({ ...s, historico: s.puntos })));
 
     } else {
       // 1D mode — use normalized intraday series from /api/chart (same as live charts)

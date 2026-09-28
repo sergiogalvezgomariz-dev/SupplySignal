@@ -409,6 +409,83 @@ app.get("/api/chart/:ticker", async (req, res) => {
   res.json({ cliente, actualizadoEn: new Date().toISOString(), series });
 });
 
+// ── PercentageChartsBOT: cache semanal ───────────────────────────────────────
+// Stores 5-day 15-min history per ticker for the 1W % change charts
+let weeklyCache = {}; // { TICKER: { actualizadoEn, puntos: [{t, v}] } }
+
+async function fetchWeeklySerie(ticker) {
+  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${ticker}?range=5d&interval=15m`;
+  const r = await fetch(url, { headers: { "User-Agent": UA } });
+  if (!r.ok) throw new Error(`Yahoo ${r.status}`);
+  const data   = await r.json();
+  const result = data.chart?.result?.[0];
+  if (!result) throw new Error("No result");
+  const timestamps = result.timestamp || [];
+  const closes     = result.indicators?.quote?.[0]?.close || [];
+  const meta       = result.meta;
+  const puntos = timestamps
+    .map((ts, i) => ({ t: ts * 1000, v: closes[i] }))
+    .filter(p => p.v != null)
+    .map(p => ({ t: p.t, v: Math.round(p.v * 100) / 100 }));
+  return {
+    ticker,
+    nombre:  meta.shortName || meta.longName || ticker,
+    moneda:  meta.currency || "USD",
+    puntos,
+    actualizadoEn: new Date().toISOString(),
+  };
+}
+
+// Weekly chart for a customer + its suppliers (used by New Charts 1W mode)
+app.get("/api/weekly-chart/:ticker", async (req, res) => {
+  const cliente = req.params.ticker.toUpperCase();
+  if (!/^[A-Z0-9.\-]{1,10}$/.test(cliente)) return res.status(400).json({ error: "Invalid ticker" });
+
+  const suppliers = pares
+    .filter(p => p.cliente === cliente && p.proveedor)
+    .map(p => ({ ticker: p.proveedor, nombre: p.proveedorNombre, dependencia: p.dependencia }));
+  const todos = [
+    { ticker: cliente, esCliente: true, dependencia: null },
+    ...suppliers.map(s => ({ ...s, esCliente: false })),
+  ];
+
+  const MAX_AGE = 10 * 60 * 1000; // 10 min
+  const series  = [];
+  for (const item of todos) {
+    try {
+      const cached = weeklyCache[item.ticker];
+      const stale  = !cached || (Date.now() - new Date(cached.actualizadoEn).getTime() > MAX_AGE);
+      const serie  = stale ? await fetchWeeklySerie(item.ticker) : cached;
+      if (stale) weeklyCache[item.ticker] = serie;
+      series.push({ ...serie, esCliente: item.esCliente, dependencia: item.dependencia });
+    } catch (e) {
+      if (weeklyCache[item.ticker]) series.push({ ...weeklyCache[item.ticker], esCliente: item.esCliente, dependencia: item.dependencia });
+    }
+    await new Promise(r => setTimeout(r, 120));
+  }
+
+  res.json({ cliente, actualizadoEn: new Date().toISOString(), series });
+});
+
+// PercentageChartsBOT cron: pre-fetches all tickers every 15 min during market hours
+app.get("/api/cron/weekly-prices", async (req, res) => {
+  const token = req.query.token || req.headers["x-vercel-cron-key"];
+  if (token && token !== process.env.CRON_TOKEN && token !== "supplysignal_cron") {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+  const resultados = [];
+  for (const ticker of todosLosTickers) {
+    try {
+      weeklyCache[ticker] = await fetchWeeklySerie(ticker);
+      resultados.push({ ticker, ok: true, puntos: weeklyCache[ticker].puntos.length });
+    } catch (e) {
+      resultados.push({ ticker, ok: false, error: e.message });
+    }
+    await new Promise(r => setTimeout(r, 200));
+  }
+  res.json({ bot: "PercentageChartsBOT", actualizadoEn: new Date().toISOString(), resultados });
+});
+
 // Estado del informe (generado automáticamente con las señales)
 app.get("/api/report/status", (req, res) => res.json(estadoInforme));
 
