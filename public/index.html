@@ -2231,20 +2231,12 @@ function ncRenderGrid() {
 
 async function ncCargarYDibujar(ticker) {
   try {
-    // Fetch weekly data from /api/chart/:ticker (same endpoint used by live charts)
-    const r    = await fetch(`/api/chart/${ticker}`);
-    const data = await r.json();
-    if (!data.series?.length) return;
-
-    const allSeries = data.series;
-
-    // Build datasets based on mode
     let datasets;
-    const modeLabel = ncMode === "1W" ? "% change from Monday open" : "Intraday price";
+    const isWeekly = ncMode === "1W";
     const footerEl = document.getElementById("nc-footer-" + ticker);
-    if (footerEl) footerEl.textContent = modeLabel;
+    if (footerEl) footerEl.textContent = isWeekly ? "% change from Monday open" : "% change from today's open";
 
-    if (ncMode === "1W") {
+    if (isWeekly) {
       // For 1W: fetch 5-day 15-min history from PercentageChartsBOT endpoint
       const wr    = await fetch(`/api/weekly-chart/${ticker}`);
       const wData = await wr.json();
@@ -2293,7 +2285,12 @@ async function ncCargarYDibujar(ticker) {
       ncBuildLegend(ticker, allTickers.map(s => ({ ...s, historico: (s.puntos || []).filter(p => p.v != null) })));
 
     } else {
-      // 1D mode — % change from first intraday point (market open)
+      // 1D mode — fetch intraday data and show % change from open
+      const r1d   = await fetch(`/api/chart/${ticker}`);
+      const data1d = await r1d.json();
+      if (!data1d.series?.length) return;
+      const allSeries = data1d.series;
+
       datasets = allSeries.map((s, i) => {
         const color = PALETA_YF[i % PALETA_YF.length];
         const hist  = (s.puntos || []).filter(p => p.v != null);
@@ -2334,8 +2331,6 @@ async function ncCargarYDibujar(ticker) {
 
     const canvas = document.getElementById("nc-canvas-" + ticker);
     if (!canvas) return;
-
-    const isWeekly = ncMode === "1W";
 
     // For 1W, pull dayTicks/refPts from the first dataset
     const _dayTicks = datasets[0]?._dayTicks || {};
