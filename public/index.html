@@ -1525,8 +1525,9 @@ footer {
         border: 1px solid var(--gray-200);
         background: var(--white);
         color: var(--gray-600);
-        font-family: var(--f-mono);
+        font-family: var(--f-sans);
         font-size: 11px;
+        font-weight: 500;
         cursor: pointer;
         transition: all .15s;
         letter-spacing: .02em;
@@ -1534,13 +1535,13 @@ footer {
       .net-btn:hover { border-color: var(--navy); color: var(--navy); }
       .net-btn.active { background: var(--navy); border-color: var(--navy); color: var(--white); }
       #net-legend { display:flex;gap:18px;flex-wrap:wrap;align-items:center;margin-bottom:10px; }
-      .net-li { display:flex;align-items:center;gap:5px;font-size:11px;color:var(--gray-600);font-family:var(--f-mono);text-transform:uppercase;letter-spacing:.05em; }
+      .net-li { display:flex;align-items:center;gap:5px;font-size:11px;color:var(--gray-600);font-family:var(--f-sans);font-weight:500;text-transform:uppercase;letter-spacing:.05em; }
       .net-ld { width:10px;height:10px;border-radius:50%; }
       .net-ll { width:20px;height:2.5px;border-radius:2px; }
       #net-graph-box {
-        border: 1px solid var(--gray-100);
-        border-radius: 6px;
-        background: #070d1a;
+        border: 2px solid var(--navy);
+        border-radius: 4px;
+        background: var(--white);
         height: 580px;
         position: relative;
         overflow: hidden;
@@ -1548,35 +1549,38 @@ footer {
       #net-graph-box svg { width:100%;height:100%; }
       #net-tooltip {
         position:absolute;
-        background:#0d1929;
-        border:1px solid #1e3048;
-        border-radius:5px;
+        background:var(--white);
+        border:1px solid var(--gray-200);
+        border-top: 2px solid var(--navy);
+        border-radius:3px;
         padding:9px 12px;
         font-size:12px;
+        font-family:var(--f-sans);
         pointer-events:none;
         opacity:0;
         transition:opacity .12s;
         max-width:220px;
         z-index:50;
         line-height:1.6;
-        color:#e2e8f0;
+        color:var(--gray-800);
+        box-shadow: 0 2px 10px rgba(0,0,0,.08);
       }
       #net-tooltip.vis { opacity:1; }
-      .nt-title { font-weight:600;margin-bottom:4px;font-size:13px;color:#e2e8f0; }
+      .nt-title { font-weight:600;margin-bottom:4px;font-size:13px;color:var(--navy); }
       .nt-row { display:flex;justify-content:space-between;gap:12px; }
-      .nt-k { color:#64748b; }
-      .nt-v { color:#e2e8f0;font-family:var(--f-mono);font-size:11px; }
+      .nt-k { color:var(--gray-400); }
+      .nt-v { color:var(--gray-800);font-family:var(--f-mono);font-size:11px; }
       #net-stats {
         position:absolute;bottom:12px;left:14px;display:flex;gap:20px;pointer-events:none;
       }
-      .net-stat-v { font-size:20px;font-weight:700;font-family:var(--f-mono);color:#e2e8f0;line-height:1;font-variant-numeric:tabular-nums; }
-      .net-stat-k { font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.07em; }
-      .net-hint { position:absolute;bottom:12px;right:14px;font-size:10px;color:#475569;text-align:right;pointer-events:none;line-height:1.8; }
+      .net-stat-v { font-size:18px;font-weight:600;font-family:var(--f-mono);color:var(--navy);line-height:1;font-variant-numeric:tabular-nums; }
+      .net-stat-k { font-size:10px;color:var(--gray-400);text-transform:uppercase;letter-spacing:.07em;font-family:var(--f-sans); }
+      .net-hint { position:absolute;bottom:12px;right:14px;font-size:10px;color:var(--gray-400);text-align:right;pointer-events:none;line-height:1.8;font-family:var(--f-sans); }
     </style>
 
     <div id="net-legend">
-      <div class="net-li"><div class="net-ld" style="background:#3b9eff"></div>Customer</div>
-      <div class="net-li"><div class="net-ld" style="background:#f59e0b"></div>Supplier</div>
+      <div class="net-li"><div class="net-ld" style="background:var(--navy)"></div>Customer</div>
+      <div class="net-li"><div class="net-ld" style="background:var(--gold)"></div>Supplier</div>
       <div class="net-li"><div class="net-ll" style="background:#10b981"></div>Corr &gt; 0.50</div>
       <div class="net-li"><div class="net-ll" style="background:#f59e0b"></div>0.35 – 0.50</div>
       <div class="net-li"><div class="net-ll" style="background:#ef4444"></div>&lt; 0.35</div>
@@ -3583,7 +3587,7 @@ function descargarIntelPDF() {
       )
       .on("mouseenter", function(e,d) {
         const tt = document.getElementById("net-tooltip");
-        tt.innerHTML = `<div class="nt-title">${d.name} <span style="color:${d.type==='customer'?'#3b9eff':'#f59e0b'};font-size:10px;font-family:monospace">${d.type.toUpperCase()}</span></div>
+        tt.innerHTML = `<div class="nt-title">${d.name} <span style="color:${d.type==='customer'?'#001F5B':'#C8962A'};font-size:10px;font-family:'IBM Plex Mono',monospace">${d.type.toUpperCase()}</span></div>
           <div class="nt-row"><span class="nt-k">Ticker</span><span class="nt-v">${d.id}</span></div>
           <div class="nt-row"><span class="nt-k">Connections</span><span class="nt-v">${d.links}</span></div>
           <div class="nt-row"><span class="nt-k">Max correlation</span><span class="nt-v">${d.maxCorr.toFixed(3)}</span></div>`;
@@ -3598,15 +3602,16 @@ function descargarIntelPDF() {
 
     nodeGs.append("circle")
       .attr("r", d => netRadius(d))
-      .attr("fill", d => d.type==="customer"?"#3b9eff":"#f59e0b")
-      .attr("fill-opacity", 0.18)
-      .attr("stroke", d => d.type==="customer"?"#3b9eff":"#f59e0b")
-      .attr("stroke-width", 1.5);
+      .attr("fill", d => d.type==="customer"?"#001F5B":"#C8962A")
+      .attr("fill-opacity", 0.12)
+      .attr("stroke", d => d.type==="customer"?"#001F5B":"#C8962A")
+      .attr("stroke-width", 1.8);
 
     nodeGs.append("text")
       .attr("text-anchor","middle").attr("dy","0.35em")
-      .attr("fill","#e2e8f0")
-      .attr("font-family","monospace")
+      .attr("fill","#001F5B")
+      .attr("font-family","'IBM Plex Mono', monospace")
+      .attr("font-weight","500")
       .attr("pointer-events","none")
       .text(d => d.id)
       .attr("font-size", d => Math.max(8, Math.min(11, netRadius(d)*0.9)));
