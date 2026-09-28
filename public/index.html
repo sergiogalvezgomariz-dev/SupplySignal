@@ -2254,10 +2254,14 @@ async function ncCargarYDibujar(ticker) {
 
       datasets = allTickers.map((s, i) => {
         const color = PALETA_YF[i % PALETA_YF.length];
-        const hist  = (s.puntos || []).filter(p => p.v != null);
-        if (!hist.length) return null;
-        const base  = hist[0].v;
-        const pts   = hist.map(p => ({ x: p.t, y: (p.v / base - 1) * 100 }));
+        const real  = (s.puntos || []).filter(p => p.v != null);
+        if (!real.length) return null;
+        const base  = real[0].v;
+        // Preserve null gap markers; normalize non-null values to % from base
+        const pts   = (s.puntos || []).map(p => ({
+          x: p.t,
+          y: p.v != null ? (p.v / base - 1) * 100 : null,
+        }));
         return {
           label:                    s.ticker,
           data:                     pts,
@@ -2271,13 +2275,13 @@ async function ncCargarYDibujar(ticker) {
           pointHoverBorderColor:    "#fff",
           pointHoverBorderWidth:    2,
           tension:                  0.2,
-          spanGaps:                 true,
+          spanGaps:                 false,
           _meta: s,
         };
       }).filter(Boolean);
 
       // Legend
-      ncBuildLegend(ticker, allTickers.map(s => ({ ...s, historico: s.puntos })));
+      ncBuildLegend(ticker, allTickers.map(s => ({ ...s, historico: (s.puntos || []).filter(p => p.v != null) })));
 
     } else {
       // 1D mode — % change from first intraday point (market open)
