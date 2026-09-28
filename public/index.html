@@ -1946,7 +1946,6 @@ async function renderTablaComparacion() {
             <th style="text-align:right">Price</th>
             <th style="text-align:right">Change</th>
             <th style="text-align:right">Dep.</th>
-            <th>Correlation</th>
           </tr>
         </thead>
         <tbody>
@@ -1970,11 +1969,6 @@ async function renderTablaComparacion() {
               <td class="cmp-price">${fmtP(datoSup?.precio, datoSup?.moneda)}</td>
               <td style="text-align:right">${fmtChgTd(datoSup?.variacionPct)}</td>
               <td class="cmp-dep">${dep}%</td>
-              <td>
-                <div class="cmp-bar-wrap">
-                  <div class="cmp-bar" style="width:${barW}%;background:${barClr}"></div>
-                </div>
-              </td>
             </tr>`;
           }).join("")}
         </tbody>
