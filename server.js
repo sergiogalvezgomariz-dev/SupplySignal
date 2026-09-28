@@ -521,45 +521,7 @@ app.get("/api/correlaciones", (req, res) => {
 });
 
 // Cron endpoint — Vercel llama a esto cada noche a las 06:00 UTC
-// También se puede llamar manualmente: GET /api/cron/warmup
-app.get("/api/cron/warmup", (req, res) => {
-  // Protección mínima: solo Vercel Cron o token manual
-  const auth = req.headers["authorization"] || req.query.token || "";
-  const secret = process.env.CRON_SECRET || "supplysignal_cron";
-  if (auth !== `Bearer ${secret}` && auth !== secret) {
-    return res.status(401).json({ error: "Unauthorized" });
-  }
-
-  const intelDir = path.join(__dirname, "output", "company_intel");
-  if (!fs.existsSync(intelDir)) fs.mkdirSync(intelDir, { recursive: true });
-
-  // Lanza pregenerate_intel.py en background (no bloquea la respuesta)
-  const { spawn } = require("child_process");
-  const proc = spawn("python", [
-    path.join(__dirname, "pregenerate_intel.py"),
-  ], {
-    cwd: __dirname,
-    stdio: ["ignore", "pipe", "pipe"],
-    detached: true,
-  });
-
-  let log = "";
-  proc.stdout.on("data", d => { log += d; });
-  proc.stderr.on("data", d => { log += d; });
-  proc.on("close", code => {
-    console.log(`[Cron warmup] exit ${code}\n${log.slice(0, 500)}`);
-  });
-  proc.unref(); // no bloquea el proceso principal
-
-  res.json({
-    status: "started",
-    message: "Pre-generation running in background",
-    startedAt: new Date().toISOString(),
-  });
-});
-
-const { buildCompanyIntel, cacheIsFresh } = require("./company_intel_js");
-const { runBriefingAgent }               = require("./briefing_agent_js");
+const { runBriefingAgent } = require("./briefing_agent_js");
 
 // ── Earnings crons ────────────────────────────────────────────────────────────
 
@@ -750,33 +712,6 @@ app.get("/api/company/warmup/:ticker", async (req, res) => {
   // Lanza la generación en background sin bloquear
   buildCompanyIntel(ticker).catch(e => console.error(`[warmup ${ticker}] ${e.message}`));
   res.json({ status: "warming", ticker });
-});
-
-// Company Intel: agrega Yahoo Finance + SEC EDGAR + supply chain con caché 24h
-app.get("/api/company/:ticker", async (req, res) => {
-  const ticker = req.params.ticker.toUpperCase();
-  if (!/^[A-Z0-9.\-]{1,10}$/.test(ticker))
-    return res.status(400).json({ error: "Invalid ticker" });
-
-  const cacheFile = path.join(__dirname, "output", "company_intel", `${ticker}.json`);
-
-  // Sirve caché si es válida (< 24h)
-  if (cacheIsFresh(ticker)) {
-    try {
-      const cached = JSON.parse(fs.readFileSync(cacheFile, "utf8"));
-      cached._fromCache = true;
-      return res.json(cached);
-    } catch(e) { /* cache corrupta, recalcula */ }
-  }
-
-  // Caché expirada o inexistente → genera en Node.js (sin Python)
-  try {
-    const data = await buildCompanyIntel(ticker);
-    data._fromCache = false;
-    res.json(data);
-  } catch(e) {
-    res.status(500).json({ error: "Agent failed", detail: e.message });
-  }
 });
 
 // Postmortem del agente post-earnings
