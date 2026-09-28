@@ -423,9 +423,17 @@ async function fetchWeeklySerie(ticker) {
   const timestamps = result.timestamp || [];
   const closes     = result.indicators?.quote?.[0]?.close || [];
   const meta       = result.meta;
+  // Keep only regular market hours: Mon-Fri 9:30-16:00 ET
+  const isMarketHour = ts => {
+    const d = new Date(ts * 1000);
+    const day = d.toLocaleString("en-US", { timeZone: "America/New_York", weekday: "short" });
+    if (day === "Sat" || day === "Sun") return false;
+    const hhmm = parseInt(d.toLocaleString("en-US", { timeZone: "America/New_York", hour: "2-digit", minute: "2-digit", hour12: false }).replace(":", ""), 10);
+    return hhmm >= 930 && hhmm < 1600;
+  };
   const puntos = timestamps
     .map((ts, i) => ({ t: ts * 1000, v: closes[i] }))
-    .filter(p => p.v != null)
+    .filter(p => p.v != null && isMarketHour(p.t / 1000))
     .map(p => ({ t: p.t, v: Math.round(p.v * 100) / 100 }));
   return {
     ticker,
