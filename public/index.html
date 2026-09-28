@@ -1544,7 +1544,6 @@ function thresholdBar(chgAbs, umbral) {
   const color  = pct >= 100 ? "var(--red)" : pct >= 70 ? "#e09000" : "var(--navy)";
   return `<div class="threshold-bar">
     <div class="bar-track"><div class="bar-fill" style="width:${pct.toFixed(0)}%;background:${color}"></div></div>
-    <span class="bar-pct">${pct.toFixed(0)}%</span>
   </div>`;
 }
 function alertBadge(chgAbs, umbral) {
