@@ -1276,7 +1276,8 @@ footer {
 
     <nav>
       <button class="activa" onclick="cambiarPestana('senales', this)">Signals</button>
-      <button onclick="cambiarPestana('correlaciones', this)">Correlations</button>
+      <button onclick="cambiarPestana('correlaciones', this)">Live Signals</button>
+      <button onclick="cambiarPestana('network', this)">Correlations</button>
       <button onclick="cambiarPestana('charts', this)">Live Charts</button>
       <button onclick="cambiarPestana('bot', this)" style="display:none">Execution</button>
       <button onclick="cambiarPestana('earnings', this)">Earnings</button>
@@ -1494,6 +1495,105 @@ footer {
     </div>
   </div>
 
+  <!-- ══ CORRELATIONS (Network Graph) ════════════════════════════════════ -->
+  <div id="pestaña-network" class="pestaña">
+    <div class="section-intro">
+      <div class="si-left">
+        <div class="si-title">Correlation Network</div>
+        <div class="si-sub">Customer–supplier relationships · Node size = connections · Edge color = correlation strength · Drag, zoom, hover for details</div>
+      </div>
+    </div>
+
+    <div id="net-controls" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px">
+      <span style="font-family:var(--f-mono);font-size:11px;color:var(--gray-400);text-transform:uppercase;letter-spacing:.06em">Filter</span>
+      <button class="net-btn active" data-sector="all">All</button>
+      <button class="net-btn" data-sector="tech">Tech</button>
+      <button class="net-btn" data-sector="auto">Auto</button>
+      <button class="net-btn" data-sector="cloud">Cloud / AI</button>
+      <span style="font-family:var(--f-mono);font-size:11px;color:var(--gray-400);text-transform:uppercase;letter-spacing:.06em;margin-left:8px">Min Corr</span>
+      <input type="range" id="net-corr" min="0" max="0.7" step="0.05" value="0" style="-webkit-appearance:none;width:80px;height:3px;background:var(--gray-200);border-radius:2px;outline:none;cursor:pointer">
+      <span id="net-corr-val" style="font-family:var(--f-mono);font-size:11px;color:var(--gray-600);min-width:28px">0.00</span>
+      <span style="font-family:var(--f-mono);font-size:11px;color:var(--gray-400);text-transform:uppercase;letter-spacing:.06em">Min Dep %</span>
+      <input type="range" id="net-dep" min="0" max="50" step="5" value="0" style="-webkit-appearance:none;width:80px;height:3px;background:var(--gray-200);border-radius:2px;outline:none;cursor:pointer">
+      <span id="net-dep-val" style="font-family:var(--f-mono);font-size:11px;color:var(--gray-600);min-width:28px">0%</span>
+    </div>
+
+    <style>
+      .net-btn {
+        padding: 4px 11px;
+        border-radius: 3px;
+        border: 1px solid var(--gray-200);
+        background: var(--white);
+        color: var(--gray-600);
+        font-family: var(--f-mono);
+        font-size: 11px;
+        cursor: pointer;
+        transition: all .15s;
+        letter-spacing: .02em;
+      }
+      .net-btn:hover { border-color: var(--navy); color: var(--navy); }
+      .net-btn.active { background: var(--navy); border-color: var(--navy); color: var(--white); }
+      #net-legend { display:flex;gap:18px;flex-wrap:wrap;align-items:center;margin-bottom:10px; }
+      .net-li { display:flex;align-items:center;gap:5px;font-size:11px;color:var(--gray-600);font-family:var(--f-mono);text-transform:uppercase;letter-spacing:.05em; }
+      .net-ld { width:10px;height:10px;border-radius:50%; }
+      .net-ll { width:20px;height:2.5px;border-radius:2px; }
+      #net-graph-box {
+        border: 1px solid var(--gray-100);
+        border-radius: 6px;
+        background: #070d1a;
+        height: 580px;
+        position: relative;
+        overflow: hidden;
+      }
+      #net-graph-box svg { width:100%;height:100%; }
+      #net-tooltip {
+        position:absolute;
+        background:#0d1929;
+        border:1px solid #1e3048;
+        border-radius:5px;
+        padding:9px 12px;
+        font-size:12px;
+        pointer-events:none;
+        opacity:0;
+        transition:opacity .12s;
+        max-width:220px;
+        z-index:50;
+        line-height:1.6;
+        color:#e2e8f0;
+      }
+      #net-tooltip.vis { opacity:1; }
+      .nt-title { font-weight:600;margin-bottom:4px;font-size:13px;color:#e2e8f0; }
+      .nt-row { display:flex;justify-content:space-between;gap:12px; }
+      .nt-k { color:#64748b; }
+      .nt-v { color:#e2e8f0;font-family:var(--f-mono);font-size:11px; }
+      #net-stats {
+        position:absolute;bottom:12px;left:14px;display:flex;gap:20px;pointer-events:none;
+      }
+      .net-stat-v { font-size:20px;font-weight:700;font-family:var(--f-mono);color:#e2e8f0;line-height:1;font-variant-numeric:tabular-nums; }
+      .net-stat-k { font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.07em; }
+      .net-hint { position:absolute;bottom:12px;right:14px;font-size:10px;color:#475569;text-align:right;pointer-events:none;line-height:1.8; }
+    </style>
+
+    <div id="net-legend">
+      <div class="net-li"><div class="net-ld" style="background:#3b9eff"></div>Customer</div>
+      <div class="net-li"><div class="net-ld" style="background:#f59e0b"></div>Supplier</div>
+      <div class="net-li"><div class="net-ll" style="background:#10b981"></div>Corr &gt; 0.50</div>
+      <div class="net-li"><div class="net-ll" style="background:#f59e0b"></div>0.35 – 0.50</div>
+      <div class="net-li"><div class="net-ll" style="background:#ef4444"></div>&lt; 0.35</div>
+    </div>
+
+    <div id="net-graph-box">
+      <svg id="net-svg"></svg>
+      <div id="net-tooltip"></div>
+      <div id="net-stats">
+        <div><div class="net-stat-v" id="net-s-nodes">—</div><div class="net-stat-k">Nodes</div></div>
+        <div><div class="net-stat-v" id="net-s-edges">—</div><div class="net-stat-k">Links</div></div>
+        <div><div class="net-stat-v" id="net-s-corr">—</div><div class="net-stat-k">Avg Corr</div></div>
+      </div>
+      <div class="net-hint">Drag · Scroll to zoom · Hover for details</div>
+    </div>
+  </div>
+
 </div><!-- /page-wrap -->
 
 <!-- ══ PRINT OVERLAY (PDF) ══════════════════════════════════════════════════ -->
@@ -1514,6 +1614,7 @@ footer {
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.3.1/dist/chartjs-adapter-luxon.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
 <script>
 // ── Estado global ─────────────────────────────────────────────────────────
 let datosCorrGlobal = [];   // análisis histórico
@@ -3365,6 +3466,197 @@ function descargarIntelPDF() {
     document.getElementById("pdf-overlay").style.display = "none";
   }, 1000);
 }
+
+// ── Network Graph ─────────────────────────────────────────────────────────
+(function() {
+  const NET_DATA = [
+    {c:"AAPL",cN:"Apple",s:"TSM",sN:"TSMC",dep:25,corr:0.349,roll:0.331,lag:"15–18d",sector:"tech"},
+    {c:"AAPL",cN:"Apple",s:"QCOM",sN:"Qualcomm",dep:20,corr:0.415,roll:0.413,lag:"3–6d",sector:"tech"},
+    {c:"AAPL",cN:"Apple",s:"SWKS",sN:"Skyworks",dep:55,corr:0.501,roll:0.487,lag:"15–18d",sector:"tech"},
+    {c:"AAPL",cN:"Apple",s:"QRVO",sN:"Qorvo",dep:30,corr:0.482,roll:0.441,lag:"3–6d",sector:"tech"},
+    {c:"AAPL",cN:"Apple",s:"CRUS",sN:"Cirrus Logic",dep:80,corr:0.455,roll:0.428,lag:"15–18d",sector:"tech"},
+    {c:"AAPL",cN:"Apple",s:"AMAT",sN:"Applied Materials",dep:8,corr:0.362,roll:0.343,lag:"3–6d",sector:"tech"},
+    {c:"AAPL",cN:"Apple",s:"KLAC",sN:"KLA Corp",dep:7,corr:0.37,roll:0.357,lag:"3–6d",sector:"tech"},
+    {c:"NVDA",cN:"NVIDIA",s:"TSM",sN:"TSMC",dep:11,corr:0.682,roll:0.657,lag:"1–4d",sector:"tech"},
+    {c:"NVDA",cN:"NVIDIA",s:"MU",sN:"Micron",dep:15,corr:0.519,roll:0.54,lag:"15–18d",sector:"tech"},
+    {c:"NVDA",cN:"NVIDIA",s:"VRT",sN:"Vertiv",dep:20,corr:0.605,roll:0.625,lag:"3–6d",sector:"tech"},
+    {c:"NVDA",cN:"NVIDIA",s:"AMAT",sN:"Applied Materials",dep:12,corr:0.573,roll:0.579,lag:"1–4d",sector:"tech"},
+    {c:"NVDA",cN:"NVIDIA",s:"KLAC",sN:"KLA Corp",dep:10,corr:0.598,roll:0.604,lag:"1–4d",sector:"tech"},
+    {c:"NVDA",cN:"NVIDIA",s:"LRCX",sN:"Lam Research",dep:11,corr:0.584,roll:0.598,lag:"1–4d",sector:"tech"},
+    {c:"NVDA",cN:"NVIDIA",s:"SMCI",sN:"Super Micro",dep:20,corr:0.499,roll:0.516,lag:"3–6d",sector:"tech"},
+    {c:"NVDA",cN:"NVIDIA",s:"ACHR",sN:"Archer Aviation",dep:8,corr:0.274,roll:0.252,lag:"3–6d",sector:"tech"},
+    {c:"AMD",cN:"AMD",s:"TSM",sN:"TSMC",dep:100,corr:0.574,roll:0.572,lag:"15–18d",sector:"tech"},
+    {c:"INTC",cN:"Intel",s:"AMAT",sN:"Applied Materials",dep:14,corr:0.481,roll:0.444,lag:"1–4d",sector:"tech"},
+    {c:"QCOM",cN:"Qualcomm",s:"TSM",sN:"TSMC",dep:65,corr:0.475,roll:0.529,lag:"15–18d",sector:"tech"},
+    {c:"MSFT",cN:"Microsoft",s:"AMD",sN:"AMD",dep:12,corr:0.361,roll:0.397,lag:"10–13d",sector:"cloud"},
+    {c:"MSFT",cN:"Microsoft",s:"DELL",sN:"Dell",dep:15,corr:0.327,roll:0.339,lag:"10–13d",sector:"cloud"},
+    {c:"MSFT",cN:"Microsoft",s:"NVDA",sN:"NVIDIA",dep:15,corr:0.493,roll:0.495,lag:"1–4d",sector:"cloud"},
+    {c:"AMZN",cN:"Amazon",s:"GXO",sN:"GXO Logistics",dep:14,corr:0.309,roll:0.298,lag:"3–6d",sector:"cloud"},
+    {c:"AMZN",cN:"Amazon",s:"RIVN",sN:"Rivian",dep:30,corr:0.225,roll:0.242,lag:"1–4d",sector:"cloud"},
+    {c:"AMZN",cN:"Amazon",s:"NVDA",sN:"NVIDIA",dep:12,corr:0.476,roll:0.465,lag:"7–10d",sector:"cloud"},
+    {c:"META",cN:"Meta",s:"NVDA",sN:"NVIDIA",dep:18,corr:0.472,roll:0.456,lag:"15–18d",sector:"cloud"},
+    {c:"GOOGL",cN:"Alphabet",s:"NVDA",sN:"NVIDIA",dep:10,corr:0.394,roll:0.389,lag:"3–6d",sector:"cloud"},
+    {c:"TSLA",cN:"Tesla",s:"PCAR",sN:"Paccar",dep:10,corr:0.243,roll:0.24,lag:"1–4d",sector:"auto"},
+    {c:"TSLA",cN:"Tesla",s:"ALB",sN:"Albemarle",dep:18,corr:0.344,roll:0.343,lag:"3–6d",sector:"auto"},
+    {c:"TSLA",cN:"Tesla",s:"STM",sN:"STMicro",dep:12,corr:0.395,roll:0.397,lag:"3–6d",sector:"auto"},
+    {c:"TSLA",cN:"Tesla",s:"ON",sN:"ON Semiconductor",dep:12,corr:0.445,roll:0.428,lag:"1–4d",sector:"auto"},
+    {c:"TSLA",cN:"Tesla",s:"LAC",sN:"Lithium Americas",dep:15,corr:0.217,roll:0.243,lag:"15–18d",sector:"auto"},
+    {c:"GM",cN:"General Motors",s:"MGA",sN:"Magna Intl",dep:9,corr:0.53,roll:0.531,lag:"5–8d",sector:"auto"},
+    {c:"F",cN:"Ford",s:"MGA",sN:"Magna Intl",dep:11,corr:0.509,roll:0.548,lag:"1–4d",sector:"auto"},
+    {c:"F",cN:"Ford",s:"ALV",sN:"Autoliv",dep:10,corr:0.477,roll:0.498,lag:"1–4d",sector:"auto"},
+  ];
+
+  const custSectors = {AAPL:"tech",NVDA:"tech",AMD:"tech",INTC:"tech",QCOM:"tech",MSFT:"cloud",AMZN:"cloud",META:"cloud",GOOGL:"cloud",TSLA:"auto",GM:"auto",F:"auto"};
+  let netSector = "all", netMinCorr = 0, netMinDep = 0;
+  let netSim, netInitialized = false;
+
+  function netCorrColor(c) { return c >= 0.50 ? "#10b981" : c >= 0.35 ? "#f59e0b" : "#ef4444"; }
+  function netCorrW(c) { return 1 + c * 5; }
+  function netRadius(d) { return (d.type === "customer" ? 20 : 14) + d.links * 1.5; }
+
+  function buildNet() {
+    const box = document.getElementById("net-graph-box");
+    if (!box) return;
+    const data = NET_DATA.filter(d => {
+      const ok = netSector === "all" || custSectors[d.c] === netSector;
+      return ok && d.corr >= netMinCorr && d.dep >= netMinDep;
+    });
+
+    const svgEl = d3.select("#net-svg");
+    svgEl.selectAll("*").remove();
+    const g = svgEl.append("g");
+
+    const zoom = d3.zoom().scaleExtent([0.25, 5]).on("zoom", e => g.attr("transform", e.transform));
+    svgEl.call(zoom);
+
+    const nodeMap = new Map();
+    data.forEach(d => {
+      if (!nodeMap.has(d.c)) nodeMap.set(d.c, {id:d.c,name:d.cN,type:"customer",links:0,maxCorr:0});
+      if (!nodeMap.has(d.s)) nodeMap.set(d.s, {id:d.s,name:d.sN,type:"supplier",links:0,maxCorr:0});
+      nodeMap.get(d.c).links++; nodeMap.get(d.s).links++;
+      nodeMap.get(d.c).maxCorr = Math.max(nodeMap.get(d.c).maxCorr, d.corr);
+      nodeMap.get(d.s).maxCorr = Math.max(nodeMap.get(d.s).maxCorr, d.corr);
+    });
+    const nodes = Array.from(nodeMap.values());
+    const links = data.map(d => ({source:d.c,target:d.s,corr:d.corr,dep:d.dep,lag:d.lag,roll:d.roll,cN:d.cN,sN:d.sN}));
+
+    document.getElementById("net-s-nodes").textContent = nodes.length;
+    document.getElementById("net-s-edges").textContent = links.length;
+    const avg = links.reduce((a,b) => a+b.corr, 0) / (links.length||1);
+    document.getElementById("net-s-corr").textContent = avg.toFixed(3);
+
+    const W = box.clientWidth || 800, H = box.clientHeight || 580;
+    if (netSim) netSim.stop();
+    netSim = d3.forceSimulation(nodes)
+      .force("link", d3.forceLink(links).id(d=>d.id).distance(d => 90+(1-d.corr)*80).strength(0.6))
+      .force("charge", d3.forceManyBody().strength(-280))
+      .force("center", d3.forceCenter(W/2, H/2))
+      .force("collide", d3.forceCollide(d => netRadius(d)+10));
+
+    const linkSel = g.append("g").selectAll("line").data(links).join("line")
+      .attr("stroke", d => netCorrColor(d.corr))
+      .attr("stroke-width", d => netCorrW(d.corr))
+      .attr("stroke-opacity", 0.65)
+      .attr("stroke-linecap", "round")
+      .on("mouseenter", function(e,d) {
+        const tt = document.getElementById("net-tooltip");
+        tt.innerHTML = `<div class="nt-title">${d.cN} → ${d.sN}</div>
+          <div class="nt-row"><span class="nt-k">Spot corr</span><span class="nt-v" style="color:${netCorrColor(d.corr)}">${d.corr.toFixed(3)}</span></div>
+          <div class="nt-row"><span class="nt-k">Rolling avg</span><span class="nt-v">${d.roll.toFixed(3)}</span></div>
+          <div class="nt-row"><span class="nt-k">Dependency</span><span class="nt-v">${d.dep}%</span></div>
+          <div class="nt-row"><span class="nt-k">Best lag</span><span class="nt-v">${d.lag}</span></div>`;
+        tt.classList.add("vis");
+        d3.select(this).attr("stroke-opacity",1).attr("stroke-width",netCorrW(d.corr)+1.5);
+      })
+      .on("mousemove", e => netMoveTip(e))
+      .on("mouseleave", function(e,d) {
+        document.getElementById("net-tooltip").classList.remove("vis");
+        d3.select(this).attr("stroke-opacity",0.65).attr("stroke-width",netCorrW(d.corr));
+      });
+
+    const nodeGs = g.append("g").selectAll("g").data(nodes).join("g")
+      .attr("cursor","grab")
+      .call(d3.drag()
+        .on("start",(e,d)=>{ if(!e.active) netSim.alphaTarget(0.3).restart(); d.fx=d.x; d.fy=d.y; })
+        .on("drag",(e,d)=>{ d.fx=e.x; d.fy=e.y; })
+        .on("end",(e,d)=>{ if(!e.active) netSim.alphaTarget(0); d.fx=null; d.fy=null; })
+      )
+      .on("mouseenter", function(e,d) {
+        const tt = document.getElementById("net-tooltip");
+        tt.innerHTML = `<div class="nt-title">${d.name} <span style="color:${d.type==='customer'?'#3b9eff':'#f59e0b'};font-size:10px;font-family:monospace">${d.type.toUpperCase()}</span></div>
+          <div class="nt-row"><span class="nt-k">Ticker</span><span class="nt-v">${d.id}</span></div>
+          <div class="nt-row"><span class="nt-k">Connections</span><span class="nt-v">${d.links}</span></div>
+          <div class="nt-row"><span class="nt-k">Max correlation</span><span class="nt-v">${d.maxCorr.toFixed(3)}</span></div>`;
+        tt.classList.add("vis");
+        linkSel.attr("stroke-opacity", l => (l.source.id===d.id||l.target.id===d.id)?1:0.08);
+      })
+      .on("mousemove", e => netMoveTip(e))
+      .on("mouseleave", function() {
+        document.getElementById("net-tooltip").classList.remove("vis");
+        linkSel.attr("stroke-opacity", 0.65);
+      });
+
+    nodeGs.append("circle")
+      .attr("r", d => netRadius(d))
+      .attr("fill", d => d.type==="customer"?"#3b9eff":"#f59e0b")
+      .attr("fill-opacity", 0.18)
+      .attr("stroke", d => d.type==="customer"?"#3b9eff":"#f59e0b")
+      .attr("stroke-width", 1.5);
+
+    nodeGs.append("text")
+      .attr("text-anchor","middle").attr("dy","0.35em")
+      .attr("fill","#e2e8f0")
+      .attr("font-family","monospace")
+      .attr("pointer-events","none")
+      .text(d => d.id)
+      .attr("font-size", d => Math.max(8, Math.min(11, netRadius(d)*0.9)));
+
+    netSim.on("tick", () => {
+      linkSel.attr("x1",d=>d.source.x).attr("y1",d=>d.source.y).attr("x2",d=>d.target.x).attr("y2",d=>d.target.y);
+      nodeGs.attr("transform", d => `translate(${d.x},${d.y})`);
+    });
+  }
+
+  function netMoveTip(e) {
+    const box = document.getElementById("net-graph-box");
+    const r = box.getBoundingClientRect();
+    const tt = document.getElementById("net-tooltip");
+    let x = e.clientX - r.left + 14, y = e.clientY - r.top - 14;
+    if (x + 230 > r.width) x -= 240;
+    if (y + 130 > r.height) y -= 140;
+    tt.style.left = x+"px"; tt.style.top = y+"px";
+  }
+
+  document.querySelectorAll(".net-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".net-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      netSector = btn.dataset.sector;
+      buildNet();
+    });
+  });
+
+  document.getElementById("net-corr").addEventListener("input", function() {
+    netMinCorr = +this.value;
+    document.getElementById("net-corr-val").textContent = netMinCorr.toFixed(2);
+    buildNet();
+  });
+  document.getElementById("net-dep").addEventListener("input", function() {
+    netMinDep = +this.value;
+    document.getElementById("net-dep-val").textContent = netMinDep+"%";
+    buildNet();
+  });
+
+  // Build when tab is first opened
+  const origCambiar = window.cambiarPestana;
+  window.cambiarPestana = function(id, btn) {
+    origCambiar(id, btn);
+    if (id === "network" && !netInitialized) {
+      netInitialized = true;
+      setTimeout(buildNet, 80);
+    }
+  };
+})();
 
 // ── Init ──────────────────────────────────────────────────────────────────
 cargarSenales();
