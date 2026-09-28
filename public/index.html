@@ -2246,22 +2246,29 @@ async function ncCargarYDibujar(ticker) {
 
     if (ncMode === "1W") {
       // For 1W: fetch 5-day 15-min history from PercentageChartsBOT endpoint
-      const wr   = await fetch(`/api/weekly-chart/${ticker}`);
+      const wr    = await fetch(`/api/weekly-chart/${ticker}`);
       const wData = await wr.json();
       if (!wData.series?.length) return;
 
       const allTickers = wData.series;
+
+      // Reference series (first) — used for index→timestamp mapping and day labels
+      const refPts = (allTickers[0]?.puntos || []).filter(p => p.v != null);
+
+      // Compute day-boundary indices for X-axis tick labels
+      const dayTicks = {};
+      let prevDay = null;
+      refPts.forEach((p, idx) => {
+        const day = new Date(p.t).toLocaleDateString("en-US", { timeZone: "America/New_York", weekday: "short" });
+        if (day !== prevDay) { dayTicks[idx] = day; prevDay = day; }
+      });
 
       datasets = allTickers.map((s, i) => {
         const color = PALETA_YF[i % PALETA_YF.length];
         const real  = (s.puntos || []).filter(p => p.v != null);
         if (!real.length) return null;
         const base  = real[0].v;
-        // Preserve null gap markers; normalize non-null values to % from base
-        const pts   = (s.puntos || []).map(p => ({
-          x: p.t,
-          y: p.v != null ? (p.v / base - 1) * 100 : null,
-        }));
+        const pts   = real.map((p, idx) => ({ x: idx, y: (p.v / base - 1) * 100 }));
         return {
           label:                    s.ticker,
           data:                     pts,
@@ -2275,8 +2282,10 @@ async function ncCargarYDibujar(ticker) {
           pointHoverBorderColor:    "#fff",
           pointHoverBorderWidth:    2,
           tension:                  0.2,
-          spanGaps:                 false,
+          spanGaps:                 true,
           _meta: s,
+          _dayTicks: dayTicks,
+          _refPts:   refPts,
         };
       }).filter(Boolean);
 
@@ -2328,23 +2337,21 @@ async function ncCargarYDibujar(ticker) {
 
     const isWeekly = ncMode === "1W";
 
+    // For 1W, pull dayTicks/refPts from the first dataset
+    const _dayTicks = datasets[0]?._dayTicks || {};
+    const _refPts   = datasets[0]?._refPts   || [];
+
     const xConfig = isWeekly ? {
-      type: "time",
-      adapters: { date: { zone: "America/New_York" } },
-      time: {
-        unit:           "day",
-        displayFormats: { day: "EEE" },
-        tooltipFormat:  "EEE H:mm",
-      },
+      type: "linear",
       grid:   { display: false },
       border: { display: false },
       ticks:  {
         color:        "#9ca3af",
         font:         { family: "'IBM Plex Sans', sans-serif", size: 10.5 },
         maxRotation:  0,
-        autoSkip:     true,
-        maxTicksLimit: 5,
-        padding:      6,
+        autoSkip:     false,
+        callback: val => _dayTicks[Math.round(val)] ?? "",
+        padding:  6,
       },
     } : {
       type: "time",
@@ -2380,9 +2387,12 @@ async function ncCargarYDibujar(ticker) {
 
     const tooltipCallbacks = isWeekly ? {
       title: items => {
-        const d = new Date(items[0].parsed.x);
-        return d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })
-          + " " + d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: false }) + " ET";
+        const idx = Math.round(items[0].parsed.x);
+        const pt  = _refPts[idx];
+        if (!pt) return "";
+        const d = new Date(pt.t);
+        return d.toLocaleDateString("en-US", { timeZone: "America/New_York", weekday: "short", month: "short", day: "numeric" })
+          + " " + d.toLocaleTimeString("en-US", { timeZone: "America/New_York", hour: "2-digit", minute: "2-digit", hour12: false }) + " ET";
       },
       label: ctx => {
         const v = ctx.parsed.y;

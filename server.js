@@ -436,15 +436,7 @@ async function fetchWeeklySerie(ticker) {
     .filter(p => p.v != null && isMarketHour(p.t / 1000))
     .map(p => ({ t: p.t, v: Math.round(p.v * 100) / 100 }));
 
-  // Insert null gaps at session boundaries (consecutive points > 30 min apart)
-  const GAP = 30 * 60 * 1000;
-  const puntos = [];
-  for (let i = 0; i < filtered.length; i++) {
-    if (i > 0 && filtered[i].t - filtered[i - 1].t > GAP) {
-      puntos.push({ t: Math.round((filtered[i - 1].t + filtered[i].t) / 2), v: null });
-    }
-    puntos.push(filtered[i]);
-  }
+  const puntos = filtered;
   return {
     ticker,
     nombre:  meta.shortName || meta.longName || ticker,
