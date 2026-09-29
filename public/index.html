@@ -505,6 +505,9 @@ nav button.activa {
   grid-template-columns: repeat(auto-fill, minmax(520px, 1fr));
   gap: 20px;
 }
+#nc-grid.charts-grid {
+  grid-template-columns: 1fr;
+}
 .chart-card {
   background: var(--white);
   border: 1px solid var(--gray-200);
@@ -982,11 +985,12 @@ footer {
       <button class="activa" onclick="cambiarPestana('about', this)">Who We Are</button>
       <button onclick="cambiarPestana('senales', this)">Active Signal</button>
       <button onclick="cambiarPestana('correlaciones', this)">Corr. Monitor</button>
-      <button onclick="cambiarPestana('charts', this)">Live Charts</button>
-      <button onclick="cambiarPestana('newcharts', this)">New Charts</button>
+      <button onclick="cambiarPestana('charts', this)">Pairs</button>
+      <button onclick="cambiarPestana('newcharts', this)">Performance</button>
       <button onclick="cambiarPestana('bot', this)" style="display:none">Execution</button>
       <button onclick="cambiarPestana('earnings', this)">Earnings</button>
-      <button onclick="cambiarPestana('network', this)">Corr. Network</button>
+      <button onclick="cambiarPestana('portfolio', this)">Portfolio</button>
+      <button onclick="cambiarPestana('tradelog', this)">Trade Log</button>
     </nav>
 
   </div>
@@ -1030,6 +1034,25 @@ footer {
       }
     </style>
 
+    <style>
+      .author-card{display:flex;gap:40px;align-items:flex-start;margin-bottom:48px;padding-bottom:48px;border-bottom:1px solid var(--gray-100)}
+      .author-photo{width:180px;flex-shrink:0}
+      .author-photo img{width:180px;height:225px;object-fit:cover;object-position:center top;filter:grayscale(100%);display:block}
+      .author-name{font-family:var(--f-serif);font-size:1.55rem;font-weight:600;color:var(--navy);margin-bottom:4px}
+      .author-role{font-size:12px;color:var(--navy);font-weight:600;text-transform:uppercase;letter-spacing:.09em;margin-bottom:16px}
+      .author-bio{font-size:13.5px;color:var(--gray-600);line-height:1.75;margin-bottom:12px}
+      .author-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+      .author-tag{font-size:12px;font-family:var(--f-sans);color:var(--navy);padding:0;background:none;border:none}
+      .author-tag+.author-tag::before{content:"·";margin-right:8px;color:var(--gray-400)}
+      .author-links{display:flex;gap:20px}
+      .author-link{font-size:13.5px;font-family:var(--f-sans);color:var(--navy);text-decoration:none;border-bottom:1px solid var(--navy);padding-bottom:1px}
+      .ack{background:var(--gray-100);border-left:3px solid var(--navy);padding:18px 22px;margin-bottom:48px}
+      .ack-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--navy);margin-bottom:8px}
+      .ack p{font-size:13px;color:var(--gray-600);line-height:1.75;font-style:italic}
+      .ack strong{color:var(--navy);font-style:normal}
+      @media(max-width:600px){.author-card{flex-direction:column}.author-photo{width:100%}.author-photo img{width:100%;height:auto}}
+    </style>
+
     <div class="about-wrap">
       <div class="about-hero">
         <h1>Supply Chain Intelligence,<br>built for active investors</h1>
@@ -1038,7 +1061,7 @@ footer {
 
       <div class="about-section">
         <h2>What is SupplySignal?</h2>
-        <p>When a supplier experiences a significant price shock, its major customers tend to react with a predictable delay of days to weeks. This lag exists because markets are slow to price in the downstream consequences. SupplySignal tracks 35 customer–supplier pairs across semiconductors, automotive, and cloud infrastructure, generating alerts the moment a threshold is crossed.</p>
+        <p>When a supplier experiences a significant price shock, its major customers tend to react with a predictable delay of days to weeks. This lag exists because markets are slow to price in the downstream consequences. SupplySignal tracks 51 customer–supplier pairs across semiconductors, automotive, cloud infrastructure, retail, aerospace & defense, and pharma, generating alerts the moment a threshold is crossed.</p>
       </div>
 
       <hr class="about-divider">
@@ -1059,16 +1082,16 @@ footer {
           <div class="about-step"><span class="about-step-num">02</span><div class="about-step-body"><strong>Corr. Monitor</strong> - Real-time correlation table showing relationship strength, dependency exposure, and historical shock response for every monitored pair.</div></div>
           <div class="about-step"><span class="about-step-num">03</span><div class="about-step-body"><strong>Live Charts</strong> - Intraday and multi-day price comparison across all covered names, normalized for direct visual comparison.</div></div>
           <div class="about-step"><span class="about-step-num">04</span><div class="about-step-body"><strong>Earnings</strong> - Calendar of upcoming earnings for all covered companies, with estimated market impact based on historical volatility.</div></div>
-          <div class="about-step"><span class="about-step-num">05</span><div class="about-step-body"><strong>Corr. Network</strong> - Interactive network graph of all 35 pairs, visualizing supply chain structure and the strength of each relationship.</div></div>
+          <div class="about-step"><span class="about-step-num">05</span><div class="about-step-body"><strong>Corr. Network</strong> - Interactive network graph of all 51 pairs, visualizing supply chain structure and the strength of each relationship.</div></div>
         </div>
       </div>
 
       <div class="about-stats">
         <div class="about-stat"><div class="about-stat-val">12</div><div class="about-stat-key">Customers</div></div>
         <div class="about-stat"><div class="about-stat-val">23</div><div class="about-stat-key">Suppliers</div></div>
-        <div class="about-stat"><div class="about-stat-val">35</div><div class="about-stat-key">Mapped pairs</div></div>
+        <div class="about-stat"><div class="about-stat-val">51</div><div class="about-stat-key">Mapped pairs</div></div>
         <div class="about-stat"><div class="about-stat-val">751</div><div class="about-stat-key">Trading days</div></div>
-        <div class="about-stat"><div class="about-stat-val">4</div><div class="about-stat-key">Sectors</div></div>
+        <div class="about-stat"><div class="about-stat-val">6</div><div class="about-stat-key">Sectors</div></div>
       </div>
 
       <hr class="about-divider">
@@ -1081,6 +1104,19 @@ footer {
       </div>
 
       <hr class="about-divider">
+      <div class="author-card">
+        <div class="author-photo"><img src="/sergio.png" alt="Sergio Galvez Gomariz"></div>
+        <div>
+          <div class="author-name">Sergio Galvez Gomariz</div>
+          <div class="author-role">Deals Associate &middot; PwC &middot; Madrid</div>
+          <p class="author-bio">Industrial Engineer (ICAI &ndash; Comillas) and MiM graduate (IESE Business School, Finance Track). Currently working in M&amp;A at PwC in Madrid and preparing the CFA Level II (May 2027).</p>
+          <p class="author-bio">SupplySignal is a personal project built to test the hypothesis of Cohen &amp; Frazzini (2008): that equity returns propagate through supply chain networks with predictable delays.</p>
+          <div class="author-links">
+            <a class="author-link" href="https://www.linkedin.com/in/sergio-galvez-gomariz" target="_blank">LinkedIn</a>
+            <a class="author-link" href="mailto:sergiogalvezgomariz@gmail.com">sergiogalvezgomariz@gmail.com</a>
+          </div>
+        </div>
+      </div>
       <p class="about-disclaimer">For research purposes only. Nothing herein constitutes investment advice or a recommendation to buy or sell any security. Investment decisions are the sole responsibility of the user. MiFID II compliant.</p>
     </div>
   </div>
@@ -1170,38 +1206,140 @@ footer {
       <strong>Return / shock:</strong> supplier mean return in 5 days after customer move &gt;3% ·
       Past performance is not indicative of future results.
     </div>
+
+    <!-- ── Correlation Network Graph ─────────────────────────────────── -->
+    <div style="margin-top:40px;border-top:1px solid var(--gray-100);padding-top:32px;">
+      <div class="section-intro" style="margin-bottom:18px;">
+        <div class="si-left">
+          <div class="si-title">Correlation Network</div>
+          <div class="si-sub">Customer–supplier relationships · Node size = connections · Edge color = correlation strength · Drag, zoom, hover for details</div>
+        </div>
+      </div>
+
+      <div id="net-controls" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px">
+        <span style="font-family:var(--f-mono);font-size:11px;color:var(--gray-400);text-transform:uppercase;letter-spacing:.06em">Filter</span>
+        <button class="net-btn active" data-sector="all">All</button>
+        <button class="net-btn" data-sector="tech">Tech</button>
+        <button class="net-btn" data-sector="auto">Auto</button>
+        <button class="net-btn" data-sector="cloud">Cloud / AI</button>
+        <button class="net-btn" data-sector="retail">Retail</button>
+        <button class="net-btn" data-sector="aero">Aero & Defense</button>
+        <button class="net-filter-btn" data-sector="pharma">Pharma</button>
+        <span style="font-family:var(--f-mono);font-size:11px;color:var(--gray-400);text-transform:uppercase;letter-spacing:.06em;margin-left:8px">Min Corr</span>
+        <input type="range" id="net-corr" min="0" max="0.7" step="0.05" value="0" style="-webkit-appearance:none;width:80px;height:3px;background:var(--gray-200);border-radius:2px;outline:none;cursor:pointer">
+        <span id="net-corr-val" style="font-family:var(--f-mono);font-size:11px;color:var(--gray-600);min-width:28px">0.00</span>
+        <span style="font-family:var(--f-mono);font-size:11px;color:var(--gray-400);text-transform:uppercase;letter-spacing:.06em">Min Dep %</span>
+        <input type="range" id="net-dep" min="0" max="50" step="5" value="0" style="-webkit-appearance:none;width:80px;height:3px;background:var(--gray-200);border-radius:2px;outline:none;cursor:pointer">
+        <span id="net-dep-val" style="font-family:var(--f-mono);font-size:11px;color:var(--gray-600);min-width:28px">0%</span>
+      </div>
+
+      <style>
+        .net-btn {
+          padding: 4px 11px;
+          border-radius: 3px;
+          border: 1px solid var(--gray-200);
+          background: var(--white);
+          color: var(--gray-600);
+          font-family: var(--f-sans);
+          font-size: 11px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all .15s;
+          letter-spacing: .02em;
+        }
+        .net-btn:hover { border-color: var(--navy); color: var(--navy); }
+        .net-btn.active { background: var(--navy); border-color: var(--navy); color: var(--white); }
+        #net-legend { display:flex;gap:18px;flex-wrap:wrap;align-items:center;margin-bottom:10px; }
+        .net-li { display:flex;align-items:center;gap:5px;font-size:11px;color:var(--gray-600);font-family:var(--f-sans);font-weight:500;text-transform:uppercase;letter-spacing:.05em; }
+        .net-ld { width:10px;height:10px;border-radius:50%; }
+        .net-ll { width:20px;height:2.5px;border-radius:2px; }
+        #net-graph-box {
+          border: 2px solid var(--navy);
+          border-radius: 4px;
+          background: var(--white);
+          height: 580px;
+          position: relative;
+          overflow: hidden;
+        }
+        #net-graph-box svg { width:100%;height:100%; }
+        #net-tooltip {
+          position:absolute;
+          background:var(--white);
+          border:1px solid var(--gray-200);
+          border-top: 2px solid var(--navy);
+          border-radius:3px;
+          padding:9px 12px;
+          font-size:12px;
+          font-family:var(--f-sans);
+          pointer-events:none;
+          opacity:0;
+          transition:opacity .12s;
+          max-width:220px;
+          z-index:50;
+          line-height:1.6;
+          color:var(--gray-800);
+          box-shadow: 0 2px 10px rgba(0,0,0,.08);
+        }
+        #net-tooltip.vis { opacity:1; }
+        .nt-title { font-weight:600;margin-bottom:4px;font-size:13px;color:var(--navy); }
+        .nt-row { display:flex;justify-content:space-between;gap:12px; }
+        .nt-k { color:var(--gray-400); }
+        .nt-v { color:var(--gray-800);font-family:var(--f-mono);font-size:11px; }
+        #net-stats {
+          position:absolute;bottom:12px;left:14px;display:flex;gap:20px;pointer-events:none;
+        }
+        .net-stat-v { font-size:18px;font-weight:600;font-family:var(--f-mono);color:var(--navy);line-height:1;font-variant-numeric:tabular-nums; }
+        .net-stat-k { font-size:10px;color:var(--gray-400);text-transform:uppercase;letter-spacing:.07em;font-family:var(--f-sans); }
+        .net-hint { position:absolute;bottom:12px;right:14px;font-size:10px;color:var(--gray-400);text-align:right;pointer-events:none;line-height:1.8;font-family:var(--f-sans); }
+      </style>
+
+      <div id="net-legend">
+        <div class="net-li"><div class="net-ld" style="background:var(--navy)"></div>Customer</div>
+        <div class="net-li"><div class="net-ld" style="background:var(--gold)"></div>Supplier</div>
+        <div class="net-li"><div class="net-ll" style="background:#10b981"></div>Corr &gt; 0.50</div>
+        <div class="net-li"><div class="net-ll" style="background:#f59e0b"></div>0.35 – 0.50</div>
+        <div class="net-li"><div class="net-ll" style="background:#ef4444"></div>&lt; 0.35</div>
+      </div>
+
+      <div id="net-graph-box">
+        <svg id="net-svg"></svg>
+        <div id="net-tooltip"></div>
+        <div id="net-stats">
+          <div><div class="net-stat-v" id="net-s-nodes">—</div><div class="net-stat-k">Nodes</div></div>
+          <div><div class="net-stat-v" id="net-s-edges">—</div><div class="net-stat-k">Links</div></div>
+          <div><div class="net-stat-v" id="net-s-corr">—</div><div class="net-stat-k">Avg Corr</div></div>
+        </div>
+        <div class="net-hint">Drag · Scroll to zoom · Hover for details</div>
+      </div>
+    </div>
   </div>
 
   <!-- ══ LIVE CHARTS ══════════════════════════════════════════════════ -->
   <div id="pestaña-charts" class="pestaña">
     <div class="section-intro">
       <div class="si-left">
-        <div class="si-title">Live Price Charts</div>
-        <div class="si-sub">Intraday % change vs. prior close · Customer + suppliers on the same chart · 5-min intervals · Auto-refresh every 60s</div>
+        <div class="si-title">Customer–Supplier Pairs</div>
+        <div class="si-sub">All 51 pairs · Live price + daily % change · Sorted by customer move</div>
       </div>
-      <button class="btn btn-primary" onclick="refrescarCharts()">Refresh now</button>
+      <div style="display:flex;gap:10px;align-items:center">
+        <a href="/SupplySignal_Pairs_Catalogue_Sept26.pdf" download="Supply-Chain Pair Catalogue.pdf"
+           style="display:inline-flex;align-items:center;gap:6px;padding:8px 20px;background:var(--navy);color:#fff;border-radius:4px;font-family:var(--f-sans);font-size:11px;font-weight:600;text-decoration:none;letter-spacing:1.2px;text-transform:uppercase;border:1.5px solid var(--navy)">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 1v9M8 10l-3-3M8 10l3-3M2 13h12" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Pair Catalogue Sept26
+        </a>
+        <button class="btn btn-primary" onclick="refrescarCharts()">Refresh</button>
+      </div>
     </div>
-
-    <div class="charts-refresh-strip">
-      <span id="charts-update-ts">Last update: —</span>
-      <span>Next refresh in <span class="countdown" id="charts-countdown">60</span>s</span>
-    </div>
-
-    <div class="charts-selector" id="charts-selector"></div>
 
     <!-- Tabla comparativa cliente → supplier -->
     <div class="comparador-wrap">
       <div class="comparador-header">
         <span class="comparador-title">Price Comparison — All Pairs</span>
-        <span class="comparador-hint">Sorted by customer move · Click any row to jump to chart</span>
+        <span class="comparador-hint">Sorted by customer move</span>
       </div>
       <div id="comparador-tabla">
         <div class="state-block"><div class="state-label">Loading...</div></div>
       </div>
-    </div>
-
-    <div class="charts-grid" id="charts-grid">
-      <div class="state-block"><div class="state-label">Loading charts...</div></div>
     </div>
   </div>
 
@@ -1209,7 +1347,7 @@ footer {
   <div id="pestaña-newcharts" class="pestaña">
     <div class="section-intro">
       <div class="si-left">
-        <div class="si-title">Weekly Performance Charts</div>
+        <div class="si-title">Performance Charts</div>
         <div class="si-sub">% change from week open · Customer vs. suppliers on the same axis · Toggle 1D / 1W</div>
       </div>
       <div style="display:flex;gap:8px;align-items:center;">
@@ -1220,12 +1358,6 @@ footer {
         <button class="btn btn-primary" onclick="refrescarNewCharts()">Refresh</button>
       </div>
     </div>
-
-    <div class="charts-refresh-strip">
-      <span id="nc-update-ts">Last update: —</span>
-    </div>
-
-    <div class="charts-selector" id="nc-selector"></div>
 
     <div class="charts-grid" id="nc-grid">
       <div class="state-block"><div class="state-label">Loading charts...</div></div>
@@ -1288,107 +1420,31 @@ footer {
 
   <!-- ══ COMPANY INTEL ══════════════════════════════════════════════════ -->
   <!-- ══ CORRELATIONS (Network Graph) ════════════════════════════════════ -->
-  <div id="pestaña-network" class="pestaña">
+  <!-- ══ PORTFOLIO ══════════════════════════════════════════════════════ -->
+  <div id="pestaña-portfolio" class="pestaña">
     <div class="section-intro">
       <div class="si-left">
-        <div class="si-title">Correlation Network</div>
-        <div class="si-sub">Customer–supplier relationships · Node size = connections · Edge color = correlation strength · Drag, zoom, hover for details</div>
+        <div class="si-title">Portfolio</div>
+        <div class="si-sub">Posiciones abiertas · Historial · P&amp;L acumulado · Actualizado por el bot en tiempo real</div>
       </div>
     </div>
+    <div id="portfolio-cont"></div>
+  </div>
 
-    <div id="net-controls" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px">
-      <span style="font-family:var(--f-mono);font-size:11px;color:var(--gray-400);text-transform:uppercase;letter-spacing:.06em">Filter</span>
-      <button class="net-btn active" data-sector="all">All</button>
-      <button class="net-btn" data-sector="tech">Tech</button>
-      <button class="net-btn" data-sector="auto">Auto</button>
-      <button class="net-btn" data-sector="cloud">Cloud / AI</button>
-      <span style="font-family:var(--f-mono);font-size:11px;color:var(--gray-400);text-transform:uppercase;letter-spacing:.06em;margin-left:8px">Min Corr</span>
-      <input type="range" id="net-corr" min="0" max="0.7" step="0.05" value="0" style="-webkit-appearance:none;width:80px;height:3px;background:var(--gray-200);border-radius:2px;outline:none;cursor:pointer">
-      <span id="net-corr-val" style="font-family:var(--f-mono);font-size:11px;color:var(--gray-600);min-width:28px">0.00</span>
-      <span style="font-family:var(--f-mono);font-size:11px;color:var(--gray-400);text-transform:uppercase;letter-spacing:.06em">Min Dep %</span>
-      <input type="range" id="net-dep" min="0" max="50" step="5" value="0" style="-webkit-appearance:none;width:80px;height:3px;background:var(--gray-200);border-radius:2px;outline:none;cursor:pointer">
-      <span id="net-dep-val" style="font-family:var(--f-mono);font-size:11px;color:var(--gray-600);min-width:28px">0%</span>
-    </div>
-
-    <style>
-      .net-btn {
-        padding: 4px 11px;
-        border-radius: 3px;
-        border: 1px solid var(--gray-200);
-        background: var(--white);
-        color: var(--gray-600);
-        font-family: var(--f-sans);
-        font-size: 11px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all .15s;
-        letter-spacing: .02em;
-      }
-      .net-btn:hover { border-color: var(--navy); color: var(--navy); }
-      .net-btn.active { background: var(--navy); border-color: var(--navy); color: var(--white); }
-      #net-legend { display:flex;gap:18px;flex-wrap:wrap;align-items:center;margin-bottom:10px; }
-      .net-li { display:flex;align-items:center;gap:5px;font-size:11px;color:var(--gray-600);font-family:var(--f-sans);font-weight:500;text-transform:uppercase;letter-spacing:.05em; }
-      .net-ld { width:10px;height:10px;border-radius:50%; }
-      .net-ll { width:20px;height:2.5px;border-radius:2px; }
-      #net-graph-box {
-        border: 2px solid var(--navy);
-        border-radius: 4px;
-        background: var(--white);
-        height: 580px;
-        position: relative;
-        overflow: hidden;
-      }
-      #net-graph-box svg { width:100%;height:100%; }
-      #net-tooltip {
-        position:absolute;
-        background:var(--white);
-        border:1px solid var(--gray-200);
-        border-top: 2px solid var(--navy);
-        border-radius:3px;
-        padding:9px 12px;
-        font-size:12px;
-        font-family:var(--f-sans);
-        pointer-events:none;
-        opacity:0;
-        transition:opacity .12s;
-        max-width:220px;
-        z-index:50;
-        line-height:1.6;
-        color:var(--gray-800);
-        box-shadow: 0 2px 10px rgba(0,0,0,.08);
-      }
-      #net-tooltip.vis { opacity:1; }
-      .nt-title { font-weight:600;margin-bottom:4px;font-size:13px;color:var(--navy); }
-      .nt-row { display:flex;justify-content:space-between;gap:12px; }
-      .nt-k { color:var(--gray-400); }
-      .nt-v { color:var(--gray-800);font-family:var(--f-mono);font-size:11px; }
-      #net-stats {
-        position:absolute;bottom:12px;left:14px;display:flex;gap:20px;pointer-events:none;
-      }
-      .net-stat-v { font-size:18px;font-weight:600;font-family:var(--f-mono);color:var(--navy);line-height:1;font-variant-numeric:tabular-nums; }
-      .net-stat-k { font-size:10px;color:var(--gray-400);text-transform:uppercase;letter-spacing:.07em;font-family:var(--f-sans); }
-      .net-hint { position:absolute;bottom:12px;right:14px;font-size:10px;color:var(--gray-400);text-align:right;pointer-events:none;line-height:1.8;font-family:var(--f-sans); }
-    </style>
-
-    <div id="net-legend">
-      <div class="net-li"><div class="net-ld" style="background:var(--navy)"></div>Customer</div>
-      <div class="net-li"><div class="net-ld" style="background:var(--gold)"></div>Supplier</div>
-      <div class="net-li"><div class="net-ll" style="background:#10b981"></div>Corr &gt; 0.50</div>
-      <div class="net-li"><div class="net-ll" style="background:#f59e0b"></div>0.35 – 0.50</div>
-      <div class="net-li"><div class="net-ll" style="background:#ef4444"></div>&lt; 0.35</div>
-    </div>
-
-    <div id="net-graph-box">
-      <svg id="net-svg"></svg>
-      <div id="net-tooltip"></div>
-      <div id="net-stats">
-        <div><div class="net-stat-v" id="net-s-nodes">—</div><div class="net-stat-k">Nodes</div></div>
-        <div><div class="net-stat-v" id="net-s-edges">—</div><div class="net-stat-k">Links</div></div>
-        <div><div class="net-stat-v" id="net-s-corr">—</div><div class="net-stat-k">Avg Corr</div></div>
+  <!-- ══ TRADE LOG ═══════════════════════════════════════════════════════ -->
+  <div id="pestaña-tradelog" class="pestaña">
+    <div class="section-intro">
+      <div class="si-left">
+        <div class="si-title">Trade Log</div>
+        <div class="si-sub">Decisiones del bot — cada apertura, cierre y señal descartada, con razonamiento</div>
       </div>
-      <div class="net-hint">Drag · Scroll to zoom · Hover for details</div>
+      <button class="btn btn-primary" onclick="cargarTradeLog()">Refresh</button>
+    </div>
+    <div id="tradelog-cont">
+      <div class="state-block"><div class="state-label">Loading trade log…</div></div>
     </div>
   </div>
+
 
 </div><!-- /page-wrap -->
 
@@ -1705,14 +1761,173 @@ async function cargarBot() {
   }
 }
 
+// ── Portfolio ─────────────────────────────────────────────────────────────
+async function cargarPortfolio() {
+  const cont = document.getElementById("portfolio-cont");
+  cont.innerHTML = `<div class="state-block"><div class="state-label">Loading portfolio...</div></div>`;
+  try {
+    const [r, rPares] = await Promise.all([fetch("/api/bot/portfolio"), fetch("/api/pares")]);
+    const data = await r.json();
+    const paresData = await rPares.json();
+    const paresLookup = {};
+    (paresData.pares || []).sort((a,b) => b.dependencia - a.dependencia).forEach(p => {
+      if (!paresLookup[p.proveedor]) paresLookup[p.proveedor] = p;
+    });
+
+    const isBlank = (v) => !v || v === "None" || v.replace(/[-–—\s]/g, "") === "" || v.startsWith("â");
+    const enrich = (pos) => {
+      const ticker = pos.supplier || pos.proveedor;
+      const match = paresLookup[ticker];
+      return {
+        ...pos,
+        cliente:      isBlank(pos.cliente)     ? (match ? match.cliente     : "—") : pos.cliente,
+        dependencia:  (!pos.dependencia || pos.dependencia === 0) ? (match ? match.dependencia : 0) : pos.dependencia,
+        lag:          isBlank(pos.lag)         ? (match ? match.lag         : null) : pos.lag,
+      };
+    };
+
+    const abiertas = (data.posiciones || []).map(enrich);
+    const hist     = (data.historial  || []).map(enrich);
+
+    const totalPnlUsd = hist.reduce((s, h) => s + (h.pnl_usd || 0), 0);
+    const wins        = hist.filter(h => h.pnl_usd > 0).length;
+    const winRate     = hist.length ? Math.round(wins / hist.length * 100) : 0;
+    const actualizado = data.actualizadoEn ? new Date(data.actualizadoEn).toLocaleTimeString() : "—";
+
+    const fmtPnl = (v) => {
+      const cls = v >= 0 ? "pnl-pos" : "pnl-neg";
+      return `<span class="${cls}">${v >= 0 ? "+" : ""}${v.toFixed(2)}</span>`;
+    };
+
+    const rowsAbiertas = abiertas.length ? abiertas.map(p => `
+      <tr>
+        <td>${p.cliente || "—"} → <strong>${p.supplier || p.proveedor || "—"}</strong></td>
+        <td><span class="dir-badge dir-${p.direccion.toLowerCase()}">${p.direccion}</span></td>
+        <td>${p.fecha_entrada}</td>
+        <td>$${(p.precio_entrada||0).toFixed(2)}</td>
+        <td>${p.dependencia ? p.dependencia + "%" : "—"}</td>
+        <td>${p.lag || "—"} d</td>
+      </tr>`).join("") :
+      `<tr><td colspan="6" style="text-align:center;color:var(--gray-400);padding:24px">No hay posiciones abiertas</td></tr>`;
+
+    const rowsHist = hist.length ? [...hist].reverse().map(h => `
+      <tr>
+        <td>${h.cliente || "—"} → <strong>${h.supplier || h.proveedor || "—"}</strong></td>
+        <td><span class="dir-badge dir-${(h.direccion||"").toLowerCase()}">${h.direccion}</span></td>
+        <td>${h.fecha_entrada}</td>
+        <td>${h.fecha_salida}</td>
+        <td>${fmtPnl(h.pnl_pct || 0)}%</td>
+        <td>${fmtPnl(h.pnl_usd || 0)}$</td>
+        <td class="motivo-${(h.motivo_cierre||"").toLowerCase()}">${h.motivo_cierre || "—"}</td>
+      </tr>`).join("") :
+      `<tr><td colspan="7" style="text-align:center;color:var(--gray-400);padding:24px">Sin operaciones cerradas aún</td></tr>`;
+
+    cont.innerHTML = `
+      <style>
+        .pf-stats{display:flex;gap:24px;flex-wrap:wrap;margin-bottom:32px}
+        .pf-stat{background:var(--gray-100);padding:16px 24px;min-width:140px}
+        .pf-stat-val{font-family:var(--f-serif);font-size:1.6rem;font-weight:600;color:var(--navy)}
+        .pf-stat-key{font-size:11px;color:var(--gray-400);text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
+        .pf-section{margin-bottom:40px}
+        .pf-section h2{font-family:var(--f-serif);font-size:1.1rem;font-weight:600;color:var(--navy);margin-bottom:14px}
+        .pf-table{width:100%;border-collapse:collapse;font-size:13px}
+        .pf-table th{text-align:left;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--gray-400);padding:6px 10px;border-bottom:1px solid var(--gray-100)}
+        .pf-table td{padding:10px 10px;border-bottom:1px solid var(--gray-100);color:var(--gray-600)}
+        .pf-table td strong{color:var(--navy)}
+        .dir-badge{font-size:10px;font-weight:700;letter-spacing:.06em;padding:2px 8px;border-radius:2px}
+        .dir-long{background:#dcfce7;color:#15803d}
+        .dir-short{background:#fee2e2;color:#b91c1c}
+        .pnl-pos{color:#15803d;font-weight:600}
+        .pnl-neg{color:#b91c1c;font-weight:600}
+        .motivo-stop_loss{color:#b91c1c;font-size:11px;font-weight:600}
+        .motivo-take_profit{color:#15803d;font-size:11px;font-weight:600}
+        .motivo-time_stop{color:var(--gray-400);font-size:11px;font-weight:600}
+        .pf-updated{font-size:11px;color:var(--gray-400);margin-bottom:24px}
+      </style>
+      <div class="pf-updated">Bot actualizado: ${actualizado}</div>
+      <div class="pf-stats">
+        <div class="pf-stat"><div class="pf-stat-val">${abiertas.length}</div><div class="pf-stat-key">Posiciones abiertas</div></div>
+        <div class="pf-stat"><div class="pf-stat-val">${hist.length}</div><div class="pf-stat-key">Operaciones cerradas</div></div>
+        <div class="pf-stat"><div class="pf-stat-val ${totalPnlUsd >= 0 ? "pnl-pos" : "pnl-neg"}">${totalPnlUsd >= 0 ? "+" : ""}$${totalPnlUsd.toFixed(0)}</div><div class="pf-stat-key">P&L acumulado</div></div>
+        <div class="pf-stat"><div class="pf-stat-val">${winRate}%</div><div class="pf-stat-key">Win rate</div></div>
+      </div>
+      <div class="pf-section">
+        <h2>Posiciones abiertas</h2>
+        <div style="overflow-x:auto">
+        <table class="pf-table">
+          <thead><tr><th>Par</th><th>Dir.</th><th>Entrada</th><th>Precio entrada</th><th>Dependencia</th><th>Lag</th></tr></thead>
+          <tbody>${rowsAbiertas}</tbody>
+        </table></div>
+      </div>
+      <div class="pf-section">
+        <h2>Historial</h2>
+        <div style="overflow-x:auto">
+        <table class="pf-table">
+          <thead><tr><th>Par</th><th>Dir.</th><th>Entrada</th><th>Salida</th><th>P&L %</th><th>P&L $</th><th>Motivo</th></tr></thead>
+          <tbody>${rowsHist}</tbody>
+        </table></div>
+      </div>`;
+  } catch(e) {
+    cont.innerHTML = `<div class="state-block"><div class="state-label">Error cargando portfolio</div></div>`;
+  }
+}
+
 // ── Live Charts ───────────────────────────────────────────────────────────
 // Paleta idéntica a Yahoo Finance compare mode
 const PALETA_YF = ['#7B61FF','#0ea5e9','#f59e0b','#10b981','#ef4444','#8b5cf6','#f97316','#06b6d4'];
-const chartInstancias   = {};   // { ticker: Chart }
-let   clientesDisponibles = [];
-let   clientesActivos     = new Set();
-let   chartsCountdown     = 60;
-let   chartsCountdownTimer = null;
+
+// ── Trade Log ─────────────────────────────────────────────────────────────
+async function cargarTradeLog() {
+  const cont = document.getElementById("tradelog-cont");
+  cont.innerHTML = `<div class="state-block"><div class="state-label">Loading trade log…</div></div>`;
+  try {
+    const r = await fetch("/api/bot/tradelog");
+    const data = await r.json();
+    const entries = data.entries || [];
+    if (!entries.length) {
+      cont.innerHTML = `<div class="state-block"><div class="state-label">No hay entradas todavía — el bot aún no ha registrado ninguna decisión.</div></div>`;
+      return;
+    }
+    const TYPE_LABEL = { apertura:"APERTURA", cierre:"CIERRE", skip:"SKIP", scan:"SCAN" };
+    const TYPE_COLOR = { apertura:"var(--navy)", cierre:"var(--green,#1a7a4a)", skip:"var(--gray-400)", scan:"var(--gray-300)" };
+    const TYPE_BG    = { apertura:"#e8eef8", cierre:"#e8f5ee", skip:"#f5f5f5", scan:"#f9f9f9" };
+    const rows = entries.map(e => {
+      const label = TYPE_LABEL[e.type] || e.type.toUpperCase();
+      const color = TYPE_COLOR[e.type] || "var(--gray-400)";
+      const bg    = TYPE_BG[e.type]    || "#fff";
+      const ts    = e.ts ? new Date(e.ts).toLocaleString("es-ES",{timeZone:"Europe/Madrid",hour12:false}) : "—";
+      let detail  = "";
+      if (e.type === "apertura") {
+        const dir = e.direccion === "LONG" ? "📈 LONG" : "📉 SHORT";
+        detail = `<span style="font-weight:600">${e.cliente} → ${e.supplier}</span> &nbsp;${dir}&nbsp; $${(e.precio_entrada||0).toFixed(2)} · dep. ${e.dependencia}% · lag ${e.lag} · score ${(e.score||0).toFixed(1)} · capital $${(e.capital||0).toFixed(0)} · cliente movió <span style="font-weight:600;color:${(e.cambio_cliente_pct||0)>0?"var(--green,#1a7a4a)":"var(--red)"}"> ${(e.cambio_cliente_pct||0)>0?"+":""}${(e.cambio_cliente_pct||0).toFixed(2)}%</span>`;
+      } else if (e.type === "cierre") {
+        const pnl = e.pnl_pct || 0;
+        const emoji = pnl >= 0 ? "✅" : "❌";
+        detail = `${emoji} <span style="font-weight:600">${e.cliente} → ${e.supplier}</span> &nbsp;${e.direccion}&nbsp; entrada $${(e.precio_entrada||0).toFixed(2)} → salida $${(e.precio_salida||0).toFixed(2)} · <span style="font-weight:600;color:${pnl>=0?"var(--green,#1a7a4a)":"var(--red)"}">${pnl>=0?"+":""}${pnl.toFixed(2)}% ($${(e.pnl_usd||0).toFixed(0)})</span> · ${e.motivo}`;
+      } else if (e.type === "skip") {
+        detail = `<span style="color:var(--gray-600)">${e.cliente} → ${e.supplier}</span> — ${e.razon}${e.cambio_pct!=null?" · "+((e.cambio_pct>0?"+":"")+e.cambio_pct.toFixed(2))+"%":""}${e.score!=null?" · score "+(e.score.toFixed(1)):""}`;
+      } else if (e.type === "scan") {
+        const est = e.mercado_abierto ? "🟢 abierto" : "🔴 cerrado";
+        detail = `${est} · señales: ${e.n_senales} · posiciones: ${e.n_posiciones}`;
+      }
+      return `<tr style="background:${bg}">
+        <td style="width:90px;white-space:nowrap;font-family:var(--f-mono);font-size:10.5px;color:var(--gray-400)">${ts}</td>
+        <td style="width:80px"><span style="font-family:var(--f-mono);font-size:10px;font-weight:700;color:${color};letter-spacing:.8px">${label}</span></td>
+        <td style="font-size:12.5px;line-height:1.5">${detail}</td>
+      </tr>`;
+    }).join("");
+    cont.innerHTML = `<div class="data-table-wrap"><table class="data-table" style="table-layout:auto">
+      <thead><tr>
+        <th style="width:90px">Hora (CET)</th>
+        <th style="width:80px">Tipo</th>
+        <th>Detalle</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table></div>`;
+  } catch(err) {
+    cont.innerHTML = `<div class="state-block"><div class="state-label">Error cargando el log: ${err.message}</div></div>`;
+  }
+}
 
 function cambiarPestana(id, btn) {
   document.querySelectorAll(".pestaña").forEach(p => p.classList.remove("activa"));
@@ -1723,70 +1938,24 @@ function cambiarPestana(id, btn) {
     if (!datosCorrGlobal.length) cargarCorrelaciones(); else refrescarCorrelaciones();
   }
   if (id === "charts") {
-    if (!clientesDisponibles.length) inicializarCharts(); else refrescarCharts();
+    inicializarCharts();
   }
   if (id === "newcharts") {
     if (!ncClientesDisponibles.length) inicializarNewCharts(); else refrescarNewCharts();
   }
-  if (id === "bot")      { cargarBot(); verificarInforme(); }
-  if (id === "earnings") { cargarBriefings(); cargarPostmortem(); cargarEarnings(); }
+  if (id === "bot")       { cargarBot(); verificarInforme(); }
+  if (id === "earnings")  { cargarBriefings(); cargarPostmortem(); cargarEarnings(); }
+  if (id === "portfolio") { cargarPortfolio(); }
+  if (id === "tradelog")  { cargarTradeLog(); }
 
 }
 
 async function inicializarCharts() {
-  // Extrae clientes únicos con proveedores de pares.json vía /api/prices
-  try {
-    const r    = await fetch("/api/prices");
-    const resp = await r.json();
-    clientesDisponibles = Object.entries(resp.precios)
-      .filter(([, d]) => d.esCliente && d.suppliers?.length > 0)
-      .map(([ticker]) => ticker)
-      .sort();
-
-    // Botones selectores
-    const sel = document.getElementById("charts-selector");
-    sel.innerHTML = clientesDisponibles.map(t =>
-      `<button class="selector-btn activo" id="selbtn-${t}" onclick="toggleCliente('${t}')">${t}</button>`
-    ).join("");
-    clientesActivos = new Set(clientesDisponibles);
-
-    await refrescarCharts();
-    iniciarChartsCountdown();
-  } catch (e) {
-    document.getElementById("charts-grid").innerHTML =
-      `<div class="state-block"><div class="state-label">Connection error</div><div class="state-sub">Is the server running? <code>node server.js</code></div></div>`;
-  }
-}
-
-function toggleCliente(ticker) {
-  if (clientesActivos.has(ticker)) {
-    clientesActivos.delete(ticker);
-    document.getElementById("selbtn-" + ticker)?.classList.remove("activo");
-  } else {
-    clientesActivos.add(ticker);
-    document.getElementById("selbtn-" + ticker)?.classList.add("activo");
-  }
-  renderChartsGrid();
+  await refrescarCharts();
 }
 
 async function refrescarCharts() {
-  document.getElementById("charts-update-ts").textContent = "Updating...";
-
-  // Actualiza tabla comparativa y gráficas en paralelo
-  renderChartsGrid();
-  await Promise.all([
-    renderTablaComparacion(),
-    (async () => {
-      const clientes = [...clientesActivos];
-      for (let i = 0; i < clientes.length; i += 3) {
-        const lote = clientes.slice(i, i + 3);
-        await Promise.all(lote.map(t => cargarYDibujar(t)));
-      }
-    })(),
-  ]);
-
-  const ahora = new Date().toLocaleTimeString("en-US");
-  document.getElementById("charts-update-ts").textContent = `Last update: ${ahora}`;
+  await renderTablaComparacion();
 }
 
 async function renderTablaComparacion() {
@@ -1873,260 +2042,6 @@ async function renderTablaComparacion() {
   }
 }
 
-function renderChartsGrid() {
-  const grid = document.getElementById("charts-grid");
-  if (!clientesActivos.size) {
-    grid.innerHTML = `<div class="state-block"><div class="state-label">No customers selected</div></div>`;
-    return;
-  }
-  // Solo crea cards que no existen aún
-  [...clientesActivos].forEach(ticker => {
-    if (!document.getElementById("card-" + ticker)) {
-      const div = document.createElement("div");
-      div.className = "chart-card";
-      div.id = "card-" + ticker;
-      div.innerHTML = `
-        <div class="chart-header">
-          <div>
-            <div class="chart-title">${ticker}</div>
-            <div class="chart-subtitle" id="chart-sub-${ticker}">Loading...</div>
-          </div>
-        </div>
-        <div class="chart-legend" id="chart-legend-${ticker}"></div>
-        <div class="chart-canvas-wrap">
-          <canvas id="canvas-${ticker}"></canvas>
-        </div>
-        <div class="chart-footer">
-          <span>% change vs. prior close</span>
-          <span id="chart-ts-${ticker}"></span>
-        </div>`;
-      grid.appendChild(div);
-    }
-  });
-  // Elimina cards de clientes desactivados
-  document.querySelectorAll(".chart-card").forEach(card => {
-    const t = card.id.replace("card-", "");
-    if (!clientesActivos.has(t)) {
-      if (chartInstancias[t]) { chartInstancias[t].destroy(); delete chartInstancias[t]; }
-      card.remove();
-    }
-  });
-}
-
-async function cargarYDibujar(ticker) {
-  try {
-    const r    = await fetch(`/api/chart/${ticker}`);
-    const data = await r.json();
-    if (!data.series?.length) return;
-
-    const todasSeries  = data.series;
-    const clienteSerie = todasSeries.find(s => s.esCliente);
-
-    // Cabecera
-    const sub = document.getElementById("chart-sub-" + ticker);
-    if (sub && clienteSerie) sub.textContent = clienteSerie.nombre;
-
-    const stateEl = document.getElementById("chart-state-" + ticker);
-    if (stateEl) stateEl.remove();
-
-    const canvas = document.getElementById("canvas-" + ticker);
-    if (!canvas) return;
-    const ctx2d = canvas.getContext("2d");
-
-    // Normalizar cada serie a [0,1] según su propio rango del día
-    function normalizar(puntos) {
-      const vals = puntos.map(p => p.v);
-      const min  = Math.min(...vals);
-      const max  = Math.max(...vals);
-      const rng  = max - min || 1;
-      return puntos.map(p => ({ x: p.t, y: (p.v - min) / rng }));
-    }
-
-    const datasets = todasSeries.map((s, i) => {
-      const color = PALETA_YF[i % PALETA_YF.length];
-      const pts   = normalizar(s.puntos);
-      return {
-        label:                    s.ticker,
-        data:                     pts,
-        borderColor:              color,
-        borderWidth:              s.esCliente ? 2 : 1.5,
-        backgroundColor:          "transparent",
-        fill:                     false,
-        pointRadius:              0,
-        pointHoverRadius:         4,
-        pointHoverBackgroundColor: color,
-        pointHoverBorderColor:    "#fff",
-        pointHoverBorderWidth:    2,
-        tension:                  0.2,
-        spanGaps:                 true,
-      };
-    });
-
-    // Leyenda estilo Yahoo Finance
-    const legendEl = document.getElementById("chart-legend-" + ticker);
-    if (legendEl) {
-      legendEl.innerHTML = todasSeries.map((s, i) => {
-        const color = PALETA_YF[i % PALETA_YF.length];
-        const ult   = s.puntos[s.puntos.length - 1];
-        const precio = ult ? (s.moneda === "USD" ? "$" : "") + ult.v.toFixed(2) : "—";
-        return `<div class="legend-item">
-          <div style="width:14px;height:2px;background:${color};border-radius:1px;flex-shrink:0"></div>
-          <span style="font-family:var(--f-mono);font-size:11px;font-weight:500;color:var(--gray-800)">${s.ticker}</span>
-          <span style="font-family:var(--f-mono);font-size:10.5px;color:var(--gray-600)">${precio}</span>
-          ${s.dependencia ? `<span class="legend-dep">${s.dependencia}% dep.</span>` : ""}
-        </div>`;
-      }).join("");
-    }
-
-    if (chartInstancias[ticker]) {
-      chartInstancias[ticker].data.datasets = datasets;
-      chartInstancias[ticker].update("none");
-    } else {
-      chartInstancias[ticker] = new Chart(canvas, {
-        type: "line",
-        data: { datasets },
-        options: {
-          animation:   false,
-          responsive:  true,
-          maintainAspectRatio: false,
-          interaction: { mode: "index", intersect: false },
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              backgroundColor: "#fff",
-              borderColor:     "#e0e3eb",
-              borderWidth:     1,
-              titleColor:      "#6b7280",
-              bodyColor:       "#1f2937",
-              titleFont: { family: "'IBM Plex Sans', sans-serif", size: 11 },
-              bodyFont:  { family: "'IBM Plex Mono', monospace", size: 11.5 },
-              padding:   10,
-              boxPadding: 4,
-              callbacks: {
-                title: items => {
-                  const d = new Date(items[0].parsed.x);
-                  return d.toLocaleTimeString("en-US", { timeZone: "America/New_York", hour: "2-digit", minute: "2-digit", hour12: false }) + " ET";
-                },
-                label: ctx => {
-                  const s = todasSeries[ctx.datasetIndex];
-                  const ult = s?.puntos[ctx.dataIndex];
-                  const precio = ult ? "$" + ult.v.toFixed(2) : "";
-                  return `  ${ctx.dataset.label}   ${precio}`;
-                },
-                labelColor: ctx => ({
-                  borderColor:     ctx.dataset.borderColor,
-                  backgroundColor: ctx.dataset.borderColor,
-                  borderRadius:    2,
-                }),
-              },
-            },
-          },
-          scales: {
-            x: {
-              type: "time",
-              adapters: { date: { zone: "America/New_York" } },
-              time: {
-                unit:           "minute",
-                stepSize:       30,
-                displayFormats: { minute: "H:mm" },
-                tooltipFormat:  "H:mm",
-              },
-              grid:   { display: false },
-              border: { display: false },
-              ticks:  {
-                color:        "#9ca3af",
-                font:         { family: "'IBM Plex Sans', sans-serif", size: 10.5 },
-                maxRotation:  0,
-                autoSkip:     true,
-                maxTicksLimit: 9,
-                padding:      6,
-              },
-            },
-            y: {
-              display: false,
-              grid:    { display: false },
-            },
-          },
-        },
-        plugins: [
-          {
-            id: "lastpoint",
-            afterDraw(chart) {
-              const c = chart.ctx;
-              chart.data.datasets.forEach((ds, di) => {
-                const meta = chart.getDatasetMeta(di);
-                if (!meta.data.length) return;
-                const last = meta.data[meta.data.length - 1];
-                c.save();
-                c.beginPath();
-                c.arc(last.x, last.y, 4, 0, Math.PI * 2);
-                c.fillStyle   = "#22c55e";
-                c.strokeStyle = "#fff";
-                c.lineWidth   = 2;
-                c.fill();
-                c.stroke();
-                c.restore();
-              });
-            },
-          },
-          {
-            id: "crosshair",
-            afterDraw(chart) {
-              if (!chart.tooltip?._active?.length) return;
-              const x = chart.tooltip._active[0].element.x;
-              const { top, bottom } = chart.chartArea;
-              const c = chart.ctx;
-              c.save();
-              c.beginPath();
-              c.moveTo(x, top);
-              c.lineTo(x, bottom);
-              c.lineWidth   = 1;
-              c.strokeStyle = "#d1d5db";
-              c.stroke();
-              c.restore();
-            },
-          },
-          {
-            id: "zeroline",
-            afterDraw(chart) {
-              const yScale = chart.scales.y;
-              if (!yScale) return;
-              const y = yScale.getPixelForValue(0);
-              const { left, right } = chart.chartArea;
-              const c = chart.ctx;
-              c.save();
-              c.beginPath();
-              c.moveTo(left, y);
-              c.lineTo(right, y);
-              c.lineWidth   = 1;
-              c.strokeStyle = "#d1d5db";
-              c.stroke();
-              c.restore();
-            },
-          },
-        ],
-      });
-    }
-
-    const tsEl = document.getElementById("chart-ts-" + ticker);
-    if (tsEl) tsEl.textContent = new Date(data.actualizadoEn).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
-
-  } catch (e) { /* mantiene la gráfica anterior */ }
-}
-
-function iniciarChartsCountdown() {
-  if (chartsCountdownTimer) clearInterval(chartsCountdownTimer);
-  chartsCountdown = 60;
-  document.getElementById("charts-countdown").textContent = chartsCountdown;
-  chartsCountdownTimer = setInterval(async () => {
-    chartsCountdown--;
-    document.getElementById("charts-countdown").textContent = chartsCountdown;
-    if (chartsCountdown <= 0) {
-      chartsCountdown = 60;
-      await refrescarCharts();
-    }
-  }, 1000);
-}
 
 // ── New Charts (1D / 1W) ──────────────────────────────────────────────────
 let ncClientesDisponibles = [];
@@ -2150,34 +2065,14 @@ async function inicializarNewCharts() {
       .filter(([, v]) => v.esCliente && v.suppliers?.length)
       .map(([ticker, v]) => ({ ticker, nombre: v.nombre }));
     ncDatosPrecio = resp.precios;
-    ncBuildSelector();
     ncClientesActivos = new Set(ncClientesDisponibles.map(c => c.ticker));
     await refrescarNewCharts();
-    document.getElementById("nc-update-ts").textContent =
-      "Last update: " + new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
   } catch (e) {
     document.getElementById("nc-grid").innerHTML =
       `<div class="state-block"><div class="state-label">Error loading data</div></div>`;
   }
 }
 
-function ncBuildSelector() {
-  const sel = document.getElementById("nc-selector");
-  sel.innerHTML = "";
-  ncClientesDisponibles.forEach(c => {
-    const btn = document.createElement("button");
-    btn.className   = "selector-btn activa";
-    btn.textContent = c.ticker;
-    btn.dataset.ticker = c.ticker;
-    btn.onclick = () => {
-      btn.classList.toggle("activa");
-      if (btn.classList.contains("activa")) ncClientesActivos.add(c.ticker);
-      else ncClientesActivos.delete(c.ticker);
-      refrescarNewCharts();
-    };
-    sel.appendChild(btn);
-  });
-}
 
 async function refrescarNewCharts() {
   if (!ncClientesDisponibles.length) { await inicializarNewCharts(); return; }
@@ -2186,18 +2081,34 @@ async function refrescarNewCharts() {
     const r    = await fetch("/api/prices");
     const resp = await r.json();
     ncDatosPrecio = resp.precios;
-    document.getElementById("nc-update-ts").textContent =
-      "Last update: " + new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
   } catch (e) { /* use cached */ }
 
   ncRenderGrid();
-  for (const c of ncClientesDisponibles) {
-    if (ncClientesActivos.has(c.ticker)) await ncCargarYDibujar(c.ticker);
+
+  const activosList = ncClientesDisponibles.filter(c => ncClientesActivos.has(c.ticker));
+
+  if (ncMode === "1W") {
+    // Batch: one HTTP call returns all weekly series
+    let weeklyAll = null;
+    try {
+      const r = await fetch("/api/weekly-all");
+      weeklyAll = await r.json();
+    } catch (e) { /* fall back to per-ticker */ }
+
+    await Promise.all(activosList.map(c => {
+      const series = weeklyAll?.clientes?.[c.ticker] || null;
+      return ncCargarYDibujar(c.ticker, series);
+    }));
+  } else {
+    // 1D: parallel per-ticker intraday requests
+    await Promise.all(activosList.map(c => ncCargarYDibujar(c.ticker)));
   }
 }
 
 function ncRenderGrid() {
   const grid = document.getElementById("nc-grid");
+  // Clear initial loading state if no cards exist yet
+  if (!grid.querySelector(".chart-card")) grid.innerHTML = "";
   ncClientesDisponibles.forEach(c => {
     if (!ncClientesActivos.has(c.ticker)) return;
     if (document.getElementById("nc-card-" + c.ticker)) return;
@@ -2229,7 +2140,7 @@ function ncRenderGrid() {
   });
 }
 
-async function ncCargarYDibujar(ticker) {
+async function ncCargarYDibujar(ticker, prefetchedWeeklySeries = null) {
   try {
     let datasets;
     const isWeekly = ncMode === "1W";
@@ -2237,12 +2148,17 @@ async function ncCargarYDibujar(ticker) {
     if (footerEl) footerEl.textContent = isWeekly ? "% change from Monday open" : "% change from today's open";
 
     if (isWeekly) {
-      // For 1W: fetch 5-day 15-min history from PercentageChartsBOT endpoint
-      const wr    = await fetch(`/api/weekly-chart/${ticker}`);
-      const wData = await wr.json();
-      if (!wData.series?.length) return;
-
-      const allTickers = wData.series;
+      // Use pre-fetched batch data if available, otherwise fetch individually
+      let allTickers;
+      if (prefetchedWeeklySeries) {
+        allTickers = prefetchedWeeklySeries;
+      } else {
+        const wr    = await fetch(`/api/weekly-chart/${ticker}`);
+        const wData = await wr.json();
+        if (!wData.series?.length) return;
+        allTickers = wData.series;
+      }
+      if (!allTickers?.length) return;
 
       // Reference series (first) — used for index→timestamp mapping and day labels
       const refPts = (allTickers[0]?.puntos || []).filter(p => p.v != null);
@@ -2347,6 +2263,11 @@ async function ncCargarYDibujar(ticker) {
         autoSkip:     false,
         callback: val => _dayTicks[Math.round(val)] ?? "",
         padding:  6,
+      },
+      afterBuildTicks: axis => {
+        // Keep only ticks at day-boundary indices
+        const dayIdxs = new Set(Object.keys(_dayTicks).map(Number));
+        axis.ticks = axis.ticks.filter(t => dayIdxs.has(Math.round(t.value)));
       },
     } : {
       type: "time",
@@ -2535,8 +2456,8 @@ async function cargarBriefings() {
     sep.style.display = "block";
 
     const streakBadge = n => {
-      if (n >= 4) return `<span style="background:#dcfce7;color:#15803d;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;letter-spacing:.5px">BEAT ×${n}</span>`;
-      if (n >= 2) return `<span style="background:#d1fae5;color:#065f46;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px">BEAT ×${n}</span>`;
+      if (n >= 4) return `<span style="background:transparent;color:#4ade80;font-size:10px;font-weight:600;padding:2px 9px;border-radius:3px;border:1px solid #4ade80;letter-spacing:.8px;font-family:var(--f-sans);text-transform:uppercase">BEAT ×${n}</span>`;
+      if (n >= 2) return `<span style="background:transparent;color:#86efac;font-size:10px;font-weight:600;padding:2px 9px;border-radius:3px;border:1px solid #86efac;letter-spacing:.8px;font-family:var(--f-sans);text-transform:uppercase">BEAT ×${n}</span>`;
       if (n <= -2) return `<span style="background:#fee2e2;color:#b91c1c;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px">MISS ×${Math.abs(n)}</span>`;
       return "";
     };
@@ -2604,18 +2525,18 @@ async function cargarBriefings() {
             <div style="font-style:italic;font-size:.9rem;opacity:.85;line-height:1.4">"${bf.headline}"</div>
           </div>
           <!-- Bloque derecho: earnings date + implied move -->
-          <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-end;flex-shrink:0">
+          <div style="display:flex;flex-direction:column;gap:14px;align-items:flex-end;flex-shrink:0;border-left:1px solid rgba(255,255,255,.12);padding-left:20px">
             <div style="text-align:right">
-              <div style="font-size:.7rem;opacity:.55;letter-spacing:.5px;text-transform:uppercase">Next Earnings</div>
-              <div style="font-family:var(--f-mono);font-size:.95rem;font-weight:600;margin-top:1px">${b.earningsDate}</div>
-              <div style="font-size:.75rem;opacity:.55;margin-top:1px">in ${b.diasRestantes} days</div>
+              <div style="font-size:.62rem;opacity:.45;letter-spacing:.9px;text-transform:uppercase;font-family:var(--f-sans)">Next Earnings</div>
+              <div style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;margin-top:3px;letter-spacing:.01em">${b.earningsDate}</div>
+              <div style="font-size:.72rem;opacity:.45;margin-top:2px;font-family:var(--f-sans)">in ${b.diasRestantes} days</div>
             </div>
             ${im.available ? `
             <div style="text-align:right;min-width:110px">
-              <div style="font-size:.65rem;opacity:.55;letter-spacing:.8px;text-transform:uppercase;margin-bottom:4px">Implied Move</div>
-              <div style="font-family:var(--f-mono);font-size:1.5rem;font-weight:700;color:#ffffff;line-height:1">${im.label}</div>
-              ${histPct != null ? `<div style="font-size:.68rem;opacity:.5;margin-top:3px">hist avg ±${histPct}%</div>` : ""}
-              <div style="margin-top:6px">${optLabel}</div>
+              <div style="font-size:.62rem;opacity:.45;letter-spacing:.9px;text-transform:uppercase;margin-bottom:5px;font-family:var(--f-sans)">Implied Move</div>
+              <div style="font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:700;color:#ffffff;line-height:1;letter-spacing:-.01em">${im.label}</div>
+              ${histPct != null ? `<div style="font-size:.67rem;opacity:.4;margin-top:4px;font-family:var(--f-sans)">hist avg ±${histPct}%</div>` : ""}
+              <div style="margin-top:8px">${optLabel}</div>
             </div>` : ""}
           </div>
         </div>
@@ -3108,9 +3029,27 @@ async function cargarEarnings() {
     {c:"GM",cN:"General Motors",s:"MGA",sN:"Magna Intl",dep:9,corr:0.53,roll:0.531,lag:"5–8d",sector:"auto"},
     {c:"F",cN:"Ford",s:"MGA",sN:"Magna Intl",dep:11,corr:0.509,roll:0.548,lag:"1–4d",sector:"auto"},
     {c:"F",cN:"Ford",s:"ALV",sN:"Autoliv",dep:10,corr:0.477,roll:0.498,lag:"1–4d",sector:"auto"},
+    // Retail / E-commerce
+    {c:"WMT",cN:"Walmart",s:"CHD",sN:"Church & Dwight",dep:26,corr:0.31,roll:0.29,lag:"3–7d",sector:"retail"},
+    {c:"WMT",cN:"Walmart",s:"REYN",sN:"Reynolds Consumer",dep:25,corr:0.28,roll:0.27,lag:"3–7d",sector:"retail"},
+    {c:"HD",cN:"Home Depot",s:"AMWD",sN:"American Woodmark",dep:40,corr:0.38,roll:0.36,lag:"3–7d",sector:"retail"},
+    {c:"HD",cN:"Home Depot",s:"TREX",sN:"Trex Company",dep:30,corr:0.33,roll:0.31,lag:"3–7d",sector:"retail"},
+    {c:"LOW",cN:"Lowe's",s:"TREX",sN:"Trex Company",dep:22,corr:0.29,roll:0.27,lag:"3–7d",sector:"retail"},
+    {c:"AMZN",cN:"Amazon",s:"RIVN",sN:"Rivian Automotive",dep:32,corr:0.22,roll:0.24,lag:"1–4d",sector:"retail"},
+    {c:"AMZN",cN:"Amazon",s:"PACK",sN:"Ranpak Holdings",dep:35,corr:0.26,roll:0.24,lag:"3–8d",sector:"retail"},
+    // Aerospace & Defense
+    {c:"BA",cN:"Boeing",s:"HXL",sN:"Hexcel",dep:22,corr:0.35,roll:0.33,lag:"5–10d",sector:"aero"},
+    {c:"BA",cN:"Boeing",s:"DCI",sN:"Ducommun",dep:30,corr:0.32,roll:0.30,lag:"5–12d",sector:"aero"},
+    {c:"BA",cN:"Boeing",s:"WWD",sN:"Woodward",dep:22,corr:0.30,roll:0.28,lag:"5–10d",sector:"aero"},
+    {c:"BA",cN:"Boeing",s:"MOGA",sN:"Moog Inc.",dep:18,corr:0.27,roll:0.25,lag:"5–10d",sector:"aero"},
+    {c:"RTX",cN:"RTX Corp",s:"CRS",sN:"Carpenter Technology",dep:18,corr:0.29,roll:0.27,lag:"7–15d",sector:"aero"},
+    {c:"LMT",cN:"Lockheed Martin",s:"KTOS",sN:"Kratos Defense",dep:17,corr:0.28,roll:0.26,lag:"5–10d",sector:"aero"},
+    {c:"LMT",cN:"Lockheed Martin",s:"TDY",sN:"Teledyne",dep:15,corr:0.25,roll:0.23,lag:"7–15d",sector:"aero"},
+    {c:"NVO",cN:"Novo Nordisk",s:"WST",sN:"West Pharma",dep:14,corr:0.33,roll:0.31,lag:"5–12d",sector:"pharma"},
+    {c:"MRK",cN:"Merck",s:"MEDP",sN:"Medpace Holdings",dep:14,corr:0.31,roll:0.29,lag:"4–9d",sector:"pharma"},
   ];
 
-  const custSectors = {AAPL:"tech",NVDA:"tech",AMD:"tech",INTC:"tech",QCOM:"tech",MSFT:"cloud",AMZN:"cloud",META:"cloud",GOOGL:"cloud",TSLA:"auto",GM:"auto",F:"auto"};
+  const custSectors = {AAPL:"tech",NVDA:"tech",AMD:"tech",INTC:"tech",QCOM:"tech",MSFT:"cloud",AMZN:"cloud",META:"cloud",GOOGL:"cloud",TSLA:"auto",GM:"auto",F:"auto",WMT:"retail",HD:"retail",LOW:"retail",BA:"aero",RTX:"aero",LMT:"aero",NVO:"pharma",MRK:"pharma"};
   let netSector = "all", netMinCorr = 0, netMinDep = 0;
   let netSim, netInitialized = false;
 
@@ -3256,7 +3195,7 @@ async function cargarEarnings() {
   const origCambiar = window.cambiarPestana;
   window.cambiarPestana = function(id, btn) {
     origCambiar(id, btn);
-    if (id === "network" && !netInitialized) {
+    if (id === "correlaciones" && !netInitialized) {
       netInitialized = true;
       setTimeout(buildNet, 80);
     }

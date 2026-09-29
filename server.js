@@ -124,6 +124,12 @@ app.get("/logout", (req, res) => {
 // ── Middleware de autenticación ───────────────────────────────────────────
 function requireAuth(req, res, next) {
   if (req.session.auth) return next();
+  // Permitir endpoints del bot con Bearer token
+  if (req.path.startsWith("/api/bot/")) {
+    const secret = process.env.BOT_SECRET || "supplysignal_bot";
+    const auth   = req.headers["authorization"] || "";
+    if (auth === `Bearer ${secret}`) return next();
+  }
   if (req.path.startsWith("/api/")) return res.status(401).json({ error: "Unauthorized" });
   res.redirect("/login");
 }
@@ -358,11 +364,94 @@ app.get("/api/prices", async (req, res) => {
   });
 });
 
+// Endpoint para el bot Python — autenticado con BOT_SECRET (no requiere sesión)
+app.get("/api/bot/prices", async (req, res) => {
+  const secret = process.env.BOT_SECRET || "supplysignal_bot";
+  const auth   = req.headers["authorization"] || req.query.token || "";
+  if (auth !== `Bearer ${secret}` && auth !== secret)
+    return res.status(401).json({ error: "Unauthorized" });
+  await asegurarPrecios();
+  const clientes  = new Set(pares.map(p => p.cliente));
+  const resultado = {};
+  for (const [ticker, datos] of Object.entries(preciosVivos)) {
+    resultado[ticker] = { ...datos, esCliente: clientes.has(ticker) };
+  }
+  res.json({ actualizadoEn: new Date().toISOString(), precios: resultado });
+});
+
 // Estado del bot
 app.get("/api/bot", (req, res) => {
   const diario = path.join(__dirname, "bot_diario.json");
   if (!fs.existsSync(diario)) return res.json({ operaciones: [], modo: "apagado" });
   res.json(JSON.parse(fs.readFileSync(diario, "utf8")));
+});
+
+// Portfolio bot: persiste en /tmp para sobrevivir reinicios serverless
+const PORTFOLIO_FILE = "/tmp/bot_portfolio.json";
+
+function leerPortfolio() {
+  try {
+    if (fs.existsSync(PORTFOLIO_FILE))
+      return JSON.parse(fs.readFileSync(PORTFOLIO_FILE, "utf8"));
+  } catch(e) {}
+  return { posiciones: [], historial: [], actualizadoEn: null };
+}
+
+function escribirPortfolio(data) {
+  try { fs.writeFileSync(PORTFOLIO_FILE, JSON.stringify(data), "utf8"); } catch(e) {}
+}
+
+app.post("/api/bot/portfolio", express.json(), (req, res) => {
+  const secret = process.env.BOT_SECRET || "supplysignal_bot";
+  const auth   = req.headers["authorization"] || "";
+  if (auth !== `Bearer ${secret}`) return res.status(401).json({ error: "Unauthorized" });
+  const { posiciones, historial } = req.body || {};
+  if (!Array.isArray(posiciones)) return res.status(400).json({ error: "invalid" });
+  const prev = leerPortfolio();
+  const data = {
+    posiciones,
+    historial:    historial || prev.historial,
+    actualizadoEn: new Date().toISOString()
+  };
+  escribirPortfolio(data);
+  res.json({ ok: true });
+});
+
+app.get("/api/bot/portfolio", (req, res) => {
+  res.json(leerPortfolio());
+});
+
+// Trade log: persiste en /tmp (mismo patrón que portfolio)
+const TRADELOG_FILE = "/tmp/trade_log.json";
+const MAX_LOG_ENTRIES = 500;
+
+function leerTradeLog() {
+  try {
+    if (fs.existsSync(TRADELOG_FILE))
+      return JSON.parse(fs.readFileSync(TRADELOG_FILE, "utf8"));
+  } catch(e) {}
+  return { entries: [] };
+}
+
+function escribirTradeLog(data) {
+  try { fs.writeFileSync(TRADELOG_FILE, JSON.stringify(data), "utf8"); } catch(e) {}
+}
+
+app.post("/api/bot/tradelog", express.json(), (req, res) => {
+  const secret = process.env.BOT_SECRET || "supplysignal_bot";
+  const auth   = req.headers["authorization"] || "";
+  if (auth !== `Bearer ${secret}`) return res.status(401).json({ error: "Unauthorized" });
+  const entry = req.body;
+  if (!entry || !entry.type) return res.status(400).json({ error: "invalid" });
+  const log = leerTradeLog();
+  log.entries.unshift({ ...entry, ts: new Date().toISOString() });
+  if (log.entries.length > MAX_LOG_ENTRIES) log.entries = log.entries.slice(0, MAX_LOG_ENTRIES);
+  escribirTradeLog(log);
+  res.json({ ok: true });
+});
+
+app.get("/api/bot/tradelog", (req, res) => {
+  res.json(leerTradeLog());
 });
 
 // Serie de precios intradía para gráficas (cliente + sus proveedores)
@@ -475,6 +564,56 @@ app.get("/api/weekly-chart/:ticker", async (req, res) => {
   }
 
   res.json({ cliente, actualizadoEn: new Date().toISOString(), series });
+});
+
+// All weekly charts in one call (used by New Charts to avoid 12 sequential requests)
+app.get("/api/weekly-all", async (req, res) => {
+  const clientes = [...new Set(pares.filter(p => p.proveedor).map(p => p.cliente))];
+
+  // Collect all unique tickers needed across all clients
+  const allTickers = [...new Set([
+    ...clientes,
+    ...pares.filter(p => p.proveedor).map(p => p.proveedor),
+  ])];
+
+  // Fetch all missing/stale tickers in parallel (with concurrency limit 4)
+  const MAX_AGE = 10 * 60 * 1000;
+  const needed  = allTickers.filter(t => {
+    const c = weeklyCache[t];
+    return !c || (Date.now() - new Date(c.actualizadoEn).getTime() > MAX_AGE);
+  });
+
+  // Parallel fetch with concurrency cap
+  const CONCURRENCY = 4;
+  for (let i = 0; i < needed.length; i += CONCURRENCY) {
+    await Promise.all(needed.slice(i, i + CONCURRENCY).map(async t => {
+      try {
+        weeklyCache[t] = await fetchWeeklySerie(t);
+      } catch (e) { /* keep stale cache if any */ }
+    }));
+  }
+
+  // Build response grouped by client
+  const result = {};
+  for (const cliente of clientes) {
+    const suppliers = pares
+      .filter(p => p.cliente === cliente && p.proveedor)
+      .map(p => ({ ticker: p.proveedor, nombre: p.proveedorNombre, dependencia: p.dependencia }));
+    const todos = [
+      { ticker: cliente, esCliente: true, dependencia: null },
+      ...suppliers.map(s => ({ ...s, esCliente: false })),
+    ];
+    const series = todos
+      .map(item => {
+        const cached = weeklyCache[item.ticker];
+        if (!cached) return null;
+        return { ...cached, esCliente: item.esCliente, dependencia: item.dependencia };
+      })
+      .filter(Boolean);
+    if (series.length) result[cliente] = series;
+  }
+
+  res.json({ actualizadoEn: new Date().toISOString(), clientes: result });
 });
 
 // PercentageChartsBOT cron: pre-fetches all tickers every 15 min during market hours
